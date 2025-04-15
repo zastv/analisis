@@ -1,0 +1,420 @@
+
+.navbar {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    margin-bottom: 20px;
+}
+
+.navbar a {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #930001;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.navbar a:hover {
+    background-color: #fff;
+    color: #000;
+}
+
+/* Contenedor principal */
+.service-card {
+    padding: 2rem; /* Espaciado más generoso */
+    background-color: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    transform: translateY(0);
+    text-align: center; /* Asegura que todo esté centrado */
+    max-width: 300px; /* Ajusta el tamaño máximo para uniformidad */
+    margin: auto; /* Centra la tarjeta en su contenedor */
+}
+
+/* Efecto hover */
+.service-card:hover {
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px);
+}
+
+/* Contenedor del ícono */
+.icon-container {
+    position: relative;
+    margin-top: -3rem; /* Corrige la posición inicial */
+}
+
+/* Fondo del ícono */
+.icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 64px;
+    height: 64px;
+    margin: 0 auto;
+    background-color: #6366f1; /* Indigo-600 */
+    border-radius: 50%; /* Asegura que el fondo sea circular */
+    color: white;
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Hover en el fondo del ícono */
+.service-card:hover .icon {
+    background-color: #4f46e5; /* Indigo-700 */
+}
+
+/* SVG del ícono */
+.icon-svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: currentColor;
+}
+
+/* Contenido del servicio */
+.content {
+    margin-top: 2rem;
+}
+
+.title {
+    font-size: 1.5rem; /* Ajuste de tamaño */
+    font-weight: bold;
+    color: #1f2937; /* Gray-800 */
+    margin-bottom: 1rem;
+}
+
+.description {
+    color: #4b5563; /* Gray-600 */
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+ /* Estilos base */
+ :root {
+    --primary-color: #4F46E5;
+    --secondary-color: #6366F1;
+    --text-dark: #1F2937;
+    --text-light: #6B7280;
+    --light-bg: #F9FAFB;
+    --white: #FFFFFF;
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+
+
+.logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    color: var(--text-dark);
+    text-decoration: none;
+    font-weight: 500;
+    text-transform: capitalize;
+    padding: 0.5rem 0;
+    position: relative;
+    transition: var(--transition);
+}
+
+.nav-links a:hover {
+    color: var(--primary-color);
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--primary-color);
+    transition: var(--transition);
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* Sección de servicios */
+.services-section {
+    background: linear-gradient(to bottom, var(--light-bg), var(--white));
+    padding: 6rem 0;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 5rem;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+}
+
+.section-divider {
+    width: 6rem;
+    height: 4px;
+    background-color: var(--primary-color);
+    margin: 0 auto 1.5rem;
+    border-radius: 2px;
+}
+
+.section-description {
+    max-width: 36rem;
+    margin: 0 auto;
+    color: var(--text-light);
+    font-size: 1.1rem;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 3rem;
+    margin-top: 3rem;
+}
+
+@media (min-width: 768px) {
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .services-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.service-card {
+    background-color: var(--white);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: var(--transition);
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.service-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    background-color: rgba(79, 70, 229, 0.1);
+    border-radius: 50%;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+}
+
+.service-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.service-card p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+}
+
+/* Botón principal */
+.btn-primary {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition);
+    margin-top: 2rem;
+}
+
+.btn-primary:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3);
+}
+
+.titulo{
+    display: flex;
+    text-align: center;
+    margin-bottom: 2px;
+    justify-content: center;
+    width: 75%; /* Asegura que ocupe todo el ancho */
+    
+  }
+  
+  h2 {
+    color: var(--oscuro);
+    text-align: center;
+    padding: 35px;
+  }
+
+  
+  .titulo{
+    display: flex;
+    text-align: center;
+    margin-bottom: 2px;
+    justify-content: center;
+    width: 75%; /* Asegura que ocupe todo el ancho */
+    
+  }
+  
+  .farmaciacapsula {
+    justify-content: center;
+  }
+  /* Estilos para el título */
+  .secnavbar .portada {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #000; /* Color de texto */
+  }
+  
+  /* Estilos para los botones */
+  .secnavbar .navbar a {
+    display: inline-block;
+    margin: 5px;
+    padding: 10px 20px;
+    color: white;
+    background-color: #8B0000; /* Color del botón */
+    border-radius: 5px;
+    text-decoration: none;
+  }
+  
+  .secnavbar .navbar a:hover {
+    transform: translateY(-10px);
+    background-color: #A52A2A; /* Color al pasar el cursor */
+  }
+
+  
+  /* Pie de página */
+.footer-section {
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.801);
+    background: linear-gradient(to bottom right, #b6aeae, #00FFFF);
+    padding: 20px;
+    text-align: center;
+    color: var(--oscuro);
+    border-radius: 8px;
+    width: 90%; /* Ajusta el ancho para mejor responsividad */
+    max-width: 1200px; /* Limita el ancho máximo */
+    margin: 20px auto; /* Centra el pie de página */
+  }
+  
+  .footer-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+  }
+  
+  .footer-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  
+  .footer-contact,
+  .footer-email {
+    font-size: 1em;
+    margin: 5px 0;
+    
+    
+  }
+  
+  .footer-links {
+    list-style-type: none;
+    padding: 0;
+   
+  }
+  
+  .footer-links li {
+    margin: 5px 0;
+    margin: 15px 0 0 0;
+    box-shadow: 0 0 50px rgb(0, 0, 0);
+    border-radius: 8px;
+  }
+  
+  .footer-links a {
+    text-decoration: none;
+    color: var(--oscuro);
+    font-weight: bold;
+    
+  }
+  
+  .footer-links a:hover {
+    text-decoration: underline;
+  }
+  
+  .footer-logo {
+    width: 60px;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+  .footer-logo1 {
+    padding: 0 20px;
+    margin: 10px;
+    width: 60px;
+    height: auto;
+  }
+  
+  /* Estilo para la sección con fondo */
+  .navbar {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Reduce el espacio entre elementos */
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin: 35px auto; /* Centra el contenedor */
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+  }
+  
+  /* Sección con fondo */
+  .secnavbar {
+    display: flex;
+    box-shadow: 0 0 50px rgb(0, 0, 0);
+    border-radius: 15px;
+    margin: 50px auto; /* Centra el contenedor */
+    background-size: cover;
+    background-position: center;
+    padding: 50px 0;
+    text-align: center;
+    background-color: #f8f1f1;
+    position:initial;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan en pantallas pequeñas */
+    justify-content: center;
+    width: 75%; /* Asegura que ocupe todo el ancho */
+  }

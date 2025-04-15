@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="stylesheet" href="css/style1.css">
+    <title>React App</title>
+  </head>
+  <body>
+    <section class="secnavbar">
+      <div class="titulo">
+        <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula" style="width: 100px;">
+        <h2>Farmacia Cápsula</h2>
+      </div>
+      <div class="navbar">
+        <a href="index.html">Inicio</a>
+        <a href="producto.html">Producto</a>
+        <a href="delivery.html">Delivery</a>
+        <a href="servicios.html">Servicios</a>
+      </div>
+      <div class="iniciosesion">
+        <button class="navbar" onclick="logout()">Cerrar Sesión</button>
+      </div>
+    </section>
+
+    <div class="login-container">
+      <form id="loginForm" class="login-form" onsubmit="return false;">
+        <h1>Iniciar Sesión</h1>
+        <div class="login-form">
+          <label for="username">Usuario:</label>
+          <input type="text" id="username" name="username" required>
+          <label for="password">Contraseña:</label>
+          <input type="password" id="password" name="password" required>
+          <button type="submit">Iniciar Sesión</button>
+        </div>
+        <div class="links">
+          <a href="#">¿Olvidaste tu contraseña?</a>
+          <a href="registrarse.html">Crear cuenta nueva</a>
+        </div>
+      </form>
+
+      <p id="message"></p>
+    </div>
+
+    <section class="footer-section">
+      <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula" style="width: 100px;">
+      <h2>Farmacia Cápsula</h2>
+      <p>A domicilio: 800-522-6600</p>
+      <p>Correo electrónico: info@farmaciacapsula.com</p>
+      <div class="footer-links">
+        <div class="Contactanos">
+          <a href="index.html">Contáctanos</a>
+        </div>
+        <div class="Información-Legal"></div>
+          <a href="index.html">Información Legal</a>
+        </div>
+        <div class="Preguntas-Frecuentes">
+          <a href="index.html">Preguntas Frecuentes</a>
+        </div>
+      </div>
+    </section>
+
+    
+    <footer class="footer">
+      <p>Todos los derechos reservados a farmacia capsula. </p>
+    </footer>
+
+    <script>
+      document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const messageElement = document.getElementById('message');
+        messageElement.textContent = '';
+        
+        try {
+          const username = document.getElementById('username').value.trim();
+          const password = document.getElementById('password').value.trim();
+
+          if (!username || !password) {
+            throw new Error('Todos los campos son obligatorios');
+          }
+
+          const response = await fetch('http://localhost:3001/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            throw new Error(data.message || 'Error en la autenticación');
+          }
+
+          // Almacenar token y userId en localStorage
+          localStorage.setItem('authToken', data.token);
+          localStorage.setItem('userId', data.userId); // Asegúrate de que el backend devuelva el userId
+          
+          messageElement.style.color = 'green';
+          messageElement.textContent = '¡Autenticación exitosa!';
+          setTimeout(() => {
+            window.location.href = 'index.html';
+          }, 1500);
+
+        } catch (error) {
+          messageElement.style.color = 'red';
+          messageElement.textContent = error.message;
+          console.error('Login Error:', error);
+        }
+      });
+
+      // Verificar autenticación al cargar la página
+      document.addEventListener('DOMContentLoaded', () => {
+        const token = localStorage.getItem('authToken');
+        const userId = localStorage.getItem('userId');
+
+        // Si no hay token o userId, redirigir a la página de login
+        if (!token || !userId) {
+          if (window.location.pathname !== '/iniciar_sesión.html') {
+            window.location.href = '/iniciar_sesión.html';
+          }
+        }
+      });
+
+      // Función para cerrar sesión
+      function logout() {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userId');
+        window.location.href = 'iniciar_sesión.html';
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,136 @@
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-bottom: 20px;
+}
+
+.navbar a {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #930001;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.navbar a:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+/* Sección principal */
+.faq-section {
+    background-color: #f9fafb; /* Gris claro */
+    padding: 3rem 1.5rem;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  /* Título */
+  .faq-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1f2937; /* Gris oscuro */
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  /* Ítems de FAQ */
+  .faq-item {
+    border-bottom: 1px solid #e5e7eb; /* Línea divisoria */
+    padding: 1rem 0;
+  }
+  
+  .faq-question {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: #374151; /* Gris */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.5rem 0;
+    transition: color 0.3s ease;
+  }
+  
+  .faq-question:hover {
+    color: #4f46e5; /* Indigo */
+  }
+  
+  /* Icono del toggle */
+  .faq-toggle {
+    font-size: 1.5rem;
+    color: #9ca3af; /* Gris claro */
+    transition: transform 0.3s ease;
+  }
+  
+  /* Respuesta oculta por defecto */
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    padding-top: 0.5rem;
+    color: #6b7280; /* Gris medio */
+  }
+  
+  /* Mostrar respuesta cuando esté activa */
+  .faq-item.active .faq-answer {
+    max-height: 200px;
+    opacity: 1;
+  }
+  
+  /* Rotar icono al expandir */
+  .faq-item.active .faq-toggle {
+    transform: rotate(45deg);
+    color: #4f46e5; /* Indigo */
+  }
+  
+  .carousel {
+    position: relative;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  
+  .carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease;
+  }
+  
+  .carousel-item {
+    min-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .carousel-item img {
+    width: 100%;
+    display: block;
+  }
+  
+  .carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .carousel-control.prev {
+    left: 10px;
+  }
+  
+  .carousel-control.next {
+    right: 10px;
+  }

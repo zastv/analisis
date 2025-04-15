@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Web site created using create-react-app" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="stylesheet" href="css/style7.css" />
+    <title>React App</title>
+  </head>
+  <body>
+    <div class="navbar">
+      <a href="index.html">Inicio</a>
+      <a href="iniciar_sesión.html">Iniciar Sesión</a>
+      <a href="producto.html">Producto</a>
+      <a href="delivery.html">Delivery</a>
+      <a href="servicios.html">Servicios</a>
+    </div>
+
+    <div class="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="imagenes/carrusel1.jpg" alt="Imagen 1">
+        </div>
+        <div class="carousel-item">
+          <img src="imagenes/carrusel2.jpg" alt="Imagen 2">
+        </div>
+        <div class="carousel-item">
+          <img src="imagenes/carrusel3.jpg" alt="Imagen 3">
+        </div>
+      </div>
+      <button class="carousel-control prev">&#10094;</button>
+      <button class="carousel-control next">&#10095;</button>
+    </div>
+
+    <section class="faq-section">
+      <div class="container">
+        <h2 class="faq-title">Preguntas Frecuentes</h2>
+        <div class="faq-item">
+          <button class="faq-question">
+            ¿Qué servicios ofrecen? <span class="faq-toggle">+</span>
+          </button>
+          <div class="faq-answer">
+            Ofrecemos servicios como desarrollo web, diseño UI/UX, seguridad cibernética y estrategias digitales para ayudar a tu negocio a prosperar en el entorno digital.
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            ¿Cómo puedo contactarlos? <span class="faq-toggle">+</span>
+          </button>
+          <div class="faq-answer">
+            Puedes contactarnos a través de nuestro formulario en la página de contacto o enviándonos un correo electrónico a info@ejemplo.com.
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            ¿Qué tan rápido entregan los proyectos? <span class="faq-toggle">+</span>
+          </button>
+          <div class="faq-answer">
+            Los tiempos de entrega dependen del alcance del proyecto. Sin embargo, generalmente entregamos proyectos pequeños en 2-3 semanas y proyectos más complejos en 4-8 semanas.
+          </div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            ¿Ofrecen soporte técnico? <span class="faq-toggle">+</span>
+          </button>
+          <div class="faq-answer">
+            Sí, ofrecemos soporte técnico continuo para asegurarnos de que tu sitio web o aplicación funcione sin problemas después del lanzamiento.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <button id="open-modal">Más Información</button>
+
+    <div id="info-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Información Adicional</h2>
+        <p>Aquí puedes agregar más detalles sobre tus servicios o productos.</p>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Contacto</h3>
+          <p>Email: info@farmaciacapsula.com</p>
+          <p>Teléfono: 800-522-6600</p>
+          <p>Dirección: Av. Principal #123, Ciudad</p>
+        </div>
+        <div class="footer-section">
+          <h3>Enlaces Rápidos</h3>
+          <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="producto.html">Productos</a></li>
+            <li><a href="servicios.html">Servicios</a></li>
+            <li><a href="delivery.html">Delivery</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Síguenos</h3>
+          <ul class="social-links">
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">Instagram</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2023 Farmacia Cápsula. Todos los derechos reservados.</p>
+      </div>
+    </footer>
+
+    <button id="back-to-top" class="back-to-top">↑</button>
+
+    <script>
+      // Carrusel
+      let currentIndex = 0;
+      const items = document.querySelectorAll('.carousel-item');
+      const totalItems = items.length;
+
+      function showItem(index) {
+        items.forEach((item, i) => {
+          item.classList.remove('active');
+          if (i === index) {
+            item.classList.add('active');
+          }
+        });
+      }
+
+      document.querySelector('.carousel-control.next').addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % totalItems;
+        showItem(currentIndex);
+      });
+
+      document.querySelector('.carousel-control.prev').addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+        showItem(currentIndex);
+      });
+
+      // Modal
+      const modal = document.getElementById('info-modal');
+      const openModalButton = document.getElementById('open-modal');
+      const closeModalButton = document.querySelector('.close-modal');
+
+      openModalButton.addEventListener('click', () => {
+        modal.style.display = 'block';
+      });
+
+      closeModalButton.addEventListener('click', () => {
+        modal.style.display = 'none';
+      });
+
+      window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+
+      // Botón "Volver al Inicio"
+      window.addEventListener('scroll', () => {
+        const backToTopButton = document.getElementById('back-to-top');
+        if (window.scrollY > 200) {
+          backToTopButton.style.display = 'block';
+        } else {
+          backToTopButton.style.display = 'none';
+        }
+      });
+
+      document.getElementById('back-to-top').addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    </script>
+  </body>
+</html>

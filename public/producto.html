@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style6.css">
+  <title>Productos - Farmacia Cápsula</title>
+</head>
+<body>
+  <!-- Barra de navegación -->
+  <section class="secnavbar">
+    <div class="titulo">
+      <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula" style="width: 100px;">
+      <h2>Farmacia Cápsula</h2>
+    </div>
+
+    <div class="navbar">
+        <a href="index.html">inicio</a>
+        <a href="delivery.html">A tu casa</a>
+        <a href="iniciar_sesión.html">Iniciar sesión</a>
+        <a href="producto.html">Producto</a>
+        <a href="servicios.html">Servicios</a>
+    </div>
+    <div class="vercarrito">
+     <button onclick="showCart()">Ver Carrito</button>
+    </div>
+    </section>
+
+
+  <!-- Filtro -->
+  <div class="filter-container">
+    <label for="product-filter">Filtrar por:</label>
+    <select id="product-filter" onchange="filterProducts()">
+      <option value="all">Todos</option>
+      <option value="most-sold">Más comprados</option>
+      <option value="cheapest">Más baratos</option>
+    </select>
+  </div>
+  <div class="products-grid">
+    <div class="products-grid">
+      <!-- Producto 1 -->
+      <div class="product-card" data-price="5" data-sold="50" data-id="1">
+        <img src="imagenes/Productos/tempra-500mg-20t_i.png" alt="Producto 1" class="product-image">
+        <h3 class="product-name">Paracetamol 500mg</h3>
+        <p class="product-description">Alivia dolores y reduce la fiebre. Caja con 20 tabletas.</p>
+        <p class="product-price">$5.00</p>
+        <button class="add-to-cart" onclick="addToCart(1, 'Paracetamol 500mg', 5)">Añadir al carrito</button>
+      </div>
+    
+      <!-- Producto 2 -->
+      <div class="product-card" data-price="10" data-sold="20" data-id="2">
+        <img src="imagenes/Productos/antiseptica.jpg" alt="Producto 2" class="product-image">
+        <h3 class="product-name">Vitamina C 1000mg</h3>
+        <p class="product-description">Fortalece tu sistema inmunológico. Frasco con 30 tabletas.</p>
+        <p class="product-price">$10.00</p>
+        <button class="add-to-cart" onclick="addToCart('64f1a2b3c4d5e6f7a8b9c0d1', 'Vitamina C 1000mg', 10)">
+          Añadir al carrito
+        </button>
+      </div>
+    
+      <!-- Producto 3 -->
+      <div class="product-card" data-price="8" data-sold="30" data-id="3">
+        <img src="imagenes/Productos/ibuprofemo.jpg" alt="Producto 3" class="product-image">
+        <h3 class="product-name">Ibuprofeno 200mg</h3>
+        <p class="product-description">Antiinflamatorio y analgésico. Caja con 20 tabletas.</p>
+        <p class="product-price">$8.00</p>
+        <button class="add-to-cart" onclick="addToCart(3, 'Ibuprofeno 200mg', 8)">Añadir al carrito</button>
+      </div>
+    
+      <!-- Producto 4 -->
+      <div class="product-card" data-price="6.5" data-sold="40" data-id="4">
+        <img src="imagenes/Productos/antiseptica.jpg" alt="Producto 4" class="product-image">
+        <h3 class="product-name">Crema Antiséptica</h3>
+        <p class="product-description">Protege y sana heridas menores. Tubo de 50g.</p>
+        <p class="product-price">$6.50</p>
+        <button class="add-to-cart" onclick="addToCart(4, 'Crema Antiséptica', 6.5)">Añadir al carrito</button>
+      </div>
+    
+      <!-- Producto 5 -->
+      <div class="product-card" data-price="7" data-sold="25" data-id="5">
+        <img src="imagenes/Productos/tos.jpeg" alt="Producto 5" class="product-image">
+        <h3 class="product-name">Jarabe para la Tos</h3>
+        <p class="product-description">Alivia la tos seca y con flema. Frasco de 120ml.</p>
+        <p class="product-price">$7.00</p>
+        <button class="add-to-cart" onclick="addToCart(5, 'Jarabe para la Tos', 7)">Añadir al carrito</button>
+      </div>
+    
+      <!-- Producto 6 -->
+      <div class="product-card" data-price="4.5" data-sold="60" data-id="6">
+        <img src="imagenes/Productos/Gel.jpg" alt="Producto 6" class="product-image">
+        <h3 class="product-name">Gel Desinfectante</h3>
+        <p class="product-description">Mata el 99.9% de gérmenes. Botella de 500ml.</p>
+        <p class="product-price">$4.50</p>
+        <button class="add-to-cart" onclick="addToCart(6, 'Gel Desinfectante', 4.5)">Añadir al carrito</button>
+      </div>
+    
+      <!-- Producto 7 -->
+      <div class="product-card" data-price="12" data-sold="15" data-id="7">
+        <img src="imagenes/Productos/omeprazol.png" alt="Producto 7" class="product-image">
+        <h3 class="product-name">Omeprazol 20mg</h3>
+        <p class="product-description">Alivia el reflujo y protege el estómago. Caja con 14 cápsulas.</p>
+        <p class="product-price">$12.00</p>
+        <button class="add-to-cart" onclick="addToCart(7, 'Omeprazol 20mg', 12)">Añadir al carrito</button>
+      </div>
+    
+      <!-- Producto 8 -->
+      <div class="product-card" data-price="15" data-sold="10" data-id="8">
+        <img src="imagenes/Productos/ternometro.jpeg" alt="Producto 8" class="product-image">
+        <h3 class="product-name">Termómetro Digital</h3>
+        <p class="product-description">Medición rápida y precisa. Incluye batería.</p>
+        <p class="product-price">$15.00</p>
+        <button class="add-to-cart" onclick="addToCart(8, 'Termómetro Digital', 15)">Añadir al carrito</button>
+      </div>
+    
+      <!-- Producto 9 -->
+      <div class="product-card" data-price="9" data-sold="35" data-id="9">
+        <img src="imagenes/Productos/mascarilla.jpg" alt="Producto 9" class="product-image">
+        <h3 class="product-name">Mascarillas Desechables</h3>
+        <p class="product-description">Caja con 50 unidades. Triple capa de protección.</p>
+        <p class="product-price">$9.00</p>
+        <button class="add-to-cart" onclick="addToCart(9, 'Mascarillas Desechables', 9)">Añadir al carrito</button>
+      </div>
+    
+      <!-- Producto 10 -->
+      <div class="product-card" data-price="5.5" data-sold="20" data-id="10">
+        <img src="imagenes/Productos/vendas.jpg" alt="Producto 10" class="product-image">
+        <h3 class="product-name">Vendas Elásticas</h3>
+        <p class="product-description">Soporte para lesiones musculares. Paquete de 2 piezas.</p>
+        <p class="product-price">$5.50</p>
+        <button class="add-to-cart" onclick="addToCart(10, 'Vendas Elásticas', 5.5)">Añadir al carrito</button>
+      </div>
+    </div>
+    <!-- Footer -->
+    
+    <!-- Productos aquí... -->
+  </div>
+  <!-- Footer aquí... -->
+  
+  <section class="footer-section">
+    <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula" style="width: 100px;">
+    <h2>Farmacia Cápsula</h2>
+    <p>A domicilio: 800-522-6600</p>
+    <p>Correo electrónico: info@farmaciacapsula.com</p>
+    <div class="footer-links">
+      <div class="Contactanos">
+        <a href="index.html">Contáctanos</a>
+      </div>
+      <div class="Información-Legal"></div>
+        <a href="index.html">Información Legal</a>
+      </div>
+      <div class="Preguntas-Frecuentes">
+        <a href="index.html">Preguntas Frecuentes</a>
+      </div>
+    </div>
+  </section>
+
+  
+  <footer class="footer">
+    <p>Todos los derechos reservados a farmacia capsula. </p>
+  </footer>
+
+  <!-- Script de filtro y carrito -->
+  <script>
+    // Generar un guestId si no existe
+    function getGuestId() {
+      let guestId = localStorage.getItem('guestId');
+      if (!guestId) {
+        guestId = 'guest_' + Math.random().toString(36).substr(2, 9); // Generar un ID único
+        localStorage.setItem('guestId', guestId);
+      }
+      return guestId;
+    }
+  
+    // Función para añadir productos al carrito
+    function addToCart(productId, productName, productPrice) {
+      const guestId = getGuestId(); // Obtener el guestId
+  
+      fetch('http://localhost:3001/carts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId: guestId, productId, quantity: 1 }),
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error al añadir al carrito');
+          }
+          return response.json();
+        })
+        .then(data => {
+          alert('Producto añadido al carrito');
+          console.log(data);
+          updateCartUI(); // Actualizar la interfaz de usuario
+        })
+        .catch(error => {
+          console.error(error);
+          alert('Hubo un error al añadir el producto al carrito: ' + error.message);
+        });
+    }
+  
+    // Función para mostrar el carrito
+    function showCart() {
+      const guestId = getGuestId(); // Obtener el guestId
+  
+      fetch(`http://localhost:3001/carts?userId=${guestId}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error al obtener el carrito');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Carrito:', data);
+          // Aquí puedes mostrar los datos del carrito en un modal o en una sección de la página
+          const cartContainer = document.getElementById('cart-container');
+          cartContainer.innerHTML = ''; // Limpiar el contenedor
+  
+          if (data.products.length === 0) {
+            cartContainer.innerHTML = '<p>Tu carrito está vacío.</p>';
+            return;
+          }
+  
+          data.products.forEach(item => {
+            const productElement = document.createElement('div');
+            productElement.innerHTML = `
+              <h3>${item.name}</h3>
+              <p>Precio: $${item.price}</p>
+              <p>Cantidad: ${item.quantity}</p>
+            `;
+            cartContainer.appendChild(productElement);
+          });
+        })
+        .catch(error => {
+          console.error(error);
+          alert('Hubo un error al cargar el carrito');
+        });
+    }
+  
+    // Función para actualizar la interfaz de usuario del carrito
+    function updateCartUI() {
+      const guestId = getGuestId(); // Obtener el guestId
+  
+      fetch(`http://localhost:3001/carts?userId=${guestId}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error al obtener el carrito');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Carrito actualizado:', data);
+          // Aquí puedes actualizar la interfaz de usuario con los datos del carrito
+        })
+        .catch(error => {
+          console.error(error);
+          alert('Hubo un error al cargar el carrito');
+        });
+    }
+  </script>
+
+</body>
+</html>

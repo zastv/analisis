@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delivery - Farmacia Cápsula</title>
+  <link rel="stylesheet" href="css/style4.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    .delivery-form {
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+
+    .delivery-form h2 {
+      margin-bottom: 20px;
+    }
+
+    .delivery-form label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+
+    .delivery-form input,
+    .delivery-form select,
+    .delivery-form textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .delivery-form button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .delivery-form button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <section class="secnavbar">
+    <div class="titulo">
+      <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula" style="width: 100px;">
+      <h2>Farmacia Cápsula</h2>
+    </div>
+    <div class="navbar">
+        <a href="index.html">inicio</a>
+        <a href="delivery.html">A tu casa</a>
+        <a href="iniciar_sesión.html">Iniciar sesión</a>
+        <a href="producto.html">Producto</a>
+        <a href="servicios.html">Servicios</a>
+    </div>
+    </section>
+
+  <div class="delivery-form">
+    <h2>Formulario de Delivery</h2>
+    <form id="deliveryForm">
+      <label for="nombre">Nombre completo:</label>
+      <input type="text" id="nombre" name="nombre" required>
+
+      <label for="direccion">Dirección de entrega:</label>
+      <textarea id="direccion" name="direccion" rows="3" required></textarea>
+
+      <label for="telefono">Teléfono de contacto:</label>
+      <input type="tel" id="telefono" name="telefono" required>
+
+      <label for="fecha">Fecha de entrega:</label>
+      <input type="date" id="fecha" name="fecha" required>
+
+      <label for="hora">Hora de entrega:</label>
+      <input type="time" id="hora" name="hora" required>
+
+      <label for="metodoPago">Método de pago:</label>
+      <select id="metodoPago" name="metodoPago" required>
+        <option value="efectivo">Efectivo</option>
+        <option value="tarjeta">Tarjeta de crédito/débito</option>
+        <option value="transferencia">Transferencia bancaria</option>
+      </select>
+
+      <button type="submit">Confirmar Pedido</button>
+    </form>
+  </div>
+
+  <section class="footer-section">
+    <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula" style="width: 100px;">
+    <h2>Farmacia Cápsula</h2>
+    <p>A domicilio: 800-522-6600</p>
+    <p>Correo electrónico: info@farmaciacapsula.com</p>
+    <div class="footer-links">
+      <div class="Contactanos">
+        <a href="index.html">Contáctanos</a>
+      </div>
+      <div class="Información-Legal"></div>
+        <a href="index.html">Información Legal</a>
+      </div>
+      <div class="Preguntas-Frecuentes">
+        <a href="index.html">Preguntas Frecuentes</a>
+      </div>
+    </div>
+  </section>
+
+  
+  <footer class="footer">
+    <p>Todos los derechos reservados a farmacia capsula. </p>
+  </footer>
+
+  <script>
+    document.getElementById('deliveryForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const nombre = document.getElementById('nombre').value;
+      const direccion = document.getElementById('direccion').value;
+      const telefono = document.getElementById('telefono').value;
+      const fecha = document.getElementById('fecha').value;
+      const hora = document.getElementById('hora').value;
+      const metodoPago = document.getElementById('metodoPago').value;
+
+      const pedido = {
+        nombre,
+        direccion,
+        telefono,
+        fecha,
+        hora,
+        metodoPago,
+      };
+
+      // Guardar el pedido en localStorage (o enviarlo a un servidor)
+      localStorage.setItem('pedido', JSON.stringify(pedido));
+
+      alert('Pedido confirmado. ¡Gracias por su compra!');
+      window.location.href = 'index.html'; // Redirigir al inicio
+    });
+  </script>
+</body>
+</html>

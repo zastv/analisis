@@ -1,0 +1,201 @@
+/* Reset y estilos base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  body {
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+    touch-action: manipulation;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .mobile-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+  
+  h1 {
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 24px;
+    text-align: center;
+    font-weight: 500;
+  }
+  
+  /* Contenedor de estado */
+  .status-container {
+    width: 100%;
+    max-width: 400px;
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    text-align: center;
+  }
+  
+  .status-indicator {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    transition: all 0.3s ease;
+    background-color: #ecf0f1;
+  }
+  
+  .status-indicator.active {
+    background-color: #2ecc71;
+    color: white;
+    box-shadow: 0 0 20px rgba(46, 204, 113, 0.4);
+  }
+  
+  .status-indicator.inactive {
+    background-color: #e74c3c;
+    color: white;
+    box-shadow: 0 0 20px rgba(231, 76, 60, 0.3);
+  }
+  
+  .status-text {
+    font-size: 18px;
+    color: #7f8c8d;
+    font-weight: 500;
+  }
+  
+  /* Botones de acción */
+  .action-buttons {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+  }
+  
+  .btn-action {
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+  
+  .btn-action:active {
+    transform: scale(0.98);
+  }
+  
+  .btn-action:disabled {
+    opacity: 0.7;
+    transform: none !important;
+    cursor: not-allowed;
+  }
+  
+  #startBtn {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+  }
+  
+  #stopBtn {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+  }
+  
+  /* Enlace para cambiar de interfaz */
+  .switch-interface {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #34495e;
+    color: white;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .switch-interface:hover {
+    background-color: #2c3e50;
+    transform: translateY(-2px);
+  }
+  
+  /* Efectos de carga */
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  .loading {
+    animation: pulse 1.5s infinite ease-in-out;
+  }
+  
+  /* Responsive para pantallas pequeñas */
+  @media (max-width: 480px) {
+    .mobile-container {
+      padding: 15px;
+    }
+    
+    h1 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .status-container {
+      padding: 20px;
+    }
+    
+    .status-indicator {
+      width: 80px;
+      height: 80px;
+      font-size: 32px;
+    }
+    
+    .btn-action {
+      padding: 14px;
+      font-size: 16px;
+    }
+  }
+  
+  /* Indicador de conexión */
+  .connection-status {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #95a5a6;
+  }
+  
+  .connection-status.connected {
+    background-color: #2ecc71;
+    box-shadow: 0 0 10px #2ecc71;
+  }
+  
+  .connection-status.disconnected {
+    background-color: #e74c3c;
+    box-shadow: 0 0 10px #e74c3c;
+  }
