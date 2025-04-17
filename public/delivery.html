@@ -63,7 +63,7 @@
     <div class="navbar">
         <a href="index.html">inicio</a>
         <a href="delivery.html">A tu casa</a>
-        <a href="iniciar_sesión.html">Iniciar sesión</a>
+        <a href="iniciar_sesion.html">Iniciar sesión</a>
         <a href="producto.html">Producto</a>
         <a href="servicios.html">Servicios</a>
     </div>
@@ -122,31 +122,49 @@
   </footer>
 
   <script>
-    document.getElementById('deliveryForm').addEventListener('submit', function (event) {
-      event.preventDefault();
+document.getElementById('deliveryForm').addEventListener('submit', async function (event) {
+  event.preventDefault();
 
-      const nombre = document.getElementById('nombre').value;
-      const direccion = document.getElementById('direccion').value;
-      const telefono = document.getElementById('telefono').value;
-      const fecha = document.getElementById('fecha').value;
-      const hora = document.getElementById('hora').value;
-      const metodoPago = document.getElementById('metodoPago').value;
+  const nombre = document.getElementById('nombre').value;
+  const direccion = document.getElementById('direccion').value;
+  const telefono = document.getElementById('telefono').value;
+  const fecha = document.getElementById('fecha').value;
+  const hora = document.getElementById('hora').value;
+  const metodoPago = document.getElementById('metodoPago').value;
 
-      const pedido = {
-        nombre,
-        direccion,
-        telefono,
-        fecha,
-        hora,
-        metodoPago,
-      };
+  const pedido = {
+    nombre,
+    direccion,
+    telefono,
+    fecha,
+    hora,
+    metodoPago,
+    // Aquí podrías incluir también el userId si está autenticado
+  };
 
-      // Guardar el pedido en localStorage (o enviarlo a un servidor)
-      localStorage.setItem('pedido', JSON.stringify(pedido));
-
-      alert('Pedido confirmado. ¡Gracias por su compra!');
-      window.location.href = 'index.html'; // Redirigir al inicio
+  try {
+    const response = await fetch('http://localhost:3001/api/pedidos', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(pedido)
     });
+
+    const result = await response.json();
+
+    if (result.success) {
+      alert('Pedido confirmado. ¡Gracias por su compra!');
+      window.location.href = 'index.html';
+    } else {
+      alert('Error al confirmar el pedido: ' + result.message);
+    }
+  } catch (error) {
+    console.error('Error al enviar el pedido:', error);
+    alert('Ocurrió un error al enviar el pedido.');
+  }
+});
+
   </script>
 </body>
 </html>

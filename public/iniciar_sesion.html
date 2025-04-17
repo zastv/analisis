@@ -26,9 +26,7 @@
         <a href="delivery.html">Delivery</a>
         <a href="servicios.html">Servicios</a>
       </div>
-      <div class="iniciosesion">
-        <button class="navbar" onclick="logout()">Cerrar Sesión</button>
-      </div>
+      
     </section>
 
     <div class="login-container">
@@ -59,7 +57,7 @@
         <div class="Contactanos">
           <a href="index.html">Contáctanos</a>
         </div>
-        <div class="Información-Legal"></div>
+        <div class="Información-Legal">
           <a href="index.html">Información Legal</a>
         </div>
         <div class="Preguntas-Frecuentes">
@@ -74,69 +72,91 @@
     </footer>
 
     <script>
-      document.getElementById('loginForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const messageElement = document.getElementById('message');
-        messageElement.textContent = '';
-        
-        try {
-          const username = document.getElementById('username').value.trim();
-          const password = document.getElementById('password').value.trim();
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const messageElement = document.getElementById('message');
+  messageElement.textContent = '';
 
-          if (!username || !password) {
-            throw new Error('Todos los campos son obligatorios');
-          }
+  try {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
 
-          const response = await fetch('http://localhost:3001/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, password }),
-          });
+    if (!username || !password) {
+      throw new Error('Todos los campos son obligatorios');
+    }
 
-          const data = await response.json();
+    const response = await fetch('http://localhost:3001/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
 
-          if (!response.ok) {
-            throw new Error(data.message || 'Error en la autenticación');
-          }
+    const data = await response.json();
 
-          // Almacenar token y userId en localStorage
-          localStorage.setItem('authToken', data.token);
-          localStorage.setItem('userId', data.userId); // Asegúrate de que el backend devuelva el userId
-          
-          messageElement.style.color = 'green';
-          messageElement.textContent = '¡Autenticación exitosa!';
-          setTimeout(() => {
-            window.location.href = 'index.html';
-          }, 1500);
+    if (!response.ok) {
+      throw new Error(data.message || 'Error en la autenticación');
+    }
 
-        } catch (error) {
-          messageElement.style.color = 'red';
-          messageElement.textContent = error.message;
-          console.error('Login Error:', error);
-        }
-      });
+    // Almacenar token y userId en localStorage
+    localStorage.setItem('authToken', data.token);
+    localStorage.setItem('userId', data.userId);
 
-      // Verificar autenticación al cargar la página
-      document.addEventListener('DOMContentLoaded', () => {
-        const token = localStorage.getItem('authToken');
-        const userId = localStorage.getItem('userId');
+    messageElement.style.color = 'green';
+    messageElement.textContent = '¡Autenticación exitosa!';
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 1500);
 
-        // Si no hay token o userId, redirigir a la página de login
-        if (!token || !userId) {
-          if (window.location.pathname !== '/iniciar_sesión.html') {
-            window.location.href = '/iniciar_sesión.html';
-          }
-        }
-      });
+  } catch (error) {
+    messageElement.style.color = 'red';
+    messageElement.textContent = 'Error de autenticación. Intente nuevamente.';
+    console.error('Login Error:', error);
+  }
+});
 
-      // Función para cerrar sesión
-      function logout() {
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('userId');
-        window.location.href = 'iniciar_sesión.html';
-      }
+// Función para verificar si el token JWT está expirado
+function isTokenExpired(token) {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.exp * 1000 < Date.now();
+  } catch (e) {
+    return true; // Si falla el parseo, asumimos que está expirado o mal formado
+  }
+}
+
+// Verificar autenticación al cargar la página
+document.addEventListener('DOMContentLoaded', () => {
+  const token = localStorage.getItem('authToken');
+  const userId = localStorage.getItem('userId');
+
+  // Si no hay token, userId o el token expiró, redirigir al login
+  if (!token || !userId || isTokenExpired(token)) {
+    if (!window.location.pathname.endsWith('/iniciar_sesion.html')) {
+      window.location.href = '/iniciar_sesion.html';
+    }
+  }
+});
+
+// Función para cerrar sesión
+function logout() {
+  localStorage.removeItem('authToken');
+  localStorage.removeItem('userId');
+  window.location.href = 'iniciar_sesion.html';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const token = localStorage.getItem('authToken');
+  const logoutBtn = document.querySelector('.iniciosesion');
+  if (!token || isTokenExpired(token)) {
+    logoutBtn.style.display = 'none';
+  } else {
+    logoutBtn.style.display = 'block';
+  }
+});
+
+
     </script>
   </body>
 </html>

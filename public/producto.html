@@ -17,7 +17,7 @@
     <div class="navbar">
         <a href="index.html">inicio</a>
         <a href="delivery.html">A tu casa</a>
-        <a href="iniciar_sesión.html">Iniciar sesión</a>
+        <a href="iniciar_sesion.html">Iniciar sesión</a>
         <a href="producto.html">Producto</a>
         <a href="servicios.html">Servicios</a>
     </div>
@@ -161,102 +161,167 @@
 
   <!-- Script de filtro y carrito -->
   <script>
-    // Generar un guestId si no existe
-    function getGuestId() {
-      let guestId = localStorage.getItem('guestId');
-      if (!guestId) {
-        guestId = 'guest_' + Math.random().toString(36).substr(2, 9); // Generar un ID único
-        localStorage.setItem('guestId', guestId);
+ // ====================== AUTENTICACIÓN ======================
+
+document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const messageElement = document.getElementById('message');
+  messageElement.textContent = '';
+
+  try {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    if (!username || !password) {
+      throw new Error('Todos los campos son obligatorios');
+    }
+
+    const response = await fetch('http://localhost:3001/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || 'Error en la autenticación');
+    }
+
+    localStorage.setItem('authToken', data.token);
+    localStorage.setItem('userId', data.userId);
+
+    messageElement.style.color = 'green';
+    messageElement.textContent = '¡Autenticación exitosa!';
+    setTimeout(() => {
+      window.location.href = 'index.html';
+    }, 1500);
+
+  } catch (error) {
+    messageElement.style.color = 'red';
+    messageElement.textContent = error.message;
+    console.error('Login Error:', error);
+  }
+});
+
+// Verifica si el token está expirado
+function isTokenExpired(token) {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.exp * 1000 < Date.now();
+  } catch (e) {
+    return true;
+  }
+}
+
+// Redirección automática si no está autenticado
+document.addEventListener('DOMContentLoaded', () => {
+  const token = localStorage.getItem('authToken');
+  const userId = localStorage.getItem('userId');
+
+  if ((!token || !userId || isTokenExpired(token)) &&
+      !window.location.pathname.endsWith('/iniciar_sesión.html')) {
+    window.location.href = '/iniciar_sesión.html';
+  }
+});
+
+// Cerrar sesión
+function logout() {
+  localStorage.removeItem('authToken');
+  localStorage.removeItem('userId');
+  localStorage.removeItem('guestId');
+  window.location.href = 'iniciar_sesión.html';
+}
+
+// ====================== GESTIÓN DE CARRITO ======================
+
+// Obtener o generar guestId
+function getGuestId() {
+  let guestId = localStorage.getItem('guestId');
+  if (!guestId) {
+    guestId = 'guest_' + Math.random().toString(36).substr(2, 9);
+    localStorage.setItem('guestId', guestId);
+  }
+  return guestId;
+}
+
+// Añadir producto al carrito
+function addToCart(productId, productName, productPrice) {
+  const userId = localStorage.getItem('userId') || getGuestId();
+
+  fetch('http://localhost:3001/carts', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userId, productId, quantity: 1 }),
+  })
+    .then(response => {
+      if (!response.ok) throw new Error('Error al añadir al carrito');
+      return response.json();
+    })
+    .then(data => {
+      alert('Producto añadido al carrito');
+      console.log(data);
+      updateCartUI();
+    })
+    .catch(error => {
+      console.error(error);
+      alert('Hubo un error al añadir el producto: ' + error.message);
+    });
+}
+
+// Mostrar productos del carrito
+function showCart() {
+  const userId = localStorage.getItem('userId') || getGuestId();
+
+  fetch(`http://localhost:3001/carts?userId=${userId}`)
+    .then(response => {
+      if (!response.ok) throw new Error('Error al obtener el carrito');
+      return response.json();
+    })
+    .then(data => {
+      const cartContainer = document.getElementById('cart-container');
+      cartContainer.innerHTML = '';
+
+      if (!data.products || data.products.length === 0) {
+        cartContainer.innerHTML = '<p>Tu carrito está vacío.</p>';
+        return;
       }
-      return guestId;
-    }
-  
-    // Función para añadir productos al carrito
-    function addToCart(productId, productName, productPrice) {
-      const guestId = getGuestId(); // Obtener el guestId
-  
-      fetch('http://localhost:3001/carts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ userId: guestId, productId, quantity: 1 }),
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Error al añadir al carrito');
-          }
-          return response.json();
-        })
-        .then(data => {
-          alert('Producto añadido al carrito');
-          console.log(data);
-          updateCartUI(); // Actualizar la interfaz de usuario
-        })
-        .catch(error => {
-          console.error(error);
-          alert('Hubo un error al añadir el producto al carrito: ' + error.message);
-        });
-    }
-  
-    // Función para mostrar el carrito
-    function showCart() {
-      const guestId = getGuestId(); // Obtener el guestId
-  
-      fetch(`http://localhost:3001/carts?userId=${guestId}`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Error al obtener el carrito');
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log('Carrito:', data);
-          // Aquí puedes mostrar los datos del carrito en un modal o en una sección de la página
-          const cartContainer = document.getElementById('cart-container');
-          cartContainer.innerHTML = ''; // Limpiar el contenedor
-  
-          if (data.products.length === 0) {
-            cartContainer.innerHTML = '<p>Tu carrito está vacío.</p>';
-            return;
-          }
-  
-          data.products.forEach(item => {
-            const productElement = document.createElement('div');
-            productElement.innerHTML = `
-              <h3>${item.name}</h3>
-              <p>Precio: $${item.price}</p>
-              <p>Cantidad: ${item.quantity}</p>
-            `;
-            cartContainer.appendChild(productElement);
-          });
-        })
-        .catch(error => {
-          console.error(error);
-          alert('Hubo un error al cargar el carrito');
-        });
-    }
-  
-    // Función para actualizar la interfaz de usuario del carrito
-    function updateCartUI() {
-      const guestId = getGuestId(); // Obtener el guestId
-  
-      fetch(`http://localhost:3001/carts?userId=${guestId}`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Error al obtener el carrito');
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log('Carrito actualizado:', data);
-          // Aquí puedes actualizar la interfaz de usuario con los datos del carrito
-        })
-        .catch(error => {
-          console.error(error);
-          alert('Hubo un error al cargar el carrito');
-        });
-    }
+
+      data.products.forEach(item => {
+        const productElement = document.createElement('div');
+        productElement.innerHTML = `
+          <h3>${item.name}</h3>
+          <p>Precio: $${item.price}</p>
+          <p>Cantidad: ${item.quantity}</p>
+        `;
+        cartContainer.appendChild(productElement);
+      });
+    })
+    .catch(error => {
+      console.error(error);
+      alert('Hubo un error al cargar el carrito');
+    });
+}
+
+// Actualizar interfaz de carrito
+function updateCartUI() {
+  const userId = localStorage.getItem('userId') || getGuestId();
+
+  fetch(`http://localhost:3001/carts?userId=${userId}`)
+    .then(response => {
+      if (!response.ok) throw new Error('Error al obtener el carrito');
+      return response.json();
+    })
+    .then(data => {
+      console.log('Carrito actualizado:', data);
+      // Podés actualizar un icono o contador aquí si querés
+    })
+    .catch(error => {
+      console.error(error);
+      alert('Hubo un error al actualizar el carrito');
+    });
+}
+
   </script>
 
 </body>

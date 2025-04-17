@@ -25,7 +25,7 @@
       </div>
       <div class="navbar">
           <a href="delivery.html">A tu casa</a>
-          <a href="iniciar_sesión.html">Iniciar sesión</a>
+          <a href="iniciar_sesion.html">Iniciar sesión</a>
           <a href="producto.html">Producto</a>
           <a href="servicios.html">Servicios</a>
       </div>
@@ -227,54 +227,36 @@
 
 
     <script>
+let slideIndex = 0;
+let slideInterval;
 
-      // Función para abrir el modal
-function openModal(modalId) {
-    var modal = document.getElementById(modalId);
-    modal.style.display = "block";
+function showSlides() {
+  let slides = document.getElementsByClassName("mySlides");
+  for (let i = 0; i < slides.length; i++) {
+    slides[i].style.display = "none";
+  }
+
+  slideIndex++;
+  if (slideIndex > slides.length) { slideIndex = 1 }
+  slides[slideIndex - 1].style.display = "block";
 }
 
-// Función para cerrar el modal
-function closeModal(modalId) {
-    var modal = document.getElementById(modalId);
-    modal.style.display = "none";
+function startSlider() {
+  showSlides();
+  slideInterval = setInterval(showSlides, 3500);
 }
 
-// Cerrar el modal si el usuario hace clic fuera de él
-window.onclick = function(event) {
-    var modals = document.getElementsByClassName('modal');
-    for (var i = 0; i < modals.length; i++) {
-        if (event.target == modals[i]) {
-            modals[i].style.display = "none";
-        }
+window.onload = startSlider;
+
+window.addEventListener('keydown', function (e) {
+  if (e.key === "Escape") {
+    let modals = document.getElementsByClassName('modal');
+    for (let modal of modals) {
+      modal.style.display = "none";
     }
-}
-      let slideIndex = 0;
-      showSlides();
+  }
+});
 
-      function showSlides() {
-          let i;
-          let slides = document.getElementsByClassName("mySlides");
-          for (i = 0; i < slides.length; i++) {
-              slides[i].style.display = "none";  
-          }
-          slideIndex++;
-          if (slideIndex > slides.length) {slideIndex = 1}    
-          slides[slideIndex-1].style.display = "block";  
-          setTimeout(showSlides, 3500); // Cambia la imagen cada 2 segundos
-          } 
-
-          if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then(registration => {
-            console.log('ServiceWorker registrado con éxito');
-          })
-          .catch(err => {
-            console.log('Error al registrar ServiceWorker:', err);
-          });
-      });
-    }
     </script>
   </body>
 </html>

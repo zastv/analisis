@@ -1,224 +1,455 @@
+require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
-require('dotenv').config();
+const { neon } = require('@neondatabase/serverless');
 
+// Configuración inicial
 const app = express();
 const port = process.env.PORT || 3001;
 
-
-
-// Conexión a MongoDB con opciones actualizadas
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mi-base-de-datos', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-  .then(() => console.log('Conectado a MongoDB'))
-  .catch((error) => {
-    console.error('Error al conectar a MongoDB:', error);
-    process.exit(1);
-  });
+// Conexión a Neon PostgreSQL
+const sql = neon(process.env.DATABASE_URL);
 
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3001',
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
-
-// Servir archivos estáticos (corregido para evitar duplicación)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Modelos
-const User = mongoose.model('User', new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-}));
-
-const Product = mongoose.model('Product', new mongoose.Schema({
-  _id: Number,
-  name: String,
-  price: Number,
-  description: String,
-  stock: Number,
-}));
-
-const Cart = mongoose.model('Cart', new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' },
-  products: [{
-    productId: { type: Number, required: true },
-    quantity: { type: Number, required: true },
-  }],
-}));
-
-// Implementación completa de las rutas de autenticación
-app.post('/register', async (req, res) => {
+// Verificar conexión a la base de datos al iniciar
+const initializeDatabase = async () => {
   try {
-    const { username, password } = req.body;
+    // Crear tablas si no existen
+    await sql`
+      CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL,
+        email VARCHAR(255) UNIQUE,
+        role VARCHAR(50) DEFAULT 'user',
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS products (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        price DECIMAL(10, 2) NOT NULL,
+        description TEXT,
+        category VARCHAR(100),
+        stock INTEGER NOT NULL DEFAULT 0,
+        image_url VARCHAR(255),
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS carts (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+        created_at TIMESTAMP DEFAULT NOW(),
+        updated_at TIMESTAMP DEFAULT NOW(),
+        status VARCHAR(20) DEFAULT 'active',
+        UNIQUE(user_id)
+      )
+    `;
+
+    await sql`
+      CREATE TABLE IF NOT EXISTS cart_items (
+        id SERIAL PRIMARY KEY,
+        cart_id INTEGER REFERENCES carts(id) ON DELETE CASCADE,
+        product_id INTEGER REFERENCES products(id) ON DELETE CASCADE,
+        quantity INTEGER NOT NULL DEFAULT 1,
+        added_at TIMESTAMP DEFAULT NOW(),
+        UNIQUE(cart_id, product_id)
+      )
+    `;
+
+    console.log('✅ Tablas verificadas/creadas correctamente');
+  } catch (error) {
+    console.error('❌ Error al inicializar la base de datos:', error);
+    process.exit(1); // Salir si hay error crítico en la DB
+  }
+};
+
+// Rutas de autenticación
+app.post('/api/register', async (req, res) => {
+  try {
+    const { username, password, email } = req.body;
+
+    if (!username || !password || !email) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'Todos los campos son requeridos' 
+      });
+    }
+
+    const [existingUser] = await sql`
+      SELECT * FROM users WHERE username = ${username} OR email = ${email}
+    `;
     
-    // Verificar si el usuario ya existe
-    const existingUser = await User.findOne({ username });
     if (existingUser) {
-      return res.status(400).json({ message: 'El usuario ya existe' });
+      return res.status(409).json({ 
+        success: false,
+        message: 'El usuario o email ya existe' 
+      });
     }
     
-    // Encriptar contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
     
-    // Crear nuevo usuario
-    const newUser = new User({
-      username,
-      password: hashedPassword
-    });
+    const [newUser] = await sql`
+      INSERT INTO users (username, password, email)
+      VALUES (${username}, ${hashedPassword}, ${email})
+      RETURNING id, username, email, created_at
+    `;
     
-    await newUser.save();
-    res.status(201).json({ message: 'Usuario registrado con éxito' });
+    await sql`
+      INSERT INTO carts (user_id) VALUES (${newUser.id})
+    `;
+    
+    res.status(201).json({ 
+      success: true,
+      message: 'Usuario registrado con éxito',
+      user: newUser
+    });
   } catch (error) {
     console.error('Error en registro:', error);
-    res.status(500).json({ message: 'Error en el servidor', error: error.message });
+    res.status(500).json({ 
+      success: false,
+      message: 'Error en el servidor',
+      error: error.message 
+    });
   }
 });
 
-app.post('/login', async (req, res) => {
+app.post('/api/login', async (req, res) => {
   try {
     const { username, password } = req.body;
-    
-    // Buscar usuario
-    const user = await User.findOne({ username });
-    if (!user) {
-      return res.status(401).json({ message: 'Credenciales inválidas' });
+
+    if (!username || !password) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'Usuario y contraseña son requeridos' 
+      });
     }
     
-    // Verificar contraseña
+    const [user] = await sql`
+      SELECT * FROM users WHERE username = ${username}
+    `;
+    
+    if (!user) {
+      return res.status(401).json({ 
+        success: false,
+        message: 'Credenciales inválidas' 
+      });
+    }
+    
     const isValid = await bcrypt.compare(password, user.password);
     if (!isValid) {
-      return res.status(401).json({ message: 'Credenciales inválidas' });
+      return res.status(401).json({ 
+        success: false,
+        message: 'Credenciales inválidas' 
+      });
     }
     
-    // Aquí deberías implementar JWT o sesiones
-    // Por simplicidad, solo enviamos el ID del usuario
+    // Eliminar password antes de enviar la respuesta
+    delete user.password;
+    
     res.json({ 
+      success: true,
       message: 'Inicio de sesión exitoso',
-      userId: user._id
+      user
     });
   } catch (error) {
     console.error('Error en login:', error);
-    res.status(500).json({ message: 'Error en el servidor', error: error.message });
+    res.status(500).json({ 
+      success: false,
+      message: 'Error en el servidor',
+      error: error.message 
+    });
+  }
+});
+
+// Rutas de productos
+app.get('/api/products', async (req, res) => {
+  try {
+    const { category, search } = req.query;
+    let query = sql`SELECT * FROM products WHERE 1=1`;
+    
+    if (category) {
+      query = sql`${query} AND category = ${category}`;
+    }
+    
+    if (search) {
+      query = sql`${query} AND name ILIKE ${'%' + search + '%'}`;
+    }
+    
+    const products = await query;
+    res.json({ 
+      success: true,
+      data: products 
+    });
+  } catch (error) {
+    console.error('Error al obtener productos:', error);
+    res.status(500).json({ 
+      success: false,
+      message: 'Error al obtener productos',
+      error: error.message 
+    });
+  }
+});
+
+app.post('/api/products', async (req, res) => {
+  try {
+    const { name, price, description, category, stock, image_url } = req.body;
+    
+    if (!name || !price || !stock) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'Nombre, precio y stock son requeridos' 
+      });
+    }
+    
+    const [newProduct] = await sql`
+      INSERT INTO products (name, price, description, category, stock, image_url)
+      VALUES (${name}, ${price}, ${description}, ${category}, ${stock}, ${image_url})
+      RETURNING *
+    `;
+    
+    res.status(201).json({ 
+      success: true,
+      data: newProduct 
+    });
+  } catch (error) {
+    console.error('Error al crear producto:', error);
+    res.status(500).json({ 
+      success: false,
+      message: 'Error al crear producto',
+      error: error.message 
+    });
   }
 });
 
 // Rutas del carrito
-app.post('/cart', async (req, res) => {
-  try {
-    const { userId, productId, quantity } = req.body;
-    
-    // Verificar que el producto exista
-    const product = await Product.findById(productId);
-    if (!product) {
-      return res.status(404).json({ message: 'Producto no encontrado' });
-    }
-    
-    // Verificar stock
-    if (product.stock < quantity) {
-      return res.status(400).json({ message: 'No hay suficiente stock' });
-    }
-    
-    // Buscar o crear carrito
-    let cart = await Cart.findOne({ userId });
-    if (!cart) {
-      cart = new Cart({ userId, products: [] });
-    }
-    
-    // Verificar si el producto ya está en el carrito
-    const existingProductIndex = cart.products.findIndex(item => item.productId === productId);
-    
-    if (existingProductIndex >= 0) {
-      // Actualizar cantidad
-      cart.products[existingProductIndex].quantity += quantity;
-    } else {
-      // Añadir nuevo producto
-      cart.products.push({ productId, quantity });
-    }
-    
-    await cart.save();
-    res.status(201).json({ message: 'Producto añadido al carrito', cart });
-  } catch (error) {
-    console.error('Error al agregar al carrito:', error);
-    res.status(500).json({ message: 'Error en el servidor', error: error.message });
-  }
-});
-
-app.get('/cart', async (req, res) => {
+app.get('/api/cart', async (req, res) => {
   try {
     const { userId } = req.query;
     
     if (!userId) {
-      return res.status(400).json({ message: 'Se requiere userId' });
+      return res.status(400).json({ 
+        success: false,
+        message: 'ID de usuario es requerido' 
+      });
     }
     
-    const cart = await Cart.findOne({ userId });
+    const cartItems = await sql`
+      SELECT 
+        p.id, p.name, p.price, p.description, p.image_url,
+        ci.quantity, (p.price * ci.quantity) AS subtotal
+      FROM carts c
+      JOIN cart_items ci ON c.id = ci.cart_id
+      JOIN products p ON ci.product_id = p.id
+      WHERE c.user_id = ${userId} AND c.status = 'active'
+    `;
+    
+    const total = cartItems.reduce((sum, item) => sum + parseFloat(item.subtotal), 0);
+    
+    res.json({ 
+      success: true,
+      data: {
+        items: cartItems,
+        total: total.toFixed(2)
+      }
+    });
+  } catch (error) {
+    console.error('Error al obtener carrito:', error);
+    res.status(500).json({ 
+      success: false,
+      message: 'Error al obtener carrito',
+      error: error.message 
+    });
+  }
+});
+
+app.post('/api/cart', async (req, res) => {
+  try {
+    const { userId, productId, quantity = 1 } = req.body;
+    
+    if (!userId || !productId) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'ID de usuario y producto son requeridos' 
+      });
+    }
+    
+    // Verificar producto y stock
+    const [product] = await sql`
+      SELECT * FROM products WHERE id = ${productId}
+    `;
+    
+    if (!product) {
+      return res.status(404).json({ 
+        success: false,
+        message: 'Producto no encontrado' 
+      });
+    }
+    
+    if (product.stock < quantity) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'No hay suficiente stock disponible' 
+      });
+    }
+    
+    // Obtener o crear carrito
+    let [cart] = await sql`
+      SELECT * FROM carts 
+      WHERE user_id = ${userId} AND status = 'active'
+    `;
+    
     if (!cart) {
-      return res.json({ products: [] });
+      [cart] = await sql`
+        INSERT INTO carts (user_id) 
+        VALUES (${userId})
+        RETURNING id
+      `;
     }
     
-    // Obtener información detallada de productos
-    const populatedCart = [];
-    for (const item of cart.products) {
-      const product = await Product.findById(item.productId);
-      if (product) {
-        populatedCart.push({
-          product,
-          quantity: item.quantity
+    // Añadir o actualizar item
+    await sql`
+      INSERT INTO cart_items (cart_id, product_id, quantity)
+      VALUES (${cart.id}, ${productId}, ${quantity})
+      ON CONFLICT (cart_id, product_id) 
+      DO UPDATE SET quantity = cart_items.quantity + EXCLUDED.quantity
+    `;
+    
+    res.status(201).json({ 
+      success: true,
+      message: 'Producto añadido al carrito' 
+    });
+  } catch (error) {
+    console.error('Error al agregar al carrito:', error);
+    res.status(500).json({ 
+      success: false,
+      message: 'Error al actualizar carrito',
+      error: error.message 
+    });
+  }
+});
+
+// Ruta para checkout
+app.post('/api/checkout', async (req, res) => {
+  try {
+    const { userId } = req.body;
+    
+    if (!userId) {
+      return res.status(400).json({ 
+        success: false,
+        message: 'ID de usuario es requerido' 
+      });
+    }
+    
+    // Iniciar transacción
+    await sql`BEGIN`;
+    
+    // 1. Obtener carrito activo
+    const [cart] = await sql`
+      SELECT * FROM carts 
+      WHERE user_id = ${userId} AND status = 'active'
+      FOR UPDATE
+    `;
+    
+    if (!cart) {
+      await sql`ROLLBACK`;
+      return res.status(404).json({ 
+        success: false,
+        message: 'No se encontró carrito activo' 
+      });
+    }
+    
+    // 2. Obtener items del carrito
+    const items = await sql`
+      SELECT ci.product_id, ci.quantity, p.stock, p.price
+      FROM cart_items ci
+      JOIN products p ON ci.product_id = p.id
+      WHERE ci.cart_id = ${cart.id}
+      FOR UPDATE
+    `;
+    
+    // 3. Verificar stock
+    for (const item of items) {
+      if (item.quantity > item.stock) {
+        await sql`ROLLBACK`;
+        return res.status(400).json({ 
+          success: false,
+          message: `Stock insuficiente para el producto ID: ${item.product_id}` 
         });
       }
     }
     
-    res.json({ products: populatedCart });
+    // 4. Actualizar stock
+    for (const item of items) {
+      await sql`
+        UPDATE products 
+        SET stock = stock - ${item.quantity}
+        WHERE id = ${item.product_id}
+      `;
+    }
+    
+    // 5. Marcar carrito como completado
+    await sql`
+      UPDATE carts 
+      SET status = 'completed', updated_at = NOW()
+      WHERE id = ${cart.id}
+    `;
+    
+    // 6. Crear nuevo carrito vacío
+    await sql`
+      INSERT INTO carts (user_id) 
+      VALUES (${userId})
+    `;
+    
+    await sql`COMMIT`;
+    
+    res.json({ 
+      success: true,
+      message: 'Compra realizada con éxito' 
+    });
   } catch (error) {
-    console.error('Error al obtener carrito:', error);
-    res.status(500).json({ message: 'Error en el servidor', error: error.message });
+    await sql`ROLLBACK`;
+    console.error('Error en checkout:', error);
+    res.status(500).json({ 
+      success: false,
+      message: 'Error al procesar compra',
+      error: error.message 
+    });
   }
 });
 
-
-
-// API endpoints para productos
-app.get('/api/productos', async (req, res) => {
-  try {
-    const productos = await Product.find();
-    res.json(productos);
-  } catch (error) {
-    console.error('Error al obtener productos:', error);
-    res.status(500).json({ message: 'Error al obtener productos', error: error.message });
-  }
+// Inicializar y arrancar el servidor
+initializeDatabase().then(() => {
+  app.listen(port, () => {
+    console.log(`🚀 Servidor ejecutándose en http://localhost:${port}`);
+  });
+}).catch(error => {
+  console.error('No se pudo iniciar la aplicación:', error);
+  process.exit(1);
 });
 
-// Ruta principal con selector de interfaz
-app.get('/', (req, res) => {
-  const userAgent = req.headers['user-agent'] || '';
-  const isMobile = /mobile|android|iphone|ipad|phone/i.test(userAgent.toLowerCase());
-
-  if (req.query.interface === 'mobile') {
-    return res.sendFile(path.join(__dirname, 'public', 'mobile.html'));
-  } else if (req.query.interface === 'web') {
-    return res.sendFile(path.join(__dirname, 'public', 'index.html'));
-  }
-
-  // Redirección automática para móviles
-  if (isMobile && !req.query.noredirect) {
-    return res.sendFile(path.join(__dirname, 'public', 'mobile.html'));
-  }
-
-  // Página principal por defecto
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// Manejo de errores global
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });
 
-
-// Iniciar servidor
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Servidor corriendo en http://localhost:${port}`);
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+  process.exit(1);
 });
