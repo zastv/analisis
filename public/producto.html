@@ -161,48 +161,7 @@
 
   <!-- Script de filtro y carrito -->
   <script>
- // ====================== AUTENTICACIÓN ======================
-
-document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const messageElement = document.getElementById('message');
-  messageElement.textContent = '';
-
-  try {
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-
-    if (!username || !password) {
-      throw new Error('Todos los campos son obligatorios');
-    }
-
-    const response = await fetch('http://localhost:3001/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.message || 'Error en la autenticación');
-    }
-
-    localStorage.setItem('authToken', data.token);
-    localStorage.setItem('userId', data.userId);
-
-    messageElement.style.color = 'green';
-    messageElement.textContent = '¡Autenticación exitosa!';
-    setTimeout(() => {
-      window.location.href = 'index.html';
-    }, 1500);
-
-  } catch (error) {
-    messageElement.style.color = 'red';
-    messageElement.textContent = error.message;
-    console.error('Login Error:', error);
-  }
-});
+ 
 
 // Verifica si el token está expirado
 function isTokenExpired(token) {
@@ -212,25 +171,6 @@ function isTokenExpired(token) {
   } catch (e) {
     return true;
   }
-}
-
-// Redirección automática si no está autenticado
-document.addEventListener('DOMContentLoaded', () => {
-  const token = localStorage.getItem('authToken');
-  const userId = localStorage.getItem('userId');
-
-  if ((!token || !userId || isTokenExpired(token)) &&
-      !window.location.pathname.endsWith('/iniciar_sesión.html')) {
-    window.location.href = '/iniciar_sesión.html';
-  }
-});
-
-// Cerrar sesión
-function logout() {
-  localStorage.removeItem('authToken');
-  localStorage.removeItem('userId');
-  localStorage.removeItem('guestId');
-  window.location.href = 'iniciar_sesión.html';
 }
 
 // ====================== GESTIÓN DE CARRITO ======================
