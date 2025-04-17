@@ -137,6 +137,19 @@ function getGuestId() {
   }
   return guestId;
 }
+
+fetch('/api/data')
+  .then(res => res.text()) // <-- start with text to inspect raw output
+  .then(text => {
+    console.log(text); // See if it's HTML
+    const data = JSON.parse(text); // Then try parsing if it looks OK
+  });
+  fetch('/api/data', {
+  headers: {
+    'Accept': 'application/json'
+  }
+});
+
     </script>
   </body>
 </html>

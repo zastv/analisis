@@ -4,7 +4,11 @@ const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const path = require('path');
 const cors = require('cors');
+const helmet = require('helmet');
 const { neon } = require('@neondatabase/serverless');
+const { body, validationResult } = require('express-validator');
+
+
 
 // Configuración inicial
 const app = express();
@@ -13,7 +17,20 @@ const port = process.env.PORT || 3001;
 // Conexión a Neon PostgreSQL
 const sql = neon(process.env.DATABASE_URL);
 
+
+// Primero servir archivos estáticos
+app.use(express.static(path.join(__dirname, 'public')));
+
+// ... tus rutas API van aquí ...
+
+// Fallback para rutas desconocidas que no sean API
+app.get(/^\/(?!api).*/, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+
 // Middleware
+app.use(helmet()); // Seguridad adicional
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({
@@ -21,6 +38,7 @@ app.use(cors({
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
+app.options('*', cors()); // Soporte para preflight requests
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Verificar conexión a la base de datos al iniciar
@@ -81,44 +99,49 @@ const initializeDatabase = async () => {
 };
 
 // Rutas de autenticación
-app.post('/api/register', async (req, res) => {
+app.post('/api/registrarse', [
+  body('username').notEmpty().withMessage('El nombre de usuario es requerido'),
+  body('password').isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres'),
+  body('email').isEmail().withMessage('El email es inválido'),
+], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ 
+      success: false,
+      errors: errors.array() 
+    });
+  }
+
   try {
     const { username, password, email } = req.body;
 
-    if (!username || !password || !email) {
-      return res.status(400).json({ 
-        success: false,
-        message: 'Todos los campos son requeridos' 
-      });
-    }
-
-    const [existingUser] = await sql`
+    const [existingUser ] = await sql`
       SELECT * FROM users WHERE username = ${username} OR email = ${email}
     `;
     
-    if (existingUser) {
+    if (existingUser ) {
       return res.status(409).json({ 
         success: false,
         message: 'El usuario o email ya existe' 
       });
     }
     
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 12);
     
-    const [newUser] = await sql`
+    const [newUser ] = await sql`
       INSERT INTO users (username, password, email)
       VALUES (${username}, ${hashedPassword}, ${email})
       RETURNING id, username, email, created_at
     `;
     
     await sql`
-      INSERT INTO carts (user_id) VALUES (${newUser.id})
+      INSERT INTO carts (user_id) VALUES (${newUser .id})
     `;
     
     res.status(201).json({ 
       success: true,
       message: 'Usuario registrado con éxito',
-      user: newUser
+      user: newUser 
     });
   } catch (error) {
     console.error('Error en registro:', error);
@@ -130,17 +153,21 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
-app.post('/api/login', async (req, res) => {
+app.post('/api/login', [
+  body('username').notEmpty().withMessage('Usuario es requerido'),
+  body('password').notEmpty().withMessage('Contraseña es requerida'),
+], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ 
+      success: false,
+      errors: errors.array() 
+    });
+  }
+
   try {
     const { username, password } = req.body;
 
-    if (!username || !password) {
-      return res.status(400).json({ 
-        success: false,
-        message: 'Usuario y contraseña son requeridos' 
-      });
-    }
-    
     const [user] = await sql`
       SELECT * FROM users WHERE username = ${username}
     `;
@@ -160,13 +187,12 @@ app.post('/api/login', async (req, res) => {
       });
     }
     
-    // Eliminar password antes de enviar la respuesta
     delete user.password;
     
     res.json({ 
       success: true,
       message: 'Inicio de sesión exitoso',
-      user
+      user 
     });
   } catch (error) {
     console.error('Error en login:', error);
@@ -290,8 +316,7 @@ app.post('/api/cart', async (req, res) => {
       });
     }
     
-    // Verificar producto y stock
-    const [product] = await sql`
+    const product = await sql`
       SELECT * FROM products WHERE id = ${productId}
     `;
     
@@ -309,7 +334,6 @@ app.post('/api/cart', async (req, res) => {
       });
     }
     
-    // Obtener o crear carrito
     let [cart] = await sql`
       SELECT * FROM carts 
       WHERE user_id = ${userId} AND status = 'active'
@@ -323,7 +347,6 @@ app.post('/api/cart', async (req, res) => {
       `;
     }
     
-    // Añadir o actualizar item
     await sql`
       INSERT INTO cart_items (cart_id, product_id, quantity)
       VALUES (${cart.id}, ${productId}, ${quantity})
@@ -357,10 +380,8 @@ app.post('/api/checkout', async (req, res) => {
       });
     }
     
-    // Iniciar transacción
     await sql`BEGIN`;
     
-    // 1. Obtener carrito activo
     const [cart] = await sql`
       SELECT * FROM carts 
       WHERE user_id = ${userId} AND status = 'active'
@@ -375,7 +396,6 @@ app.post('/api/checkout', async (req, res) => {
       });
     }
     
-    // 2. Obtener items del carrito
     const items = await sql`
       SELECT ci.product_id, ci.quantity, p.stock, p.price
       FROM cart_items ci
@@ -384,7 +404,6 @@ app.post('/api/checkout', async (req, res) => {
       FOR UPDATE
     `;
     
-    // 3. Verificar stock
     for (const item of items) {
       if (item.quantity > item.stock) {
         await sql`ROLLBACK`;
@@ -395,7 +414,6 @@ app.post('/api/checkout', async (req, res) => {
       }
     }
     
-    // 4. Actualizar stock
     for (const item of items) {
       await sql`
         UPDATE products 
@@ -404,14 +422,12 @@ app.post('/api/checkout', async (req, res) => {
       `;
     }
     
-    // 5. Marcar carrito como completado
     await sql`
       UPDATE carts 
       SET status = 'completed', updated_at = NOW()
       WHERE id = ${cart.id}
     `;
     
-    // 6. Crear nuevo carrito vacío
     await sql`
       INSERT INTO carts (user_id) 
       VALUES (${userId})
@@ -444,12 +460,28 @@ initializeDatabase().then(() => {
   process.exit(1);
 });
 
-// Manejo de errores global
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+// Middleware de manejo de errores global
+app.use((err, req, res, next) => {
+  console.error('🔴 Error:', err);
+
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || 'Error en el servidor',
+    // Opcional: enviar stack solo en desarrollo
+    // stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+  });
 });
 
+// Captura de promesas no manejadas
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('🚨 Unhandled Rejection at:', promise, '\nReason:', reason);
+  // Opcional: podrías forzar el cierre del servidor si es crítico
+  // process.exit(1);
+});
+
+// Captura de excepciones no manejadas
 process.on('uncaughtException', (error) => {
-  console.error('Uncaught Exception:', error);
+  console.error('🔥 Uncaught Exception:', error);
+  // En general se recomienda cerrar el proceso si ocurre esto
   process.exit(1);
 });
