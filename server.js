@@ -17,6 +17,15 @@ const port = process.env.PORT || 3001;
 // Conexión a Neon PostgreSQL
 const sql = neon(process.env.DATABASE_URL);
 
+app.get('/api/testdb', async (req, res) => {
+  try {
+    const result = await sql`SELECT 1 as test`;
+    res.json({ success: true, result });
+  } catch (error) {
+    console.error('Database connection error:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
 
 // Primero servir archivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
@@ -30,7 +39,8 @@ app.get(/^\/(?!api).*/, (req, res) => {
 
 
 // Middleware
-app.use(helmet()); // Seguridad adicional
+// Move these BEFORE any route definitions
+app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({
@@ -98,11 +108,11 @@ const initializeDatabase = async () => {
   }
 };
 
-// Rutas de autenticación
+// Update your registration route in server.js
 app.post('/api/registrarse', [
   body('username').notEmpty().withMessage('El nombre de usuario es requerido'),
   body('password').isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres'),
-  body('email').isEmail().withMessage('El email es inválido'),
+  // Remove the email validation
 ], async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -113,29 +123,29 @@ app.post('/api/registrarse', [
   }
 
   try {
-    const { username, password, email } = req.body;
+    const { username, password } = req.body;
 
-    const [existingUser ] = await sql`
-      SELECT * FROM users WHERE username = ${username} OR email = ${email}
+    const [existingUser] = await sql`
+      SELECT * FROM users WHERE username = ${username}
     `;
     
-    if (existingUser ) {
+    if (existingUser) {
       return res.status(409).json({ 
         success: false,
-        message: 'El usuario o email ya existe' 
+        message: 'El usuario ya existe' 
       });
     }
     
     const hashedPassword = await bcrypt.hash(password, 12);
     
-    const [newUser ] = await sql`
-      INSERT INTO users (username, password, email)
-      VALUES (${username}, ${hashedPassword}, ${email})
-      RETURNING id, username, email, created_at
+    const [newUser] = await sql`
+      INSERT INTO users (username, password)
+      VALUES (${username}, ${hashedPassword})
+      RETURNING id, username, created_at
     `;
     
     await sql`
-      INSERT INTO carts (user_id) VALUES (${newUser .id})
+      INSERT INTO carts (user_id) VALUES (${newUser.id})
     `;
     
     res.status(201).json({ 
@@ -144,7 +154,7 @@ app.post('/api/registrarse', [
       user: newUser 
     });
   } catch (error) {
-    console.error('Error en registro:', error);
+    console.error('Error detallado en registro:', error);
     res.status(500).json({ 
       success: false,
       message: 'Error en el servidor',
