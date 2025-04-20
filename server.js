@@ -71,10 +71,6 @@ const initializeDatabase = async () => {
         id SERIAL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         price DECIMAL(10, 2) NOT NULL,
-        description TEXT,
-        category VARCHAR(100),
-        stock INTEGER NOT NULL DEFAULT 0,
-        image_url VARCHAR(255),
         created_at TIMESTAMP DEFAULT NOW()
       )
     `;
@@ -245,18 +241,18 @@ app.get('/api/products', async (req, res) => {
 
 app.post('/api/products', async (req, res) => {
   try {
-    const { name, price, description, category, stock, image_url } = req.body;
+    const { name, price} = req.body;
     
-    if (!name || !price || !stock) {
+    if (!name || !price) {
       return res.status(400).json({ 
         success: false,
-        message: 'Nombre, precio y stock son requeridos' 
+        message: 'Nombre, precio son requeridos' 
       });
     }
     
     const [newProduct] = await sql`
-      INSERT INTO products (name, price, description, category, stock, image_url)
-      VALUES (${name}, ${price}, ${description}, ${category}, ${stock}, ${image_url})
+      INSERT INTO products (name, price)
+      VALUES (${name}, ${price})
       RETURNING *
     `;
     
@@ -288,8 +284,7 @@ app.get('/api/cart', async (req, res) => {
     
     const cartItems = await sql`
       SELECT 
-        p.id, p.name, p.price, p.description, p.image_url,
-        ci.quantity, (p.price * ci.quantity) AS subtotal
+        p.id, p.name, p.price AS subtotal
       FROM carts c
       JOIN cart_items ci ON c.id = ci.cart_id
       JOIN products p ON ci.product_id = p.id
@@ -407,7 +402,7 @@ app.post('/api/checkout', async (req, res) => {
     }
     
     const items = await sql`
-      SELECT ci.product_id, ci.quantity, p.stock, p.price
+      SELECT ci.product_id, ci.quantity, p.price
       FROM cart_items ci
       JOIN products p ON ci.product_id = p.id
       WHERE ci.cart_id = ${cart.id}

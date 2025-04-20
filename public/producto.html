@@ -189,7 +189,7 @@ function getGuestId() {
 function addToCart(productId, productName, productPrice) {
   const userId = localStorage.getItem('userId') || getGuestId();
 
-  fetch('http://localhost:3001/carts', {
+  fetch('http://localhost:3001/api/carts', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ userId, productId, quantity: 1 }),
@@ -213,7 +213,7 @@ function addToCart(productId, productName, productPrice) {
 function showCart() {
   const userId = localStorage.getItem('userId') || getGuestId();
 
-  fetch(`http://localhost:3001/carts?userId=${userId}`)
+  fetch(`http://localhost:3001/api/carts?userId=${userId}`)
     .then(response => {
       if (!response.ok) throw new Error('Error al obtener el carrito');
       return response.json();
