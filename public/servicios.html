@@ -7,21 +7,365 @@
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
-      content="Web site created using create-react-app"
+      content="Servicios profesionales en Farmacia Cápsula"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <link rel="stylesheet" href="css/style5.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <title>Servicios - Farmacia Cápsula</title>
+    <style>
+      /* Global Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      
+      body {
+        background: linear-gradient(to right, #f8f9fa, #e9ecef);
+        color: #333;
+        line-height: 1.6;
+      }
+      
+      /* Header Styles - STATIC (no animations) */
+      .secnavbar {
+        background: linear-gradient(135deg, #1a5276, #2980b9);
+        padding: 10px 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        
+        top: 0;
+        z-index: 100;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+      }
 
+      .titulo {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
 
-    <title>React App</title>
+      .titulo img {
+        width: 120px;
+      }
+
+      .titulo h2 {
+        color: white;
+        font-size: 1.8rem;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+      }
+
+      .navbar {
+        display: flex;
+        gap: 20px;
+        margin: 10px 0;
+      }
+
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 15px;
+        border-radius: 30px;
+        text-transform: capitalize;
+        font-weight: 500;
+      }
+
+      .navbar a:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+      
+      /* Services Section Styles */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      
+      .services-section {
+        padding: 80px 0;
+      }
+      
+      .section-header {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+      
+      .section-title {
+        font-size: 2.5rem;
+        color: #1a5276;
+        margin-bottom: 15px;
+      }
+      
+      .section-divider {
+        height: 3px;
+        width: 80px;
+        background: #3498db;
+        margin: 0 auto 20px;
+        border-radius: 2px;
+      }
+      
+      .section-description {
+        font-size: 1.1rem;
+        color: #666;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+      
+      .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+        gap: 30px;
+        margin-bottom: 50px;
+      }
+      
+      .service-card {
+        background: white;
+        border-radius: 10px;
+        padding: 30px 25px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+      }
+      
+      .service-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      }
+      
+      .service-icon {
+        width: 70px;
+        height: 70px;
+        background: rgba(52, 152, 219, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        color: #3498db;
+      }
+      
+      .service-card h3 {
+        font-size: 1.3rem;
+        margin-bottom: 15px;
+        color: #2c3e50;
+      }
+      
+      .service-card p {
+        color: #666;
+        line-height: 1.6;
+      }
+      
+      .btn-primary {
+        display: inline-block;
+        background: linear-gradient(135deg, #2980b9, #3498db);
+        color: white;
+        text-decoration: none;
+        padding: 12px 30px;
+        border-radius: 30px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(41, 128, 185, 0.3);
+      }
+      
+      .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(41, 128, 185, 0.4);
+      }
+      
+      /* Additional Service Features */
+      .features-section {
+        background-color: #f6f9fc;
+        padding: 60px 0;
+      }
+      
+      .features-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 30px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      
+      .feature {
+        flex: 1 1 300px;
+        display: flex;
+        gap: 15px;
+      }
+      
+      .feature-icon-small {
+        color: #3498db;
+        font-size: 1.8rem;
+        flex-shrink: 0;
+        margin-top: 5px;
+      }
+      
+      .feature-content h4 {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+        color: #2c3e50;
+      }
+      
+      .feature-content p {
+        color: #666;
+        font-size: 0.95rem;
+      }
+      
+      /* Testimonials Section */
+      .testimonials-section {
+        padding: 70px 0;
+        background: linear-gradient(135deg, rgba(26, 82, 118, 0.05), rgba(41, 128, 185, 0.05));
+      }
+      
+      .testimonials-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      
+      .testimonial {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        margin-bottom: 30px;
+        position: relative;
+      }
+      
+      .testimonial-text {
+        font-style: italic;
+        margin-bottom: 20px;
+        color: #555;
+        line-height: 1.7;
+      }
+      
+      .testimonial-author {
+        display: flex;
+        align-items: center;
+      }
+      
+      .author-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px;
+      }
+      
+      .author-info h5 {
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+        color: #2c3e50;
+      }
+      
+      .author-info p {
+        color: #777;
+        font-size: 0.9rem;
+      }
+      
+      .quote-icon {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        color: rgba(52, 152, 219, 0.1);
+        font-size: 2.5rem;
+      }
+
+      /* Footer Section */
+      .footer-section {
+        background: linear-gradient(135deg, #1a5276, #2980b9);
+        color: white;
+        padding: 40px 20px;
+        text-align: center;
+      }
+
+      .footer-section img {
+        width: 100px;
+        margin-bottom: 15px;
+      }
+
+      .footer-section h2 {
+        margin-bottom: 15px;
+        font-size: 1.8rem;
+      }
+
+      .footer-section p {
+        margin-bottom: 10px;
+        font-size: 1rem;
+      }
+
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-top: 20px;
+      }
+
+      .footer-links a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 15px;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .footer-links a:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+
+      .footer {
+        background-color: #1a5276;
+        text-align: center;
+        padding: 15px;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.9rem;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .secnavbar {
+          flex-direction: column;
+          padding: 15px;
+        }
+        
+        .navbar {
+          flex-direction: column;
+          gap: 10px;
+          width: 100%;
+        }
+        
+        .navbar a {
+          width: 100%;
+          text-align: center;
+        }
+        
+        .titulo {
+          margin-bottom: 15px;
+        }
+        
+        .section-title {
+          font-size: 2rem;
+        }
+        
+        .services-grid {
+          grid-template-columns: 1fr;
+        }
+        
+        .features-container {
+          flex-direction: column;
+        }
+      }
+    </style>
   </head>
   <body>
     <section class="secnavbar">
         <div class="titulo">
-          <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula" style="width: 120px;">
+          <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula">
           <h2>Farmacia Cápsula</h2>
         </div>
         <div class="navbar">
@@ -40,26 +384,26 @@
               <h2 class="section-title">Nuestros Servicios</h2>
               <div class="section-divider"></div>
               <p class="section-description">
-                  Ofrecemos soluciones y servicios para ayudar a tu salud.
+                  Ofrecemos soluciones y servicios para ayudar a tu salud y mejorar tu bienestar.
               </p>
           </div>
  
           <div class="services-grid">
               <div class="service-card">
                   <div class="service-icon">
-                      <i class="fas fa-code fa-2x"></i>
+                      <i class="fas fa-tag fa-2x"></i>
                   </div>
-                  <h3>Promociones y descuentos</h3>
+                  <h3>Promociones y Descuentos</h3>
                   <p>
-                    Farmacia Capsula ofrece promociones y descuentos especiales para sus clientes y una fidelizacion a los clientes recurrentes.
+                    Farmacia Cápsula ofrece promociones y descuentos especiales para sus clientes y un programa de fidelización para clientes recurrentes con puntos canjeables.
                   </p>
               </div>
  
               <div class="service-card">
                   <div class="service-icon">
-                      <i class="fas fa-code fa-2x"></i>
+                      <i class="fas fa-comments fa-2x"></i>
                   </div>
-                  <h3>Consultas farmacéuticas en línea</h3>
+                  <h3>Consultas Farmacéuticas en Línea</h3>
                   <p>
                     Ofrecemos un servicio de consultas farmacéuticas en línea para que nuestros clientes puedan hacer preguntas sobre sus medicamentos o sobre su salud en general.
                   </p>
@@ -67,21 +411,21 @@
  
               <div class="service-card">
                   <div class="service-icon">
-                      <i class="fas fa-shield-alt fa-2x"></i>
+                      <i class="fas fa-exchange-alt fa-2x"></i>
                   </div>
-                  <h3>Devoluciones</h3>
+                  <h3>Devoluciones Garantizadas</h3>
                   <p>
-                      Contamos con devoluciones para que nuestros clientes puedan devolver los productos que no necesiten o que hayan recibido dañados.
+                      Contamos con un sistema de devoluciones para que nuestros clientes puedan devolver los productos que no necesiten o que hayan recibido dañados sin complicaciones.
                   </p>
               </div>
  
               <div class="service-card">
                   <div class="service-icon">
-                      <i class="fas fa-rocket fa-2x"></i>
+                      <i class="fas fa-truck fa-2x"></i>
                   </div>
-                  <h3>Envío a domicilio</h3>
+                  <h3>Envío a Domicilio</h3>
                   <p>
-                    ofrecemos servicio de envío a domicilio para que nuestros clientes puedan recibir sus medicamentos y otros productos en la comodidad de su hogar.
+                    Ofrecemos servicio de envío a domicilio para que nuestros clientes puedan recibir sus medicamentos y otros productos en la comodidad de su hogar de manera rápida.
                   </p>
               </div>
           </div>
@@ -90,29 +434,130 @@
               <a href="contacto.html" class="btn-primary">Solicitar una consulta</a>
           </div>
       </div>
-  </section>
+    </section>
+    
+    <!-- Sección de características adicionales -->
+    <section class="features-section">
+      <div class="features-container">
+        <div class="feature">
+          <div class="feature-icon-small">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="feature-content">
+            <h4>Horario Extendido</h4>
+            <p>Abierto 24/7 para atender cualquier emergencia o necesidad de medicamentos fuera de horario habitual.</p>
+          </div>
+        </div>
+        
+        <div class="feature">
+          <div class="feature-icon-small">
+            <i class="fas fa-pills"></i>
+          </div>
+          <div class="feature-content">
+            <h4>Preparación de Medicamentos</h4>
+            <p>Preparamos medicamentos personalizados según las necesidades específicas de cada paciente.</p>
+          </div>
+        </div>
+        
+        <div class="feature">
+          <div class="feature-icon-small">
+            <i class="fas fa-heartbeat"></i>
+          </div>
+          <div class="feature-content">
+            <h4>Control de Salud</h4>
+            <p>Servicio de control de presión arterial, glucosa y otros indicadores básicos de salud gratuito para clientes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Sección de testimonios -->
+    <section class="testimonials-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Lo que dicen nuestros clientes</h2>
+          <div class="section-divider"></div>
+        </div>
+        
+        <div class="testimonials-container">
+          <div class="testimonial">
+            <p class="testimonial-text">"El servicio de entrega a domicilio es excelente. Siempre llegan a tiempo y el personal es muy amable. Definitivamente recomendaría Farmacia Cápsula a cualquier persona."</p>
+            <div class="testimonial-author">
+              <img src="/api/placeholder/50/50" alt="Cliente" class="author-img">
+              <div class="author-info">
+                <h5>María González</h5>
+                <p>Cliente desde 2023</p>
+              </div>
+            </div>
+            <i class="fas fa-quote-right quote-icon"></i>
+          </div>
+          
+          <div class="testimonial">
+            <p class="testimonial-text">"Las consultas farmacéuticas en línea han sido de gran ayuda, especialmente durante la pandemia. Los farmacéuticos son muy profesionales y responden rápidamente a todas mis dudas."</p>
+            <div class="testimonial-author">
+              <img src="/api/placeholder/50/50" alt="Cliente" class="author-img">
+              <div class="author-info">
+                <h5>Carlos Rodríguez</h5>
+                <p>Cliente frecuente</p>
+              </div>
+            </div>
+            <i class="fas fa-quote-right quote-icon"></i>
+          </div>
+        </div>
+      </div>
+    </section>
  
-  <section class="footer-section">
-    <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula" style="width: 100px;">
-    <h2>Farmacia Cápsula</h2>
-    <p>A domicilio: 800-522-6600</p>
-    <p>Correo electrónico: info@farmaciacapsula.com</p>
-    <div class="footer-links">
-      <div class="Contactanos">
-        <a href="index.html">Contáctanos</a>
+    <section class="footer-section">
+      <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula">
+      <h2>Farmacia Cápsula</h2>
+      <p>A domicilio: 800-522-6600</p>
+      <p>Correo electrónico: info@farmaciacapsula.com</p>
+      <div class="footer-links">
+        <a href="contacto.html">Contáctanos</a>
+        <a href="legal.html">Información Legal</a>
+        <a href="preguntas_frecuentes.html">Preguntas Frecuentes</a>
+        <a href="ubicaciones.html">Nuestras Ubicaciones</a>
       </div>
-      <div class="Información-Legal"></div>
-        <a href="index.html">Información Legal</a>
-      </div>
-      <div class="Preguntas-Frecuentes">
-        <a href="index.html">Preguntas Frecuentes</a>
-      </div>
-    </div>
-  </section>
+    </section>
 
   
-  <footer class="footer">
-    <p>Todos los derechos reservados a farmacia capsula. </p>
-  </footer>
+    <footer class="footer">
+      <p>© 2025 Todos los derechos reservados a Farmacia Cápsula.</p>
+    </footer>
     
+    <script>
+      // Add animation to elements when they come into view (except header)
+      function animateOnScroll() {
+        const elements = document.querySelectorAll('.service-card, .feature, .testimonial');
+        
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.style.opacity = 1;
+              entry.target.style.transform = entry.target.classList.contains('service-card') ? 'translateY(0)' : 'translateX(0)';
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1 });
+        
+        elements.forEach(element => {
+          if (!element.closest('.secnavbar')) { // Skip elements in header
+            element.style.opacity = 0;
+            if (element.classList.contains('service-card')) {
+              element.style.transform = 'translateY(20px)';
+            } else {
+              element.style.transform = element.classList.contains('feature') ? 'translateX(-20px)' : 'translateX(20px)';
+            }
+            element.style.transition = 'all 0.5s ease';
+            observer.observe(element);
+          }
+        });
+      }
+      
+      // Setup animations when DOM is loaded
+      document.addEventListener('DOMContentLoaded', () => {
+        animateOnScroll();
+      });
+    </script>
+  </body>
 </html>

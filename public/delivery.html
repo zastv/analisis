@@ -4,167 +4,759 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Delivery - Farmacia Cápsula</title>
-  <link rel="stylesheet" href="css/style4.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <style>
+    :root {
+      --primary: #4CAF50;
+      --secondary: #2E7D32;
+      --accent: #8BC34A;
+      --light: #f9fff9;
+      --dark: #333;
+      --shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f8f0;
+      color: var(--dark);
+      line-height: 1.6;
     }
-
-    .delivery-form {
-      max-width: 500px;
+    
+    .container {
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      background-color: #f9f9f9;
+      padding: 0 20px;
     }
-
-    .delivery-form h2 {
-      margin-bottom: 20px;
+    
+    /* Header and Navigation */
+    .secnavbar {
+      background-color: white;
+      box-shadow: var(--shadow);
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-
-    .delivery-form label {
-      display: block;
-      margin: 10px 0 5px;
+    
+    .titulo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .titulo img {
+      width: 80px;
+      transition: transform 0.3s ease;
+    }
+    
+    .titulo img:hover {
+      transform: scale(1.1) rotate(5deg);
+    }
+    
+    .titulo h2 {
+      color: var(--primary);
+      font-size: 28px;
       font-weight: bold;
     }
-
-    .delivery-form input,
-    .delivery-form select,
-    .delivery-form textarea {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+    
+    .navbar {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
     }
-
-    .delivery-form button {
-      background-color: #007bff;
+    
+    .navbar a {
+      color: var(--dark);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+    }
+    
+    .navbar a:hover {
+      background-color: var(--primary);
+      color: white;
+      transform: translateY(-3px);
+    }
+    
+    /* Main Content */
+    .main-content {
+      padding: 40px 0;
+    }
+    
+    .page-title {
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--primary);
+      font-size: 32px;
+      position: relative;
+      padding-bottom: 15px;
+    }
+    
+    .page-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 4px;
+      background-color: var(--accent);
+      border-radius: 2px;
+    }
+    
+    /* Delivery Form */
+    .delivery-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      align-items: stretch;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    
+    .delivery-info {
+      flex: 1;
+      min-width: 300px;
+      max-width: 500px;
+      background-color: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
+    }
+    
+    .delivery-form {
+      flex: 1;
+      min-width: 300px;
+      max-width: 600px;
+      background-color: white;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
+    }
+    
+    .delivery-form:hover, .delivery-info:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+    
+    .form-title {
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 25px;
+      font-size: 24px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--dark);
+      font-size: 15px;
+    }
+    
+    .form-group i {
+      position: absolute;
+      left: 10px;
+      top: 37px;
+      color: var(--primary);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px 12px 12px 35px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+    }
+    
+    .form-check {
+      margin-top: 8px;
+    }
+    
+    .form-btn {
+      background-color: var(--primary);
       color: white;
       border: none;
-      padding: 10px 20px;
-      border-radius: 4px;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
       cursor: pointer;
+      width: 100%;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
-
-    .delivery-form button:hover {
-      background-color: #0056b3;
+    
+    .form-btn:hover {
+      background-color: var(--secondary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      background-color: #f9fff9;
+    }
+    
+    .info-icon {
+      font-size: 24px;
+      color: var(--primary);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(76, 175, 80, 0.1);
+      border-radius: 50%;
+    }
+    
+    .info-text h4 {
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+    
+    .info-text p {
+      font-size: 14px;
+      color: #666;
+    }
+    
+    /* Steps */
+    .steps-container {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      max-width: 900px;
+      margin: 0 auto 40px;
+    }
+    
+    .step {
+      text-align: center;
+      flex: 1;
+      position: relative;
+      padding: 0 15px;
+    }
+    
+    .step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 25px;
+      right: -10px;
+      width: calc(100% - 50px);
+      height: 3px;
+      background-color: var(--accent);
+    }
+    
+    .step-number {
+      width: 50px;
+      height: 50px;
+      background-color: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+      margin: 0 auto 15px;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .step-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .step-desc {
+      font-size: 14px;
+      color: #666;
+    }
+    
+    /* Footer */
+    .footer-section {
+      background-color: var(--primary);
+      color: white;
+      padding: 40px 0;
+      text-align: center;
+    }
+    
+    .footer-section img {
+      width: 80px;
+      margin-bottom: 15px;
+      filter: brightness(0) invert(1);
+    }
+    
+    .footer-section h2 {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+    
+    .footer-section p {
+      margin-bottom: 10px;
+    }
+    
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+    
+    .footer {
+      background-color: var(--secondary);
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      font-size: 14px;
+    }
+    
+    /* Animations */
+    .animate-fade {
+      animation: fadeIn 1s ease;
+    }
+    
+    .animate-up {
+      animation: slideUp 0.8s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    /* Loader */
+    .loader {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .delivery-section {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .delivery-form, .delivery-info {
+        width: 100%;
+        max-width: 500px;
+      }
+      
+      .steps-container {
+        flex-direction: column;
+        gap: 30px;
+      }
+      
+      .step:not(:last-child)::after {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
   <section class="secnavbar">
-    <div class="titulo">
-      <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula" style="width: 100px;">
-      <h2>Farmacia Cápsula</h2>
-    </div>
-    <div class="navbar">
-        <a href="index.html">inicio</a>
-        <a href="delivery.html">A tu casa</a>
-        <a href="iniciar_sesion.html">Iniciar sesión</a>
-        <a href="producto.html">Producto</a>
-        <a href="servicios.html">Servicios</a>
-    </div>
-    </section>
-
-  <div class="delivery-form">
-    <h2>Formulario de Delivery</h2>
-    <form id="deliveryForm">
-      <label for="nombre">Nombre completo:</label>
-      <input type="text" id="nombre" name="nombre" required>
-
-      <label for="direccion">Dirección de entrega:</label>
-      <textarea id="direccion" name="direccion" rows="3" required></textarea>
-
-      <label for="telefono">Teléfono de contacto:</label>
-      <input type="tel" id="telefono" name="telefono" required>
-
-      <label for="fecha">Fecha de entrega:</label>
-      <input type="date" id="fecha" name="fecha" required>
-
-      <label for="hora">Hora de entrega:</label>
-      <input type="time" id="hora" name="hora" required>
-
-      <label for="metodoPago">Método de pago:</label>
-      <select id="metodoPago" name="metodoPago" required>
-        <option value="efectivo">Efectivo</option>
-        <option value="tarjeta">Tarjeta de crédito/débito</option>
-        <option value="transferencia">Transferencia bancaria</option>
-      </select>
-
-      <button type="submit">Confirmar Pedido</button>
-    </form>
-  </div>
-
-  <section class="footer-section">
-    <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula" style="width: 100px;">
-    <h2>Farmacia Cápsula</h2>
-    <p>A domicilio: 800-522-6600</p>
-    <p>Correo electrónico: info@farmaciacapsula.com</p>
-    <div class="footer-links">
-      <div class="Contactanos">
-        <a href="index.html">Contáctanos</a>
+    <div class="container">
+      <div class="titulo animate__animated animate__fadeIn">
+        <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula">
+        <h2>Farmacia Cápsula</h2>
       </div>
-      <div class="Información-Legal"></div>
-        <a href="index.html">Información Legal</a>
-      </div>
-      <div class="Preguntas-Frecuentes">
-        <a href="index.html">Preguntas Frecuentes</a>
+      <div class="navbar animate__animated animate__fadeIn">
+        <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+        <a href="delivery.html" class="active"><i class="fas fa-truck"></i> A tu casa</a>
+        <a href="iniciar_sesion.html"><i class="fas fa-user"></i> Iniciar sesión</a>
+        <a href="producto.html"><i class="fas fa-pills"></i> Productos</a>
+        <a href="servicios.html"><i class="fas fa-briefcase-medical"></i> Servicios</a>
       </div>
     </div>
   </section>
 
+  <section class="main-content">
+    <div class="container">
+      <h1 class="page-title animate-fade">Servicio de Delivery</h1>
+      
+      <div class="steps-container animate-up">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-title">Completa el formulario</div>
+          <div class="step-desc">Proporciona tus datos para la entrega</div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-title">Procesamos tu pedido</div>
+          <div class="step-desc">Preparamos tus medicamentos</div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-title">Entrega a domicilio</div>
+          <div class="step-desc">Recibe en la puerta de tu casa</div>
+        </div>
+      </div>
+      
+      <div class="delivery-section">
+        <div class="delivery-form animate-up">
+          <h2 class="form-title">Datos para el Delivery</h2>
+          <form id="deliveryForm">
+            <div class="form-group">
+              <label for="nombre">Nombre completo:</label>
+              <i class="fas fa-user"></i>
+              <input type="text" class="form-control" id="nombre" name="nombre" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="direccion">Dirección de entrega:</label>
+              <i class="fas fa-map-marker-alt"></i>
+              <textarea class="form-control" id="direccion" name="direccion" rows="3" required></textarea>
+            </div>
+            
+            <div class="form-group">
+              <label for="telefono">Teléfono de contacto:</label>
+              <i class="fas fa-phone"></i>
+              <input type="tel" class="form-control" id="telefono" name="telefono" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Correo electrónico:</label>
+              <i class="fas fa-envelope"></i>
+              <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="fecha">Fecha de entrega:</label>
+              <i class="fas fa-calendar"></i>
+              <input type="date" class="form-control" id="fecha" name="fecha" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="hora">Hora de entrega:</label>
+              <i class="fas fa-clock"></i>
+              <input type="time" class="form-control" id="hora" name="hora" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="metodoPago">Método de pago:</label>
+              <i class="fas fa-credit-card"></i>
+              <select class="form-control" id="metodoPago" name="metodoPago" required>
+                <option value="">Seleccione método de pago</option>
+                <option value="efectivo">Efectivo</option>
+                <option value="tarjeta">Tarjeta de crédito/débito</option>
+                <option value="transferencia">Transferencia bancaria</option>
+                <option value="yape">Yape</option>
+                <option value="plin">Plin</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="notas">Notas adicionales:</label>
+              <i class="fas fa-sticky-note"></i>
+              <textarea class="form-control" id="notas" name="notas" rows="2" placeholder="Instrucciones especiales para la entrega (opcional)"></textarea>
+            </div>
+            
+            <div class="form-check">
+              <input type="checkbox" id="terminos" name="terminos" required>
+              <label for="terminos">Acepto los términos y condiciones del servicio</label>
+            </div>
+            
+            <button type="submit" class="form-btn" id="submitBtn">
+              <span>Confirmar Pedido</span>
+              <i class="fas fa-arrow-right"></i>
+              <div class="loader" id="btnLoader"></div>
+            </button>
+          </form>
+        </div>
+        
+        <div class="delivery-info animate-up">
+          <h2 class="form-title">Información del Servicio</h2>
+          
+          <div class="info-item">
+            <div class="info-icon">
+              <i class="fas fa-truck"></i>
+            </div>
+            <div class="info-text">
+              <h4>Entrega Rápida</h4>
+              <p>Recibe tus medicamentos en menos de 2 horas en zonas urbanas.</p>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <div class="info-icon">
+              <i class="fas fa-map-marked-alt"></i>
+            </div>
+            <div class="info-text">
+              <h4>Zonas de Cobertura</h4>
+              <p>Consulta nuestras zonas de reparto y horarios disponibles.</p>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <div class="info-icon">
+              <i class="fas fa-hand-holding-medical"></i>
+            </div>
+            <div class="info-text">
+              <h4>Manipulación Segura</h4>
+              <p>Garantizamos la correcta manipulación y transporte de tus medicamentos.</p>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <div class="info-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="info-text">
+              <h4>Pago Seguro</h4>
+              <p>Diferentes métodos de pago seguros y confiables.</p>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <div class="info-icon">
+              <i class="fas fa-phone-alt"></i>
+            </div>
+            <div class="info-text">
+              <h4>¿Necesitas ayuda?</h4>
+              <p>Llámanos al 800-522-6600 para asistencia.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="footer-section">
+    <div class="container">
+      <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula">
+      <h2>Farmacia Cápsula</h2>
+      <p><i class="fas fa-phone-alt"></i> A domicilio: 800-522-6600</p>
+      <p><i class="fas fa-envelope"></i> Correo electrónico: info@farmaciacapsula.com</p>
+      <div class="footer-links">
+        <a href="#"><i class="fas fa-paper-plane"></i> Contáctanos</a>
+        <a href="#"><i class="fas fa-gavel"></i> Información Legal</a>
+        <a href="preguntas_frecuentes.html"><i class="fas fa-question-circle"></i> Preguntas Frecuentes</a>
+        <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+        <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+        <a href="#"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+      </div>
+    </div>
+  </section>
   
   <footer class="footer">
-    <p>Todos los derechos reservados a farmacia capsula. </p>
+    <div class="container">
+      <p>&copy; 2025 Todos los derechos reservados | Farmacia Cápsula</p>
+    </div>
   </footer>
 
   <script>
-document.getElementById('deliveryForm').addEventListener('submit', async function (event) {
-  event.preventDefault();
-
-  const nombre = document.getElementById('nombre').value;
-  const direccion = document.getElementById('direccion').value;
-  const telefono = document.getElementById('telefono').value;
-  const fecha = document.getElementById('fecha').value;
-  const hora = document.getElementById('hora').value;
-  const metodoPago = document.getElementById('metodoPago').value;
-
-  const pedido = {
-    nombre,
-    direccion,
-    telefono,
-    fecha,
-    hora,
-    metodoPago,
-    // Aquí podrías incluir también el userId si está autenticado
-  };
-
-  try {
-    const response = await fetch('http://localhost:3001/api/pedidos', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(pedido)
+    document.getElementById('deliveryForm').addEventListener('submit', async function (event) {
+      event.preventDefault();
+      
+      // Mostrar loader
+      document.getElementById('submitBtn').innerHTML = '<div class="loader" style="display:inline-block;"></div> Procesando...';
+      document.getElementById('submitBtn').disabled = true;
+      
+      // Validar formulario
+      const form = event.target;
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        resetButton();
+        return;
+      }
+      
+      const formData = {
+        nombre: document.getElementById('nombre').value,
+        direccion: document.getElementById('direccion').value,
+        telefono: document.getElementById('telefono').value,
+        email: document.getElementById('email').value,
+        fecha: document.getElementById('fecha').value,
+        hora: document.getElementById('hora').value,
+        metodoPago: document.getElementById('metodoPago').value,
+        notas: document.getElementById('notas').value
+      };
+      
+      try {
+        // Simulación de envío a API
+        await new Promise(resolve => setTimeout(resolve, 1500)); // Simular carga
+        
+        // En producción, descomentar esto:
+        /*
+        const response = await fetch('http://localhost:3001/api/pedidos', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+        
+        const result = await response.json();
+        
+        if (!result.success) {
+          throw new Error(result.message || 'Error en el servidor');
+        }
+        */
+        
+        // Mostrar mensaje de éxito y resetear formulario
+        showSuccessMessage();
+        form.reset();
+        
+      } catch (error) {
+        console.error('Error al enviar el pedido:', error);
+        alert('Ocurrió un error al procesar tu pedido. Por favor intenta nuevamente.');
+      } finally {
+        resetButton();
+      }
     });
-
-    const result = await response.json();
-
-    if (result.success) {
-      alert('Pedido confirmado. ¡Gracias por su compra!');
-      window.location.href = 'index.html';
-    } else {
-      alert('Error al confirmar el pedido: ' + result.message);
+    
+    function resetButton() {
+      document.getElementById('submitBtn').innerHTML = '<span>Confirmar Pedido</span><i class="fas fa-arrow-right"></i>';
+      document.getElementById('submitBtn').disabled = false;
     }
-  } catch (error) {
-    console.error('Error al enviar el pedido:', error);
-    alert('Ocurrió un error al enviar el pedido.');
-  }
-});
-
+    
+    function showSuccessMessage() {
+      // Crear modal de éxito
+      const modal = document.createElement('div');
+      modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      `;
+      
+      const modalContent = document.createElement('div');
+      modalContent.style.cssText = `
+        background-color: white;
+        border-radius: 10px;
+        padding: 30px;
+        text-align: center;
+        max-width: 400px;
+        animation: slideUp 0.5s ease;
+      `;
+      
+      modalContent.innerHTML = `
+        <div style="color: #4CAF50; font-size: 50px; margin-bottom: 20px;">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h3 style="margin-bottom: 15px; color: #333;">¡Pedido Confirmado!</h3>
+        <p style="margin-bottom: 25px; color: #666;">Gracias por tu pedido. Recibirás una confirmación por correo electrónico con los detalles de tu entrega.</p>
+        <button id="closeModal" style="background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Aceptar</button>
+      `;
+      
+      modal.appendChild(modalContent);
+      document.body.appendChild(modal);
+      
+      document.getElementById('closeModal').addEventListener('click', function() {
+        document.body.removeChild(modal);
+        window.scrollTo(0, 0);
+      });
+    }
+    
+    // Animaciones al hacer scroll
+    window.addEventListener('DOMContentLoaded', function() {
+      const elements = document.querySelectorAll('.animate-fade, .animate-up');
+      
+      function checkPosition() {
+        for (let i = 0; i < elements.length; i++) {
+          let element = elements[i];
+          let positionFromTop = elements[i].getBoundingClientRect().top;
+          
+          if (positionFromTop - window.innerHeight <= 0) {
+            element.style.opacity = 1;
+            element.style.transform = 'translateY(0)';
+          }
+        }
+      }
+      
+      window.addEventListener('scroll', checkPosition);
+      checkPosition();
+    });
+    
+    // Validación de fecha (no permitir fechas anteriores a hoy)
+    document.addEventListener('DOMContentLoaded', function() {
+      const fechaInput = document.getElementById('fecha');
+      const today = new Date();
+      let dd = today.getDate();
+      let mm = today.getMonth() + 1;
+      const yyyy = today.getFullYear();
+      
+      if (dd < 10) {
+        dd = '0' + dd;
+      }
+      
+      if (mm < 10) {
+        mm = '0' + mm;
+      }
+      
+      const todayStr = yyyy + '-' + mm + '-' + dd;
+      fechaInput.setAttribute('min', todayStr);
+    });
   </script>
 </body>
 </html>

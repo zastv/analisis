@@ -1,5 +1,6 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -8,257 +9,983 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Web site created using create-react-app" />
+    <meta name="description" content="Farmacia Cápsula - Tu salud en buenas manos" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel="stylesheet" href="css/style3.css" />
-   
-    <title>React App</title>
-  </head>
-  <body>
+    
+    <style>
+      /* Estilos globales */
+      :root {
+        --primary-color: #5cb85c;
+        --secondary-color: #3498db;
+        --accent-color: #f39c12;
+        --text-color: #333;
+        --light-bg: #f9f9f9;
+        --dark-bg: #333;
+      }
+      
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        color: var(--text-color);
+        line-height: 1.6;
+      }
+      
+      /* Header y Navbar */
+      .secnavbar {
+        background: linear-gradient(135deg, #5cb85c, #3498db);
+        padding: 15px 0;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        top: 0;
+        z-index: 1000;
+        transition: all 0.3s ease;
+      }
+      
+      .secnavbar:hover {
+        box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+      }
+      
+      .titulo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+      }
+      
+      .titulo img {
+        width: 60px;
+        transition: transform 0.3s ease;
+      }
+      
+      .titulo img:hover {
+        transform: scale(1.1) rotate(5deg);
+      }
+      
+      .titulo h2 {
+        color: white;
+        font-size: 2rem;
+        margin: 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      }
+      
+      .navbar {
+        display: flex;
+        justify-content: center;
+        margin: 15px 0;
+        flex-wrap: wrap;
+      }
+      
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 10px 20px;
+        margin: 0 5px;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+        font-weight: 600;
+      }
+      
+      .navbar a:hover {
+        background-color: rgba(255,255,255,0.2);
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+      
+      .buscador {
+        max-width: 600px;
+        margin: 10px auto;
+      }
+      
+      .buscador fieldset {
+        border: none;
+        display: flex;
+        padding: 0;
+      }
+      
+      .buscador input[type="text"] {
+        width: 100%;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 30px 0 0 30px;
+        outline: none;
+        font-size: 16px;
+      }
+      
+      .search-button {
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 0 30px 30px 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .search-button:hover {
+        background-color: #e67e22;
+      }
+      
+      /* Slideshow */
+      .slideshow {
+        position: relative;
+        margin: 30px 0;
+        overflow: hidden;
+      }
+      
+      .contenido-slideshow {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      
+      .mySlides {
+        display: none;
+        text-align: center;
+        animation: fadeEffect 1.5s;
+      }
+      
+      .mySlides img {
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        max-width: 100%;
+        height: auto;
+      }
+      
+      @keyframes fadeEffect {
+        from {opacity: 0.4}
+        to {opacity: 1}
+      }
+      
+      /* Productos destacados */
+      .courses-section {
+        padding: 40px 0;
+        background-color: var(--light-bg);
+      }
+      
+      .course-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      
+      .portada {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 40px;
+        color: var(--primary-color);
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        position: relative;
+      }
+      
+      .portada:after {
+        content: '';
+        display: block;
+        width: 100px;
+        height: 4px;
+        background: var(--accent-color);
+        margin: 15px auto;
+        border-radius: 2px;
+      }
+      
+      .course-card {
+        background-color: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        padding: 25px;
+        margin: 20px;
+        transition: all 0.3s ease;
+        display: inline-block;
+        width: calc(33.33% - 40px);
+        text-align: center;
+        vertical-align: top;
+      }
+      
+      .course-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+      }
+      
+      .course-card img {
+        width: 60%;
+        margin-bottom: 15px;
+        transition: transform 0.5s ease;
+      }
+      
+      .course-card:hover img {
+        transform: scale(1.05);
+      }
+      
+      .course-title {
+        font-weight: 600;
+        font-size: 18px;
+        margin: 15px 0;
+        color: var(--text-color);
+        height: 50px;
+        overflow: hidden;
+      }
+      
+      .enroll-btn {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 30px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+      }
+      
+      .enroll-btn:hover {
+        background-color: #4cae4c;
+        transform: scale(1.05);
+      }
+      
+      /* Redes sociales */
+      .redessociales {
+        background: linear-gradient(135deg, #3498db, #8e44ad);
+        padding: 40px 0;
+        text-align: center;
+        color: white;
+      }
+      
+      .redessociales h2 {
+        margin: 10px 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 1.8rem;
+      }
+      
+      .social-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 60px;
+        height: 60px;
+        background-color: rgba(255,255,255,0.1);
+        border-radius: 50%;
+        margin: 0 15px;
+        color: white;
+        transition: all 0.3s ease;
+      }
+      
+      .social-link:hover {
+        background-color: rgba(255,255,255,0.3);
+        transform: translateY(-5px) scale(1.1);
+      }
+      
+      /* Mapa */
+      .mapa {
+        padding: 40px 0;
+        text-align: center;
+        background-color: var(--light-bg);
+      }
+      
+      .mapa h2 {
+        margin-bottom: 30px;
+        color: var(--primary-color);
+      }
+      
+      .mapa iframe {
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        max-width: 100%;
+      }
+      
+      /* Marcas */
+      .marcasrespaldadas {
+        padding: 40px 0;
+        text-align: center;
+        background-color: white;
+      }
+      
+      .marca-card {
+        display: inline-block;
+        width: 250px;
+        height: 150px;
+        margin: 20px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        transition: all 0.3s ease;
+        overflow: hidden;
+      }
+      
+      .marca-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+      }
+      
+      /* Testimonios */
+      .testimonials {
+        padding: 60px 0;
+        background: linear-gradient(135deg, #3498db, #9b59b6);
+        color: white;
+        text-align: center;
+      }
+      
+      .testimonials h1 {
+        font-size: 3rem;
+        margin-bottom: 10px;
+      }
+      
+      .testimonials h2 {
+        margin-bottom: 40px;
+        font-weight: 400;
+      }
+      
+      .testimonial-card {
+        background-color: rgba(255,255,255,0.1);
+        border-radius: 15px;
+        padding: 30px;
+        margin: 20px auto;
+        max-width: 800px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        position: relative;
+      }
+      
+      .testimonial-card p {
+        font-size: 20px;
+        font-style: italic;
+        margin-bottom: 30px;
+      }
+      
+      .student-info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      .student-info img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-right: 20px;
+        border: 3px solid white;
+      }
+      
+      .student-info span {
+        font-weight: 600;
+        font-size: 18px;
+      }
+      
+      .testimonials fieldset {
+        max-width: 600px;
+        margin: 40px auto 0;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-radius: 15px;
+        padding: 25px;
+      }
+      
+      .testimonials legend {
+        padding: 0 15px;
+        font-size: 20px;
+        font-weight: 600;
+      }
+      
+      .testimonials textarea {
+        width: 100%;
+        padding: 15px;
+        border-radius: 10px;
+        border: none;
+        height: 120px;
+        margin-top: 10px;
+        font-family: inherit;
+      }
+      
+      .testimonials button {
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: 600;
+        margin-top: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      
+      .testimonials button:hover {
+        background-color: #e67e22;
+        transform: scale(1.05);
+      }
+      
+      /* Footer */
+      .footer-section {
+        background-color: var(--light-bg);
+        color: white;
+        padding: 50px 0;
+        text-align: center;
+      }
+      
+      .footer-section img {
+        width: 80px;
+        margin-bottom: 20px;
+      }
+      
+      .footer-section h2 {
+        margin-bottom: 20px;
+      }
+      
+      .footer-section p {
+        margin: 10px 0;
+        color: #000000;
+      }
+      
+      .footer-links {
+        margin: 30px 0;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      .footer-links a {
+        color: #000000;
+        text-decoration: none;
+        margin: 0 15px;
+        transition: color 0.3s ease;
+      }
+      
+      .footer-links a:hover {
+        color: var(--accent-color);
+      }
+      
+      .footer {
+        
+        color: #000000;
+        text-align: center;
+        padding: 20px 0;
+        font-size: 14px;
+      }
+      
+      /* Animaciones y efectos */
+      .animate-on-scroll {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 1s ease;
+      }
+      
+      .animate-on-scroll.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      /* Estilos responsivos */
+      @media (max-width: 992px) {
+        .course-card {
+          width: calc(50% - 40px);
+        }
+      }
+      
+      @media (max-width: 768px) {
+        .titulo {
+          flex-direction: column;
+        }
+        
+        .navbar a {
+          margin: 5px;
+        }
+        
+        .course-card {
+          width: calc(100% - 40px);
+        }
+        
+        .marca-card {
+          width: 200px;
+        }
+      }
+      
+      /* Modal */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 2000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.7);
+      }
+      
+      .modal-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 30px;
+        width: 70%;
+        max-width: 800px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        position: relative;
+        animation: modalopen 0.5s;
+      }
+      
+      @keyframes modalopen {
+        from {opacity: 0; transform: translateY(-60px);}
+        to {opacity: 1; transform: translateY(0);}
+      }
+      
+      .close-modal {
+        position: absolute;
+        right: 20px;
+        top: 15px;
+        font-size: 28px;
+        font-weight: bold;
+        color: #aaa;
+        cursor: pointer;
+      }
+      
+      .close-modal:hover {
+        color: var(--primary-color);
+      }
+      
+      /* Nuevos elementos animados */
+      .animated-icon {
+        animation: pulse 2s infinite;
+      }
+      
+      @keyframes pulse {
+        0% {transform: scale(1);}
+        50% {transform: scale(1.1);}
+        100% {transform: scale(1);}
+      }
+      
+      .floating-button {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background-color: var(--primary-color);
+        color: white;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 100;
+      }
+      
+      .floating-button:hover {
+        transform: scale(1.1);
+        background-color: #4cae4c;
+      }
+      
+      .special-offer {
+        background: linear-gradient(135deg, #ff9966, #ff5e62);
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-weight: 600;
+        position: relative;
+        overflow: hidden;
+      }
+      
+      .special-offer:before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: rgba(255,255,255,0.1);
+        transform: rotate(45deg);
+        animation: shine 3s infinite;
+      }
+      
+      @keyframes shine {
+        0% {transform: translateX(-100%) rotate(45deg);}
+        100% {transform: translateX(100%) rotate(45deg);}
+      }
+      
+      /* Efecto hover en imágenes */
+      .hover-effect {
+        transition: all 0.5s ease;
+        overflow: hidden;
+      }
+      
+      .hover-effect img {
+        transition: all 0.5s ease;
+      }
+      
+      .hover-effect:hover img {
+        transform: scale(1.1);
+      }
+      
+      /* Contador */
+      .contador-container {
+        display: flex;
+        justify-content: space-around;
+        text-align: center;
+        padding: 40px 0;
+        background-color: var(--light-bg);
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      
+      .contador-item {
+        padding: 20px;
+      }
+      
+      .contador-numero {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin-bottom: 10px;
+      }
+      
+      .contador-texto {
+        font-size: 1.2rem;
+        color: var(--text-color);
+      }
+    </style>
+    
+    <title>Farmacia Cápsula - Tu salud en buenas manos</title>
 
+    <!-- Banner de oferta especial -->
+    <div class="special-offer">
+      <i class="fas fa-tags"></i> OFERTA ESPECIAL: 20% de descuento en productos seleccionados - ¡Solo por esta semana! <i class="fas fa-tags"></i>
+    </div>
 
     <section class="secnavbar">
-      <div class="titulo">
-        <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula" style="width: 100px;">
+      <div class="titulo animate__animated animate__fadeIn">
+        <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula">
         <h2>Farmacia Cápsula</h2>
       </div>
-      <div class="navbar">
-          <a href="delivery.html">A tu casa</a>
-          <a href="iniciar_sesion.html">Iniciar sesión</a>
-          <a href="producto.html">Producto</a>
-          <a href="servicios.html">Servicios</a>
+      <div class="navbar animate__animated animate__fadeInDown">
+          <a href="delivery.html"><i class="fas fa-truck"></i> A tu casa</a>
+          <a href="iniciar_sesion.html"><i class="fas fa-user"></i> Iniciar sesión</a>
+          <a href="producto.html"><i class="fas fa-pills"></i> Productos</a>
+          <a href="servicios.html"><i class="fas fa-heartbeat"></i> Servicios</a>
+          <a href="promociones.html"><i class="fas fa-percentage"></i> Promociones</a>
       </div>
-      <div class="buscador">
+      <div class="buscador animate__animated animate__fadeInUp">
         <form method="get" id="search-form">
            <fieldset>
-              <input type="text" id="search-input" placeholder="Buscar"  />
+              <input type="text" id="search-input" placeholder="¿Qué estás buscando?" />
               <input class="search-button" type="submit" value="Buscar" />
               <i class="search-icon"></i>
            </fieldset>
         </form>
      </div>
     </section>
-
+  </head>
+  <body>
+    
 
    <section class="slideshow">
     <div class="contenido-slideshow contenedor">
-        <div class="mySlides">
+        <div class="mySlides animate__animated animate__fadeIn">
           <div class="numbertext"></div>
-          <img _ngcontent-ccd-c38="" alt="…" class="d-block w-100" src="https://www.fischelenlinea.com//images/default-source/libreria-extra/banner-carrusel-cerave-nov-24.jpg?sfvrsn=71095c19_1" style="width:80%">
+          <img alt="Promoción CeraVe" class="d-block w-100" src="https://www.fischelenlinea.com//images/default-source/libreria-extra/banner-carrusel-cerave-nov-24.jpg?sfvrsn=71095c19_1">
         </div>
 
-        <div class="mySlides">
+        <div class="mySlides animate__animated animate__fadeIn">
             <div class="numbertext"></div>
-            <img _ngcontent-ccd-c38="" alt="…" class="d-block w-100" src="https://www.fischelenlinea.com//images/default-source/libreria-extra/banner-carrusel-lrp-nov-24.jpg?sfvrsn=90696274_1" style="width:80%">
+            <img alt="Promoción La Roche-Posay" class="d-block w-100" src="https://www.fischelenlinea.com//images/default-source/libreria-extra/banner-carrusel-lrp-nov-24.jpg?sfvrsn=90696274_1">
         </div>
 
-        <div class="mySlides">
+        <div class="mySlides animate__animated animate__fadeIn">
             <div class="numbertext"></div>
-            <img _ngcontent-ccd-c38="" alt="…" class="d-block w-100" src="https://www.fischelenlinea.com//images/default-source/libreria-extra/banner-carrusel-vichy-nov-24.jpg?sfvrsn=b9c3f325_1" style="width:80%">
+            <img alt="Promoción Vichy" class="d-block w-100" src="https://www.fischelenlinea.com//images/default-source/libreria-extra/banner-carrusel-vichy-nov-24.jpg?sfvrsn=b9c3f325_1">
         </div>
-
-        <section class="courses-section">
-          <div class="container">
-              <div class="course-container">
-                  <h2 class="portada">Productos destacados</h2>
-  
-                  <!-- Producto 1 -->
-                  <div class="course-card">
-                      <img loading="lazy" alt="Foto de producto" class="img-product-detail" src="https://farmacias.fischelenlinea.com/Images/Upload/1/2/c92c158f4413883-.jpg" style="width:25%">
-                      <div class="course-title">DERMACLINIC FAMILY BLOQUEADOR SPF85 473 ML</div>
-                      <button class="btn enroll-btn" onclick="openModal('modal1')">Mas Información</button>
-                  </div>
-  
-                  <!-- Producto 2 -->
-                  <div class="course-card">
-                      <img loading="lazy" alt="Foto de producto" class="img-product-detail" src="https://farmacias.fischelenlinea.com/Images/Upload/1/2/94d55e526537395_2.jpg" style="width:25%">
-                      <div class="course-title">Cerave Loción Hidratante Para Cuerpo Ligera 473 ml</div>
-                      <button class="btn enroll-btn" onclick="openModal('modal2')">Mas Información</button>
-                  </div>
-  
-                  <!-- Producto 3 -->
-                  <div class="course-card">
-                      <img src="https://farmacias.fischelenlinea.com/Images/Upload/1/1/279f6553Captura_de_pantalla_2024-09-09_072255-removebg-preview-min.png" alt="Product" style="width:25%">
-                      <div class="course-title">La Roche Posay Mela B3 Serum Anti Manchas Con Niacinamida 30ml</div>
-                      <button class="btn enroll-btn" onclick="openModal('modal3')">Mas Información</button>
-                  </div>
-
-                   <!-- Producto 1 -->
-                   <div class="course-card">
-                    <img loading="lazy" alt="Foto de producto" class="img-product-detail" src="https://farmacias.fischelenlinea.com/Images/Upload/1/2/c92c158f4413883-.jpg" style="width:25%">
-                    <div class="course-title">DERMACLINIC FAMILY BLOQUEADOR SPF85 473 ML</div>
-                    <button class="btn enroll-btn" onclick="openModal('modal1')">Mas Información</button>
-                </div>
-
-                <!-- Producto 2 -->
-                <div class="course-card">
-                    <img loading="lazy" alt="Foto de producto" class="img-product-detail" src="https://farmacias.fischelenlinea.com/Images/Upload/1/2/94d55e526537395_2.jpg" style="width:25%">
-                    <div class="course-title">Cerave Loción Hidratante Para Cuerpo Ligera 473 ml</div>
-                    <button class="btn enroll-btn" onclick="openModal('modal2')">Mas Información</button>
-                </div>
-
-                <!-- Producto 3 -->
-                <div class="course-card">
-                    <img src="https://farmacias.fischelenlinea.com/Images/Upload/1/1/279f6553Captura_de_pantalla_2024-09-09_072255-removebg-preview-min.png" alt="Product" style="width:25%">
-                    <div class="course-title">La Roche Posay Mela B3 Serum Anti Manchas Con Niacinamida 30ml</div>
-                    <button class="btn enroll-btn" onclick="openModal('modal3')">Mas Información</button>
-                </div>
-              </div>
-          </div>
-      </section>
-  <section class="redessociales">
-   <h2>
-    SÍGUENOS
-    VISITA
-   </h2>
-   <h2>
-    nuestras redes sociales
-   </h2>
-  </section>
-   <section class="redessociales">
-    <a class="social-link" title="Facebook" href="https://www.facebook.com/FarmaciasArrocha/?locale=es_LA" target="_blank">
-      <svg width="28 " height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">      <path fill-rule="evenodd" clip-rule="evenodd" d="M13.591 6.00441C11.5868 6.11515 9.75158 6.92966 8.34448 8.333C7.44444 9.23064 6.78641 10.2982 6.39238 11.5002C6.01229 12.6596 5.90552 13.9193 6.08439 15.1343C6.18456 15.8146 6.36736 16.4631 6.63981 17.1046C6.71166 17.2738 6.89438 17.6476 6.98704 17.815C7.22995 18.2538 7.52906 18.6904 7.84853 19.0725C8.16302 19.4486 8.56717 19.8479 8.94482 20.1556C9.6776 20.7526 10.5183 21.2186 11.4085 21.5211C11.8412 21.6681 12.259 21.7723 12.7342 21.8517L12.751 21.8545V19.0664V16.2783H11.7348H10.7186V15.1231V13.9678H11.7344H12.7503L12.7531 12.9265C12.756 11.8203 12.7553 11.845 12.7927 11.5862C12.9306 10.6339 13.3874 9.91646 14.1198 9.50212C14.4564 9.31168 14.8782 9.18341 15.331 9.13374C15.791 9.0833 16.55 9.12126 17.351 9.23478C17.4659 9.25105 17.5612 9.26437 17.5629 9.26437C17.5646 9.26437 17.566 9.70662 17.566 10.2472V11.2299L16.9679 11.233C16.3284 11.2363 16.299 11.2379 16.1298 11.2771C15.6926 11.3785 15.4015 11.6608 15.2983 12.0834C15.2566 12.2542 15.256 12.2685 15.256 13.1531V13.9678H16.3622C17.3606 13.9678 17.4685 13.9689 17.4685 13.9795C17.4685 13.9921 17.1263 16.2236 17.1191 16.2578L17.1148 16.2783H16.1854H15.256V19.0647V21.8511L15.2954 21.8459C15.4396 21.8271 15.8337 21.7432 16.0548 21.6844C16.5933 21.5411 17.079 21.3576 17.581 21.1076C19.3154 20.2441 20.6895 18.7615 21.4192 16.9663C21.7498 16.153 21.936 15.3195 21.9915 14.4052C22.0028 14.2197 22.0028 13.7268 21.9916 13.5415C21.9403 12.6947 21.7817 11.9389 21.4942 11.1712C20.8665 9.49533 19.6589 8.05123 18.1135 7.12853C17.7376 6.90413 17.2813 6.68103 16.8985 6.53456C16.1262 6.23908 15.3815 6.07432 14.5323 6.01114C14.3897 6.00053 13.7447 5.99591 13.591 6.00441Z" fill="currentColor"></path>    </svg>
-    </a>
-
-    <a class="social-link" title="Instagram" href="https://www.instagram.com/farmarrocha" target="_blank">
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">      <path fill-rule="evenodd" clip-rule="evenodd" d="M11.1213 6.00507C10.5981 6.02559 9.96558 6.0872 9.6431 6.14903C7.77505 6.50724 6.50522 7.77703 6.14804 9.644C6.0118 10.3562 6 10.7031 6 14.0006C6 17.298 6.0118 17.6449 6.14804 18.3572C6.50522 20.2241 7.776 21.4948 9.6431 21.852C10.3554 21.9882 10.7023 22 14 22C17.2977 22 17.6446 21.9882 18.3569 21.852C20.224 21.4948 21.4948 20.2241 21.852 18.3572C21.9882 17.6449 22 17.298 22 14.0006C22 10.7031 21.9882 10.3562 21.852 9.644C21.4935 7.77016 20.2144 6.49675 18.3396 6.14716C17.6551 6.01955 17.3874 6.00985 14.334 6.00234C12.707 5.99836 11.2612 5.99957 11.1213 6.00507ZM17.6262 7.50836C18.2783 7.59344 18.7654 7.73848 19.1427 7.95992C19.3813 8.09994 19.9011 8.61966 20.0411 8.85821C20.2728 9.253 20.4142 9.74012 20.4952 10.4223C20.5551 10.9261 20.5551 17.075 20.4952 17.5789C20.4142 18.261 20.2728 18.7482 20.0411 19.143C19.9011 19.3815 19.3813 19.9012 19.1427 20.0412C18.7479 20.2729 18.2608 20.4143 17.5785 20.4953C17.0747 20.5552 10.9253 20.5552 10.4215 20.4953C9.73923 20.4143 9.25207 20.2729 8.85726 20.0412C8.61869 19.9012 8.09893 19.3815 7.9589 19.143C7.72724 18.7482 7.58578 18.261 7.50476 17.5789C7.44493 17.075 7.44493 10.9261 7.50476 10.4223C7.56313 9.93096 7.62729 9.63856 7.74686 9.31938C7.88402 8.95319 8.02204 8.72965 8.28724 8.44428C8.87822 7.8083 9.55222 7.55184 10.8191 7.48098C11.5114 7.44227 17.2981 7.46552 17.6262 7.50836ZM17.9602 8.80646C17.7222 8.8876 17.4343 9.18659 17.358 9.43194C17.1268 10.175 17.8258 10.874 18.569 10.6429C18.8334 10.5606 19.1165 10.2776 19.1987 10.013C19.2689 9.78758 19.251 9.52441 19.1511 9.31187C19.071 9.14148 18.8248 8.90306 18.6554 8.83162C18.4699 8.75347 18.1498 8.74189 17.9602 8.80646ZM13.6183 9.8962C12.6459 9.99712 11.7694 10.4112 11.0899 11.0907C9.99978 12.1807 9.61075 13.7764 10.076 15.2492C10.4746 16.5107 11.4897 17.5257 12.7513 17.9243C13.5638 18.1809 14.4362 18.1809 15.2487 17.9243C16.5103 17.5257 17.5254 16.5107 17.924 15.2492C18.1806 14.4367 18.1806 13.5644 17.924 12.752C17.5254 11.4904 16.5103 10.4754 15.2487 10.0769C14.7428 9.91709 14.1016 9.84604 13.6183 9.8962ZM14.6362 11.4119C14.9255 11.4811 15.4416 11.7393 15.6794 11.9337C15.9731 12.1738 16.2113 12.4794 16.3856 12.8396C16.5969 13.2766 16.6509 13.5128 16.6509 14.0006C16.6509 14.4884 16.5969 14.7246 16.3856 15.1615C16.1137 15.7235 15.7253 16.1118 15.161 16.3855C14.7247 16.5972 14.4883 16.6513 14 16.6513C13.5117 16.6513 13.2753 16.5972 12.839 16.3855C12.2747 16.1118 11.8863 15.7235 11.6144 15.1615C11.5298 14.9866 11.4355 14.7433 11.4049 14.6208C11.3288 14.3169 11.3288 13.6843 11.4049 13.3803C11.482 13.0724 11.7369 12.5611 11.933 12.3213C12.3447 11.8177 12.9934 11.449 13.6224 11.3611C13.8845 11.3244 14.3734 11.3489 14.6362 11.4119Z" fill="currentColor"></path>    </svg>
-    </a>
-
-    <a class="social-link" title="Twitter" href="https://twitter.com/farmarrocha" target="_blank">
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">      <path fill-rule="evenodd" clip-rule="evenodd" d="M16.7107 8.01016C16.0674 8.08828 15.4592 8.34677 14.9808 8.74546C14.3619 9.26117 13.9733 9.932 13.8282 10.735C13.7732 11.0393 13.7814 11.5765 13.8457 11.8826C13.8581 11.9415 13.8648 11.9931 13.8606 11.9973C13.8565 12.0014 13.7526 11.9967 13.6299 11.9867C11.6498 11.8255 9.86436 11.0998 8.32993 9.83247C8.08976 9.63411 7.46709 9.0206 7.25993 8.77819C7.17962 8.68424 7.10806 8.60502 7.10087 8.60215C7.07841 8.59318 6.89133 8.99533 6.82319 9.19908C6.5182 10.1109 6.62714 11.0997 7.12305 11.9207C7.35156 12.299 7.6175 12.5843 8.04875 12.914L8.09561 12.9498L7.96283 12.9404C7.56691 12.9125 7.16242 12.8032 6.79124 12.6238C6.70962 12.5844 6.63644 12.5494 6.62862 12.546C6.60958 12.5379 6.62905 12.8651 6.6599 13.0716C6.85098 14.351 7.82335 15.4305 9.06804 15.7452C9.14752 15.7653 9.21253 15.786 9.21253 15.7913C9.21253 15.8015 9.03887 15.8403 8.86887 15.8681C8.81302 15.8773 8.65134 15.8888 8.50958 15.8937C8.27595 15.9018 8.16933 15.8959 7.85692 15.8577L7.77444 15.8476L7.81534 15.9624C7.88056 16.1455 8.04381 16.4672 8.16129 16.6441C8.72962 17.4998 9.64218 18.0285 10.6963 18.1127L10.8288 18.1233L10.7744 18.169C10.6906 18.2393 10.2073 18.5566 10.0342 18.6548C9.24773 19.1015 8.37784 19.377 7.42859 19.4803C7.13755 19.512 6.46302 19.5159 6.19231 19.4876C6.09057 19.4769 6.00412 19.4714 6.0002 19.4753C5.99011 19.4853 6.36772 19.7084 6.62722 19.8458C7.55676 20.3377 8.59674 20.68 9.63431 20.8355C10.3733 20.9463 11.2677 20.9669 12.04 20.8911C14.1558 20.6832 16.0078 19.839 17.4899 18.4067C19.0217 16.9265 20.0398 14.8743 20.31 12.7228C20.3571 12.3475 20.3722 12.092 20.3731 11.6571L20.3739 11.2127L20.4579 11.1524C20.7159 10.9673 21.1178 10.6063 21.3633 10.3394C21.6026 10.0792 22.0329 9.53139 21.998 9.53139C21.9933 9.53139 21.8754 9.5763 21.7362 9.6312C21.4534 9.74268 21.2125 9.81851 20.8927 9.8968C20.6687 9.95158 20.2052 10.0345 20.1763 10.025C20.1672 10.022 20.208 9.98764 20.2669 9.94871C20.7209 9.64839 21.1173 9.20076 21.3654 8.70831C21.4639 8.5128 21.5639 8.2633 21.5495 8.24903C21.5445 8.24406 21.4849 8.27187 21.4169 8.31084C20.9381 8.58539 20.2815 8.83829 19.6928 8.97486L19.4783 9.02465L19.3156 8.87036C18.8586 8.43683 18.259 8.14443 17.5951 8.03122C17.4261 8.0024 16.8815 7.98943 16.7107 8.01016Z" fill="currentColor"></path>    </svg>
-      </a>
-   </section>
-
-    <section class="mapa">
-      <h2>PUEDES ENCONTRARNOS EN NUESTRA SUCURSAL FISICA</h2>
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d245.55202123697217!2d-84.2147758236462!3d10.030690483036977!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa0f7af6c199405%3A0x1741b896f62fc54c!2sWine%20and%20Cheese!5e0!3m2!1ses-419!2scr!4v1726189490483!5m2!1ses-419!2scr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"/>
-      width="600"
-      height="450"
-      style="border:0;"
-      </iframe>
-    </section>
-
-    <div style="display: flex; justify-content: center; align-items: center; gap: 40px; flex-wrap: wrap; max-width: 1000px; margin: 0 auto; padding: 40px;">
-    
-      <h2 class="portada">
-        MARCAS
-      </h2>
-    <section class="marcasrespaldadas">
-      <h2  style="text-align: center; margin-bottom: 50px; font-size: 2.5rem;">Respaldados por las mejores marcas</h2>
-        <div class="marca-card">
-          <button onclick="window.location.href='https://www.vichy.es/'" style="border: none; background: none; padding: 0; cursor: pointer;">
-            <div style="flex: 0 1 auto; text-align: center; height: 150px; display: flex; justify-content: center; align-items: center;">
-                <img loading="lazy" alt="Vichy" class="logo-marca p-2" src="https://www.fischelenlinea.com//images/default-source/marcas-destacadas/vichy/logo-vichy.webp?sfvrsn=7d8ffe2a_1" style="max-height: 120px; max-width: 250px; object-fit: contain;">
-            </div>
-        
-          </button>
-        </div>
-    
-        <div class="marca-card">
-          <button onclick="window.location.href='https://www.laroche-posay.es/'" style="border: none; background: none; padding: 0; cursor: pointer;">
-            <div style="flex: 0 1 auto; text-align: center; height: 150px; display: flex; justify-content: center; align-items: center;">
-                <img loading="lazy" alt="La Roche-Posay" class="logo-marca p-2" src="https://www.fischelenlinea.com//images/default-source/marcas-destacadas/roche-posay/logo2.webp?sfvrsn=889a6a2f_1" style="max-height: 120px; max-width: 250px; object-fit: contain;">
-            </div>
-          </button>
-        </div>
-    
-        <div class="marca-card">
-          <button onclick="window.location.href='https://www.eucerin.es/'" style="border: none; background: none; padding: 0; cursor: pointer;">
-            <div style="flex: 0 1 auto; text-align: center; height: 150px; display: flex; justify-content: center; align-items: center;">
-                <img loading="lazy" alt="Eucerin" class="logo-marca p-2" src="https://www.fischelenlinea.com//images/default-source/libreria-extra/logo-eucerinf2c647eb-d6a2-40ee-89d5-7f3fc4c680f1.jpg?sfvrsn=ed00973d_1" style="max-height: 120px; max-width: 250px; object-fit: contain;">
-            </div>
-          </button>
-        </div>
-      </section>
     </div>
+   </section>
+   
+   <!-- Contador de estadísticas -->
+   <div class="contador-container animate-on-scroll">
+     <div class="contador-item">
+       <div class="contador-numero" id="contador1">0</div>
+       <div class="contador-texto">Clientes satisfechos</div>
+     </div>
+     <div class="contador-item">
+       <div class="contador-numero" id="contador2">0</div>
+       <div class="contador-texto">Productos</div>
+     </div>
+     <div class="contador-item">
+       <div class="contador-numero" id="contador3">0</div>
+       <div class="contador-texto">Sucursales</div>
+     </div>
+     <div class="contador-item">
+       <div class="contador-numero" id="contador4">0</div>
+       <div class="contador-texto">Años de experiencia</div>
+     </div>
+   </div>
 
+   <section class="courses-section">
+    <div class="container">
+        <div class="course-container">
+            <h2 class="portada">Productos destacados</h2>
 
-    <section class="testimonials">
-      <h1 style="text-align: center;">Experiencias</h1>
-        <h2>Lo que dicen nuestros clientes</h2>
-          <div class="testimonial-card">
-            <p>“¡Muy recomendado!”</p>
-            <div class="student-info">
-              <img _ngcontent-ccd-c37="" loading="lazy" alt="Foto de producto" class="img-product-detail" src="https://farmacias.fischelenlinea.com/Images/Upload/1/2/c92c158f4413883-.jpg" style="width:25%">
+            <!-- Producto 1 -->
+            <div class="course-card">
+                <img loading="lazy" alt="Foto de producto" class="img-product-detail" src="https://farmacias.fischelenlinea.com/Images/Upload/1/2/c92c158f4413883-.jpg" style="width:25%">
+                <div class="course-title">DERMACLINIC FAMILY BLOQUEADOR SPF85 473 ML</div>
+                <button class="btn enroll-btn" onclick="openModal('modal1')">Mas Información</button>
+            </div>
+
+            <!-- Producto 2 -->
+            <div class="course-card">
+                <img loading="lazy" alt="Foto de producto" class="img-product-detail" src="https://farmacias.fischelenlinea.com/Images/Upload/1/2/94d55e526537395_2.jpg" style="width:25%">
+                <div class="course-title">Cerave Loción Hidratante Para Cuerpo Ligera 473 ml</div>
+                <button class="btn enroll-btn" onclick="openModal('modal2')">Mas Información</button>
+            </div>
+
+            <!-- Producto 3 -->
+            <div class="course-card">
+                <img src="https://farmacias.fischelenlinea.com/Images/Upload/1/1/279f6553Captura_de_pantalla_2024-09-09_072255-removebg-preview-min.png" alt="Product" style="width:25%">
+                <div class="course-title">La Roche Posay Mela B3 Serum Anti Manchas Con Niacinamida 30ml</div>
+                <button class="btn enroll-btn" onclick="openModal('modal3')">Mas Información</button>
+            </div>
+
+             <!-- Producto 1 -->
+             <div class="course-card">
+              <img loading="lazy" alt="Foto de producto" class="img-product-detail" src="https://farmacias.fischelenlinea.com/Images/Upload/1/2/c92c158f4413883-.jpg" style="width:25%">
               <div class="course-title">DERMACLINIC FAMILY BLOQUEADOR SPF85 473 ML</div>
-                <span>Juan Pérez</span>
-            </div>
+              <button class="btn enroll-btn" onclick="openModal('modal1')">Mas Información</button>
           </div>
-          <div class="testimonial-card">
-            <p>“Muy efectivo.”</p>
-            <div class="student-info">
-              <img src="https://farmacias.fischelenlinea.com/Images/Upload/1/1/279f6553Captura_de_pantalla_2024-09-09_072255-removebg-preview-min.png" alt="Product" style="width:20%">
+
+          <!-- Producto 2 -->
+          <div class="course-card">
+              <img loading="lazy" alt="Foto de producto" class="img-product-detail" src="https://farmacias.fischelenlinea.com/Images/Upload/1/2/94d55e526537395_2.jpg" style="width:25%">
+              <div class="course-title">Cerave Loción Hidratante Para Cuerpo Ligera 473 ml</div>
+              <button class="btn enroll-btn" onclick="openModal('modal2')">Mas Información</button>
+          </div>
+
+          <!-- Producto 3 -->
+          <div class="course-card">
+              <img src="https://farmacias.fischelenlinea.com/Images/Upload/1/1/279f6553Captura_de_pantalla_2024-09-09_072255-removebg-preview-min.png" alt="Product" style="width:25%">
               <div class="course-title">La Roche Posay Mela B3 Serum Anti Manchas Con Niacinamida 30ml</div>
-                <span>Ana García</span>
+              <button class="btn enroll-btn" onclick="openModal('modal3')">Mas Información</button>
           </div>
-          <fieldset>
-            <legend>¡Danos tu opinión!</legend>
-            <div class="registos">
-              <label for="username">Escribe tu opinión:</label>
-              <textarea></textarea>
-            </div>
-              <button type="submit">Enviar</button>
-          </fieldset>  
+        </div>
+    </div>
+  </section>
+
+    
+     <!-- Sección de Marcas Respaldadas -->
+     <section class="marcasrespaldadas">
+      <h2 class="portada animate__animated animate__fadeIn">Nuestras Marcas</h2>
+      <div class="marca-card animate-on-scroll">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/65/La_Roche-Posay_logo.png" alt="La Roche-Posay" style="width: 80%; padding: 20px;">
+      </div>
+      <div class="marca-card animate-on-scroll">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Vichy_logo.svg/1280px-Vichy_logo.svg.png" alt="Vichy" style="width: 80%; padding: 20px;">
+      </div>
+      <div class="marca-card animate-on-scroll">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/CeraVe_logo.svg/2560px-CeraVe_logo.svg.png" alt="CeraVe" style="width: 80%; padding: 20px;">
+      </div>
+      <div class="marca-card animate-on-scroll">
+        <img src="https://1000marcas.net/wp-content/uploads/2020/11/Eucerin-emblema.jpg" alt="Eucerin" style="width: 80%; padding: 20px;">
+      </div>
     </section>
 
+    <!-- Sección de Testimonios -->
+    <section class="testimonials">
+      <h1>Testimonios</h1>
+      <h2>Lo que nuestros clientes opinan</h2>
+      
+      <div class="testimonial-card animate-on-scroll">
+        <p>"Farmacia Cápsula siempre tiene los productos que necesito y su servicio de delivery es excelente. Sus farmacéuticos son muy amables y profesionales."</p>
+        <div class="student-info">
+          <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="María Fernández">
+          <span>María Fernández</span>
+        </div>
+      </div>
+      
+      <div class="testimonial-card animate-on-scroll">
+        <p>"Desde que descubrí Farmacia Cápsula, no he vuelto a comprar en otro lugar. Sus precios son competitivos y la calidad de atención es insuperable."</p>
+        <div class="student-info">
+          <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Carlos Méndez">
+          <span>Carlos Méndez</span>
+        </div>
+      </div>
+      
+      <fieldset>
+        <legend>Déjanos tu opinión</legend>
+        <textarea placeholder="Escribe tu testimonio aquí..."></textarea>
+        <button>Enviar Testimonio</button>
+      </fieldset>
+    </section>
+
+    <h2 class="portada">Encuéntranos</h2>
+
+    <!-- Sección de Mapa -->
+    <section class="mapa">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3930.8417567460424!2d-84.08124032457644!3d9.864052976722832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8fa0e342c50d15c5%3A0xa4a0a5027bf92b63!2sFarmacia!5e0!3m2!1ses!2scr!4v1707345167177!5m2!1ses!2scr" width="800" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </section>
+
+    <!-- Sección de Redes Sociales -->
+    <section class="redessociales">
+      <h2>Síguenos en nuestras redes sociales</h2>
+      <a href="https://www.facebook.com/" class="social-link" target="_blank"><i class="fab fa-facebook-f fa-2x"></i></a>
+      <a href="https://www.instagram.com/" class="social-link" target="_blank"><i class="fab fa-instagram fa-2x"></i></a>
+      <a href="https://twitter.com/" class="social-link" target="_blank"><i class="fab fa-twitter fa-2x"></i></a>
+      <a href="https://www.youtube.com/" class="social-link" target="_blank"><i class="fab fa-youtube fa-2x"></i></a>
+    </section>
+
+    <!-- Sección de Footer -->
     <section class="footer-section">
-      <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula" style="width: 100px;">
+      <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula">
       <h2>Farmacia Cápsula</h2>
       <p>A domicilio: 800-522-6600</p>
       <p>Correo electrónico: info@farmaciacapsula.com</p>
       <div class="footer-links">
-        <div class="Contactanos">
-          <a href="index.html">Contáctanos</a>
-        </div>
-        <div class="Información-Legal"></div>
-          <a href="index.html">Información Legal</a>
-        </div>
-        <div class="Preguntas-Frecuentes">
-          <a href="index.html">Preguntas Frecuentes</a>
-        </div>
+        <a href="#contacto">Contáctanos</a>
+        <a href="#legal">Información Legal</a>
+        <a href="preguntas_frecuentes.html">Preguntas Frecuentes</a>
+        <a href="#privacidad">Política de Privacidad</a>
       </div>
     </section>
 
     <footer class="footer">
-      <p>Todos los derechos reservados a farmacia capsula. </p>
+      <p>© 2025 Todos los derechos reservados a Farmacia Cápsula.</p>
     </footer>
 
+    <!-- Botón flotante de WhatsApp -->
+    <div class="floating-button animated-icon">
+      <i class="fab fa-whatsapp fa-2x"></i>
+    </div>
 
+    <!-- Modales para los productos -->
+    <div id="modal1" class="modal">
+      <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('modal1')">&times;</span>
+        <h2>DERMACLINIC FAMILY BLOQUEADOR SPF85 473 ML</h2>
+        <img src="https://farmacias.fischelenlinea.com/Images/Upload/1/2/c92c158f4413883-.jpg" alt="Bloqueador SPF85" style="width: 200px; margin: 20px auto; display: block;">
+        <p>Protector solar de amplio espectro que protege contra los rayos UVA y UVB. Ideal para toda la familia, resistente al agua y no comedogénico. Su fórmula es ligera y de rápida absorción.</p>
+        <h3>Características:</h3>
+        <ul>
+          <li>SPF 85 para máxima protección</li>
+          <li>Resistente al agua hasta 80 minutos</li>
+          <li>No deja residuo blanco</li>
+          <li>Hipoalergénico</li>
+          <li>Contenido: 473 ml</li>
+        </ul>
+        <p class="price">$28.99 <span class="old-price">$35.99</span></p>
+        <button class="enroll-btn">Añadir al carrito</button>
+      </div>
+    </div>
+
+    <div id="modal2" class="modal">
+      <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('modal2')">&times;</span>
+        <h2>Cerave Loción Hidratante Para Cuerpo Ligera 473 ml</h2>
+        <img src="https://farmacias.fischelenlinea.com/Images/Upload/1/2/94d55e526537395_2.jpg" alt="Loción Hidratante CeraVe" style="width: 200px; margin: 20px auto; display: block;">
+        <p>Loción hidratante formulada con 3 ceramidas esenciales y ácido hialurónico que ayuda a restaurar la barrera protectora de la piel y proporciona una hidratación duradera.</p>
+        <h3>Características:</h3>
+        <ul>
+          <li>Hidratación 24 horas</li>
+          <li>Fórmula ligera no grasa</li>
+          <li>Con tecnología MVE de liberación controlada</li>
+          <li>Sin fragancia</li>
+          <li>Contenido: 473 ml</li>
+        </ul>
+        <p class="price">$19.99 <span class="old-price">$24.99</span></p>
+        <button class="enroll-btn">Añadir al carrito</button>
+      </div>
+    </div>
+
+    <!-- Repetir estructura para los demás modales (3-6) -->
 
     <script>
-let slideIndex = 0;
-let slideInterval;
+      // Slideshow automático
+      let slideIndex = 0;
+      showSlides();
 
-function showSlides() {
-  let slides = document.getElementsByClassName("mySlides");
-  for (let i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";
-  }
+      function showSlides() {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        
+        for (i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";  
+        }
+        
+        slideIndex++;
+        if (slideIndex > slides.length) {slideIndex = 1}
+        
+        slides[slideIndex-1].style.display = "block";
+        setTimeout(showSlides, 5000); // Cambiar imagen cada 5 segundos
+      }
 
-  slideIndex++;
-  if (slideIndex > slides.length) { slideIndex = 1 }
-  slides[slideIndex - 1].style.display = "block";
-}
+      // Funciones para el modal
+      function openModal(modalId) {
+        document.getElementById(modalId).style.display = "block";
+      }
 
-function startSlider() {
-  showSlides();
-  slideInterval = setInterval(showSlides, 3500);
-}
+      function closeModal(modalId) {
+        document.getElementById(modalId).style.display = "none";
+      }
 
-window.onload = startSlider;
+      // Cerrar el modal si el usuario hace clic fuera de él
+      window.onclick = function(event) {
+        if (event.target.classList.contains('modal')) {
+          event.target.style.display = "none";
+        }
+      }
 
-window.addEventListener('keydown', function (e) {
-  if (e.key === "Escape") {
-    let modals = document.getElementsByClassName('modal');
-    for (let modal of modals) {
-      modal.style.display = "none";
-    }
-  }
-});
-
+      // Animación al hacer scroll
+      document.addEventListener('DOMContentLoaded', function() {
+        const animatedElements = document.querySelectorAll('.animate-on-scroll');
+        
+        function checkScroll() {
+          animatedElements.forEach(element => {
+            const elementPosition = element.getBoundingClientRect().top;
+            const screenPosition = window.innerHeight / 1.3;
+            
+            if (elementPosition < screenPosition) {
+              element.classList.add('visible');
+            }
+          });
+        }
+        
+        window.addEventListener('scroll', checkScroll);
+        checkScroll(); // Verificar elementos visibles al cargar
+        
+        // Contador animado
+        function animateCounter(id, start, end, duration) {
+          let startTimestamp = null;
+          const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const currentValue = Math.floor(progress * (end - start) + start);
+            document.getElementById(id).innerText = currentValue.toLocaleString();
+            if (progress < 1) {
+              window.requestAnimationFrame(step);
+            }
+          };
+          window.requestAnimationFrame(step);
+        }
+        
+        // Iniciar animación de contadores cuando estén en viewport
+        const observerOptions = {
+          threshold: 0.5
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              animateCounter("contador1", 0, 15000, 2000);
+              animateCounter("contador2", 0, 5000, 2000);
+              animateCounter("contador3", 0, 25, 2000);
+              animateCounter("contador4", 0, 30, 2000);
+              observer.unobserve(entry.target);
+            }
+          });
+        }, observerOptions);
+        
+        const counterContainer = document.querySelector('.contador-container');
+        if (counterContainer) {
+          observer.observe(counterContainer);
+        }
+      });
     </script>
   </body>
 </html>
-
-

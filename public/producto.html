@@ -5,6 +5,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/style6.css">
   <title>Productos - Farmacia Cápsula</title>
+  <style>
+    /* Estilos para el modal del carrito */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 10% auto;
+      padding: 20px;
+      width: 70%;
+      max-width: 700px;
+      border-radius: 5px;
+      position: relative;
+    }
+
+    .close-button {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .cart-total {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: right;
+    }
+
+    .quantity-control {
+      display: flex;
+      align-items: center;
+    }
+
+    .quantity-btn {
+      padding: 2px 8px;
+      margin: 0 5px;
+      cursor: pointer;
+      background-color: #f0f0f0;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+    }
+  </style>
 </head>
 <body>
   <!-- Barra de navegación -->
@@ -22,10 +82,22 @@
         <a href="servicios.html">Servicios</a>
     </div>
     <div class="vercarrito">
-     <button onclick="showCart()">Ver Carrito</button>
+     <button onclick="showCart()">Ver Carrito (<span id="cart-count">0</span>)</button>
     </div>
-    </section>
+  </section>
 
+  <!-- Modal del Carrito -->
+  <div id="cart-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-button" onclick="closeCart()">&times;</span>
+      <h2>Tu Carrito</h2>
+      <div id="cart-container"></div>
+      <div class="cart-total">
+        Total: $<span id="cart-total">0.00</span>
+      </div>
+      <button id="checkout-btn" onclick="checkout()" style="margin-top: 20px; padding: 10px 15px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Proceder al Pago</button>
+    </div>
+  </div>
 
   <!-- Filtro -->
   <div class="filter-container">
@@ -53,7 +125,7 @@
         <h3 class="product-name">Vitamina C 1000mg</h3>
         <p class="product-description">Fortalece tu sistema inmunológico. Frasco con 30 tabletas.</p>
         <p class="product-price">$10.00</p>
-        <button class="add-to-cart" onclick="addToCart('64f1a2b3c4d5e6f7a8b9c0d1', 'Vitamina C 1000mg', 10)">
+        <button class="add-to-cart" onclick="addToCart(2, 'Vitamina C 1000mg', 10)">
           Añadir al carrito
         </button>
       </div>
@@ -130,11 +202,7 @@
         <button class="add-to-cart" onclick="addToCart(10, 'Vendas Elásticas', 5.5)">Añadir al carrito</button>
       </div>
     </div>
-    <!-- Footer -->
-    
-    <!-- Productos aquí... -->
   </div>
-  <!-- Footer aquí... -->
   
   <section class="footer-section">
     <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula" style="width: 100px;">
@@ -145,15 +213,14 @@
       <div class="Contactanos">
         <a href="index.html">Contáctanos</a>
       </div>
-      <div class="Información-Legal"></div>
+      <div class="Información-Legal">
         <a href="index.html">Información Legal</a>
       </div>
       <div class="Preguntas-Frecuentes">
-        <a href="index.html">Preguntas Frecuentes</a>
+        <a href="preguntas_frecuentes.html">Preguntas Frecuentes</a>
       </div>
     </div>
   </section>
-
   
   <footer class="footer">
     <p>Todos los derechos reservados a farmacia capsula. </p>
@@ -161,108 +228,180 @@
 
   <!-- Script de filtro y carrito -->
   <script>
- 
-
-// Verifica si el token está expirado
-function isTokenExpired(token) {
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return payload.exp * 1000 < Date.now();
-  } catch (e) {
-    return true;
-  }
-}
-
-// ====================== GESTIÓN DE CARRITO ======================
-
-// Obtener o generar guestId
-function getGuestId() {
-  let guestId = localStorage.getItem('guestId');
-  if (!guestId) {
-    guestId = 'guest_' + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem('guestId', guestId);
-  }
-  return guestId;
-}
-
-// Añadir producto al carrito
-function addToCart(productId, productName, productPrice) {
-  const userId = localStorage.getItem('userId') || getGuestId();
-
-  fetch('http://localhost:3001/api/carts', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ userId, productId, quantity: 1 }),
-  })
-    .then(response => {
-      if (!response.ok) throw new Error('Error al añadir al carrito');
-      return response.json();
-    })
-    .then(data => {
-      alert('Producto añadido al carrito');
-      console.log(data);
-      updateCartUI();
-    })
-    .catch(error => {
-      console.error(error);
-      alert('Hubo un error al añadir el producto: ' + error.message);
+    // Carrito local (ya que el backend puede no estar disponible)
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // Actualiza el contador del carrito al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+      updateCartCounter();
+      
+      // Implementación del filtro de productos
+      document.getElementById('product-filter').addEventListener('change', filterProducts);
     });
-}
+    
+    // Función para filtrar productos
+    function filterProducts() {
+      const filterValue = document.getElementById('product-filter').value;
+      const products = document.querySelectorAll('.product-card');
+      
+      products.forEach(product => {
+        switch(filterValue) {
+          case 'all':
+            product.style.display = 'block';
+            break;
+          case 'most-sold':
+            // Ordenar por más vendidos (usando el atributo data-sold)
+            const sold = parseInt(product.getAttribute('data-sold'));
+            product.style.display = sold >= 30 ? 'block' : 'none';
+            break;
+          case 'cheapest':
+            // Mostrar solo los productos más baratos (menos de $8)
+            const price = parseFloat(product.getAttribute('data-price'));
+            product.style.display = price <= 8 ? 'block' : 'none';
+            break;
+        }
+      });
+    }
 
-// Mostrar productos del carrito
-function showCart() {
-  const userId = localStorage.getItem('userId') || getGuestId();
-
-  fetch(`http://localhost:3001/api/carts?userId=${userId}`)
-    .then(response => {
-      if (!response.ok) throw new Error('Error al obtener el carrito');
-      return response.json();
-    })
-    .then(data => {
+    // Añadir producto al carrito
+    function addToCart(productId, productName, productPrice) {
+      // Buscar si el producto ya está en el carrito
+      const existingProductIndex = cart.findIndex(item => item.id === productId);
+      
+      if (existingProductIndex !== -1) {
+        // Si el producto ya está en el carrito, incrementar cantidad
+        cart[existingProductIndex].quantity += 1;
+      } else {
+        // Si no, añadir nuevo producto al carrito
+        cart.push({
+          id: productId,
+          name: productName,
+          price: productPrice,
+          quantity: 1
+        });
+      }
+      
+      // Guardar carrito en localStorage
+      localStorage.setItem('cart', JSON.stringify(cart));
+      
+      // Actualizar contador del carrito y mostrar notificación
+      updateCartCounter();
+      
+      // Mostrar notificación
+      alert(`${productName} añadido al carrito`);
+    }
+    
+    // Actualizar contador del carrito
+    function updateCartCounter() {
+      const cartCount = document.getElementById('cart-count');
+      const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+      cartCount.textContent = totalItems;
+    }
+    
+    // Mostrar el carrito
+    function showCart() {
       const cartContainer = document.getElementById('cart-container');
+      const cartModal = document.getElementById('cart-modal');
+      const cartTotalElement = document.getElementById('cart-total');
+      
+      // Limpiar contenido anterior
       cartContainer.innerHTML = '';
-
-      if (!data.products || data.products.length === 0) {
+      
+      if (cart.length === 0) {
         cartContainer.innerHTML = '<p>Tu carrito está vacío.</p>';
+        cartTotalElement.textContent = '0.00';
+      } else {
+        let cartTotal = 0;
+        
+        // Crear elementos para cada producto en el carrito
+        cart.forEach((item, index) => {
+          const itemTotal = item.price * item.quantity;
+          cartTotal += itemTotal;
+          
+          const cartItem = document.createElement('div');
+          cartItem.className = 'cart-item';
+          cartItem.innerHTML = `
+            <div>
+              <h3>${item.name}</h3>
+              <p>Precio: $${item.price.toFixed(2)}</p>
+            </div>
+            <div class="quantity-control">
+              <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">-</button>
+              <span>${item.quantity}</span>
+              <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">+</button>
+              <button class="quantity-btn" onclick="removeItem(${index})" style="margin-left: 10px; background-color: #ff6b6b; color: white;">🗑</button>
+            </div>
+            <div>
+              <p>$${itemTotal.toFixed(2)}</p>
+            </div>
+          `;
+          
+          cartContainer.appendChild(cartItem);
+        });
+        
+        // Actualizar total
+        cartTotalElement.textContent = cartTotal.toFixed(2);
+      }
+      
+      // Mostrar modal
+      cartModal.style.display = 'block';
+    }
+    
+    // Cerrar el carrito
+    function closeCart() {
+      const cartModal = document.getElementById('cart-modal');
+      cartModal.style.display = 'none';
+    }
+    
+    // Actualizar cantidad de un producto
+    function updateQuantity(index, change) {
+      // No permitir cantidades menores que 1
+      if (cart[index].quantity + change < 1) {
         return;
       }
-
-      data.products.forEach(item => {
-        const productElement = document.createElement('div');
-        productElement.innerHTML = `
-          <h3>${item.name}</h3>
-          <p>Precio: $${item.price}</p>
-          <p>Cantidad: ${item.quantity}</p>
-        `;
-        cartContainer.appendChild(productElement);
-      });
-    })
-    .catch(error => {
-      console.error(error);
-      alert('Hubo un error al cargar el carrito');
-    });
-}
-
-// Actualizar interfaz de carrito
-function updateCartUI() {
-  const userId = localStorage.getItem('userId') || getGuestId();
-
-  fetch(`http://localhost:3001/carts?userId=${userId}`)
-    .then(response => {
-      if (!response.ok) throw new Error('Error al obtener el carrito');
-      return response.json();
-    })
-    .then(data => {
-      console.log('Carrito actualizado:', data);
-      // Podés actualizar un icono o contador aquí si querés
-    })
-    .catch(error => {
-      console.error(error);
-      alert('Hubo un error al actualizar el carrito');
-    });
-}
-
+      
+      cart[index].quantity += change;
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCounter();
+      showCart(); // Recargar vista del carrito
+    }
+    
+    // Eliminar item del carrito
+    function removeItem(index) {
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCounter();
+      showCart(); // Recargar vista del carrito
+    }
+    
+    // Proceder al pago
+    function checkout() {
+      if (cart.length === 0) {
+        alert('Tu carrito está vacío');
+        return;
+      }
+      
+      // Aquí iría la lógica para proceder al pago
+      alert('¡Gracias por tu compra! Te redirigiremos al proceso de pago.');
+      setTimeout(() => {
+        window.location.href = 'delivery.html';
+      }, 1500);
+      // Aquí podrías redirigir a una página de pago o integrar con tu sistema de pagos
+      
+      // Limpia el carrito después de la compra
+      cart = [];
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCounter();
+      closeCart();
+    }
+    
+    // Cierra el modal del carrito si el usuario hace clic fuera de él
+    window.onclick = function(event) {
+      const cartModal = document.getElementById('cart-modal');
+      if (event.target === cartModal) {
+        closeCart();
+      }
+    }
   </script>
-
 </body>
 </html>
