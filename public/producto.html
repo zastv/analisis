@@ -1,12 +1,254 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/style6.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
   <title>Productos - Farmacia Cápsula</title>
   <style>
-    /* Estilos para el modal del carrito */
+    :root {
+      --primary-color: #4CAF50;
+      --secondary-color: #3d8b40;
+      --accent-color: #FF9800;
+      --text-color: #333;
+      --light-bg: #f9f9f9;
+      --error-color: #f44336;
+      --success-color: #4CAF50;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar */
+    .secnavbar {
+      background-color: white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 0.8rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .titulo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .titulo img {
+      width: 50px;
+      transition: transform 0.3s ease;
+    }
+
+    .titulo img:hover {
+      transform: rotate(360deg) scale(1.1);
+    }
+
+    .titulo h2 {
+      color: var(--primary-color);
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .navbar {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .navbar a:hover {
+      color: var(--primary-color);
+    }
+
+    .navbar a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--primary-color);
+      transition: width 0.3s ease;
+    }
+
+    .navbar a:hover::after {
+      width: 100%;
+    }
+
+    .vercarrito {
+      position: relative;
+    }
+
+    .vercarrito button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .vercarrito button:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+
+    .cart-count {
+      background-color: var(--accent-color);
+      color: white;
+      border-radius: 50%;
+      padding: 0.2rem 0.5rem;
+      font-size: 0.8rem;
+      position: absolute;
+      top: -8px;
+      right: -8px;
+    }
+
+    /* Filtros */
+    .filter-container {
+      padding: 1rem 2rem;
+      background-color: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin: 1rem 0;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .filter-container label {
+      font-weight: 500;
+      color: var(--text-color);
+    }
+
+    .filter-container select,
+    .filter-container input {
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .filter-container select:focus,
+    .filter-container input:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+    }
+
+    /* Grid de productos */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 2rem;
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .product-card {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .product-card:hover .product-image {
+      transform: scale(1.05);
+    }
+
+    .product-info {
+      padding: 1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-name {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-color);
+    }
+
+    .product-description {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 1rem;
+      flex: 1;
+    }
+
+    .product-price {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+
+    .add-to-cart {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .add-to-cart:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+
+    /* Modal del carrito */
     .modal {
       display: none;
       position: fixed;
@@ -15,264 +257,563 @@
       top: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0,0,0,0.7);
+      background-color: rgba(0, 0, 0, 0.7);
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
     .modal-content {
       background-color: white;
       margin: 10% auto;
-      padding: 20px;
-      width: 70%;
-      max-width: 700px;
-      border-radius: 5px;
+      padding: 2rem;
+      width: 90%;
+      max-width: 800px;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
       position: relative;
+      animation: slideIn 0.4s ease;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
 
     .close-button {
       position: absolute;
-      right: 15px;
-      top: 10px;
-      font-size: 24px;
+      right: 1rem;
+      top: 1rem;
+      font-size: 1.5rem;
       font-weight: bold;
       cursor: pointer;
+      color: #aaa;
+      transition: all 0.3s ease;
+    }
+
+    .close-button:hover {
+      color: var(--error-color);
+      transform: rotate(90deg);
     }
 
     .cart-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 0;
+      padding: 1rem 0;
       border-bottom: 1px solid #eee;
     }
 
-    .cart-total {
-      margin-top: 20px;
-      font-weight: bold;
-      text-align: right;
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .cart-item-name {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .cart-item-price {
+      color: var(--primary-color);
+      font-weight: 500;
     }
 
     .quantity-control {
       display: flex;
       align-items: center;
+      gap: 0.5rem;
     }
 
     .quantity-btn {
-      padding: 2px 8px;
-      margin: 0 5px;
+      background-color: var(--light-bg);
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 4px;
       cursor: pointer;
-      background-color: #f0f0f0;
-      border: 1px solid #ddd;
-      border-radius: 3px;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .quantity-btn:hover {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .remove-btn {
+      background-color: #ffebee;
+      color: var(--error-color);
+    }
+
+    .remove-btn:hover {
+      background-color: var(--error-color);
+      color: white;
+    }
+
+    .cart-total {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 2px solid var(--primary-color);
+      text-align: right;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .checkout-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      margin-top: 1rem;
+      width: 100%;
+    }
+
+    .checkout-btn:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+
+    /* Footer */
+    .footer-section {
+      background-color: white;
+      padding: 2rem;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    .footer-section img {
+      width: 60px;
+      margin-bottom: 1rem;
+      transition: transform 0.3s ease;
+    }
+
+    .footer-section img:hover {
+      transform: scale(1.1);
+    }
+
+    .footer-section h2 {
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-section p {
+      color: var(--text-color);
+      margin-bottom: 0.25rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    .footer-links a {
+      color: var(--text-color);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary-color);
+    }
+
+    .footer {
+      background-color: var(--primary-color);
+      color: white;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    /* Responsividad */
+    @media (max-width: 768px) {
+      .secnavbar {
+        flex-direction: column;
+        padding: 1rem;
+      }
+
+      .navbar {
+        margin-top: 1rem;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .filter-container {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .products-grid {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+      }
+
+      .modal-content {
+        width: 95%;
+        margin: 5% auto;
+        padding: 1rem;
+      }
+    }
+
+    /* Notificaciones */
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--success-color);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+      z-index: 1000;
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    /* Favoritos */
+    .favorite-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: rgba(255, 255, 255, 0.9);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 1;
+    }
+
+    .favorite-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .favorite-btn.active {
+      color: var(--error-color);
+    }
+
+    /* Calificaciones */
+    .rating {
+      display: flex;
+      gap: 5px;
+      margin: 10px 0;
+    }
+
+    .rating i {
+      color: #ffd700;
+      font-size: 1rem;
+    }
+
+    .rating-count {
+      font-size: 0.9rem;
+      color: #666;
+      margin-left: 5px;
+    }
+
+    /* Mejoras de accesibilidad */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
+    .product-card:focus-within {
+      outline: 3px solid var(--primary-color);
+      outline-offset: 2px;
+    }
+
+    /* Mejoras en la búsqueda */
+    .search-suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background-color: white;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      max-height: 200px;
+      overflow-y: auto;
+      display: none;
+      z-index: 1000;
+    }
+
+    .search-suggestions.active {
+      display: block;
+    }
+
+    .suggestion-item {
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .suggestion-item:hover {
+      background-color: var(--light-bg);
     }
   </style>
 </head>
 <body>
-  <!-- Barra de navegación -->
   <section class="secnavbar">
     <div class="titulo">
-      <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula" style="width: 100px;">
-      <h2>Farmacia Cápsula</h2>
+      <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula" class="floating">
+      <h2 class="animate__animated animate__fadeIn">Farmacia Cápsula</h2>
     </div>
-
-    <div class="navbar">
-        <a href="index.html">inicio</a>
-        <a href="delivery.html">A tu casa</a>
-        <a href="iniciar_sesion.html">Iniciar sesión</a>
-        <a href="producto.html">Producto</a>
-        <a href="servicios.html">Servicios</a>
+    <div class="navbar animate__animated animate__fadeInRight">
+      <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+      <a href="producto.html"><i class="fas fa-pills"></i> Productos</a>
+      <a href="delivery.html"><i class="fas fa-truck"></i> Delivery</a>
+      <a href="servicios.html"><i class="fas fa-heartbeat"></i> Servicios</a>
     </div>
     <div class="vercarrito">
-     <button onclick="showCart()">Ver Carrito (<span id="cart-count">0</span>)</button>
+      <button onclick="showCart()">
+        <i class="fas fa-shopping-cart"></i> Carrito
+        <span id="cart-count" class="cart-count">0</span>
+      </button>
     </div>
   </section>
+
+  <!-- Filtros -->
+  <div class="filter-container">
+    <label for="product-filter">Filtrar por:</label>
+    <select id="product-filter" onchange="filterProducts()" aria-label="Filtrar productos por categoría">
+      <option value="all">Todos</option>
+      <option value="most-sold">Más vendidos</option>
+      <option value="cheapest">Más baratos</option>
+      <option value="newest">Más nuevos</option>
+    </select>
+
+    <label for="price-range">Rango de precio:</label>
+    <select id="price-range" onchange="filterProducts()" aria-label="Filtrar por rango de precio">
+      <option value="all">Todos</option>
+      <option value="0-10">$0 - $10</option>
+      <option value="10-20">$10 - $20</option>
+      <option value="20+">$20+</option>
+    </select>
+
+    <label for="search">Buscar:</label>
+    <div class="search-wrapper">
+      <input type="text" id="search" placeholder="Buscar productos..." oninput="filterProducts()" aria-label="Buscar productos">
+      <div id="search-suggestions" class="search-suggestions"></div>
+    </div>
+  </div>
+
+  <!-- Grid de productos -->
+  <div class="products-grid">
+    <!-- Producto 1 -->
+    <div class="product-card" data-price="5" data-sold="50" data-date="2024-01-01" data-id="1">
+      <button class="favorite-btn" onclick="toggleFavorite(1)" aria-label="Añadir a favoritos">
+        <i class="far fa-heart"></i>
+      </button>
+      <img src="https://farmacias.fischelenlinea.com/Images/Upload/1/2/c92c158f4413883-.jpg" alt="Paracetamol 500mg" class="product-image">
+      <div class="product-info">
+        <h3 class="product-name">Paracetamol 500mg</h3>
+        <div class="rating">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="far fa-star"></i>
+          <span class="rating-count">(24)</span>
+        </div>
+        <p class="product-description">Alivia dolores y reduce la fiebre. Caja con 20 tabletas.</p>
+        <p class="product-price">$5.00</p>
+        <button class="add-to-cart" onclick="addToCart(1, 'Paracetamol 500mg', 5)">
+          <i class="fas fa-cart-plus"></i> Añadir al carrito
+        </button>
+      </div>
+    </div>
+
+    <!-- Producto 2 -->
+    <div class="product-card" data-price="10" data-sold="20" data-date="2024-02-15" data-id="2">
+      <img src="https://farmacias.fischelenlinea.com/Images/Upload/1/2/94d55e526537395_2.jpg" alt="Vitamina C 1000mg" class="product-image">
+      <div class="product-info">
+        <h3 class="product-name">Vitamina C 1000mg</h3>
+        <p class="product-description">Fortalece tu sistema inmunológico. Frasco con 30 tabletas.</p>
+        <p class="product-price">$10.00</p>
+        <button class="add-to-cart" onclick="addToCart(2, 'Vitamina C 1000mg', 10)">
+          <i class="fas fa-cart-plus"></i> Añadir al carrito
+        </button>
+      </div>
+    </div>
+
+    <!-- Producto 3 -->
+    <div class="product-card" data-price="8" data-sold="30" data-date="2024-03-01" data-id="3">
+      <img src="https://farmacias.fischelenlinea.com/Images/Upload/1/1/279f6553Captura_de_pantalla_2024-09-09_072255-removebg-preview-min.png" alt="Ibuprofeno 200mg" class="product-image">
+      <div class="product-info">
+        <h3 class="product-name">Ibuprofeno 200mg</h3>
+        <p class="product-description">Antiinflamatorio y analgésico. Caja con 20 tabletas.</p>
+        <p class="product-price">$8.00</p>
+        <button class="add-to-cart" onclick="addToCart(3, 'Ibuprofeno 200mg', 8)">
+          <i class="fas fa-cart-plus"></i> Añadir al carrito
+        </button>
+      </div>
+    </div>
+
+    <!-- Producto 4 -->
+    <div class="product-card" data-price="6.5" data-sold="40" data-date="2024-01-15" data-id="4">
+      <img src="https://farmacias.fischelenlinea.com/Images/Upload/1/2/c92c158f4413883-.jpg" alt="Crema Antiséptica" class="product-image">
+      <div class="product-info">
+        <h3 class="product-name">Crema Antiséptica</h3>
+        <p class="product-description">Protege y sana heridas menores. Tubo de 50g.</p>
+        <p class="product-price">$6.50</p>
+        <button class="add-to-cart" onclick="addToCart(4, 'Crema Antiséptica', 6.5)">
+          <i class="fas fa-cart-plus"></i> Añadir al carrito
+        </button>
+      </div>
+    </div>
+
+    <!-- Producto 5 -->
+    <div class="product-card" data-price="7" data-sold="25" data-date="2024-02-01" data-id="5">
+      <img src="https://farmacias.fischelenlinea.com/Images/Upload/1/2/94d55e526537395_2.jpg" alt="Jarabe para la Tos" class="product-image">
+      <div class="product-info">
+        <h3 class="product-name">Jarabe para la Tos</h3>
+        <p class="product-description">Alivia la tos seca y con flema. Frasco de 120ml.</p>
+        <p class="product-price">$7.00</p>
+        <button class="add-to-cart" onclick="addToCart(5, 'Jarabe para la Tos', 7)">
+          <i class="fas fa-cart-plus"></i> Añadir al carrito
+        </button>
+      </div>
+    </div>
+
+    <!-- Producto 6 -->
+    <div class="product-card" data-price="4.5" data-sold="60" data-date="2024-03-15" data-id="6">
+      <img src="https://farmacias.fischelenlinea.com/Images/Upload/1/1/279f6553Captura_de_pantalla_2024-09-09_072255-removebg-preview-min.png" alt="Gel Desinfectante" class="product-image">
+      <div class="product-info">
+        <h3 class="product-name">Gel Desinfectante</h3>
+        <p class="product-description">Mata el 99.9% de gérmenes. Botella de 500ml.</p>
+        <p class="product-price">$4.50</p>
+        <button class="add-to-cart" onclick="addToCart(6, 'Gel Desinfectante', 4.5)">
+          <i class="fas fa-cart-plus"></i> Añadir al carrito
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Modal del Carrito -->
   <div id="cart-modal" class="modal">
     <div class="modal-content">
       <span class="close-button" onclick="closeCart()">&times;</span>
-      <h2>Tu Carrito</h2>
+      <h2><i class="fas fa-shopping-cart"></i> Tu Carrito</h2>
       <div id="cart-container"></div>
       <div class="cart-total">
         Total: $<span id="cart-total">0.00</span>
       </div>
-      <button id="checkout-btn" onclick="checkout()" style="margin-top: 20px; padding: 10px 15px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">Proceder al Pago</button>
+      <button class="checkout-btn" onclick="checkout()">
+        <i class="fas fa-credit-card"></i> Proceder al Pago
+      </button>
     </div>
   </div>
 
-  <!-- Filtro -->
-  <div class="filter-container">
-    <label for="product-filter">Filtrar por:</label>
-    <select id="product-filter" onchange="filterProducts()">
-      <option value="all">Todos</option>
-      <option value="most-sold">Más comprados</option>
-      <option value="cheapest">Más baratos</option>
-    </select>
-  </div>
-  <div class="products-grid">
-    <div class="products-grid">
-      <!-- Producto 1 -->
-      <div class="product-card" data-price="5" data-sold="50" data-id="1">
-        <img src="imagenes/Productos/tempra-500mg-20t_i.png" alt="Producto 1" class="product-image">
-        <h3 class="product-name">Paracetamol 500mg</h3>
-        <p class="product-description">Alivia dolores y reduce la fiebre. Caja con 20 tabletas.</p>
-        <p class="product-price">$5.00</p>
-        <button class="add-to-cart" onclick="addToCart(1, 'Paracetamol 500mg', 5)">Añadir al carrito</button>
-      </div>
-    
-      <!-- Producto 2 -->
-      <div class="product-card" data-price="10" data-sold="20" data-id="2">
-        <img src="imagenes/Productos/antiseptica.jpg" alt="Producto 2" class="product-image">
-        <h3 class="product-name">Vitamina C 1000mg</h3>
-        <p class="product-description">Fortalece tu sistema inmunológico. Frasco con 30 tabletas.</p>
-        <p class="product-price">$10.00</p>
-        <button class="add-to-cart" onclick="addToCart(2, 'Vitamina C 1000mg', 10)">
-          Añadir al carrito
-        </button>
-      </div>
-    
-      <!-- Producto 3 -->
-      <div class="product-card" data-price="8" data-sold="30" data-id="3">
-        <img src="imagenes/Productos/ibuprofemo.jpg" alt="Producto 3" class="product-image">
-        <h3 class="product-name">Ibuprofeno 200mg</h3>
-        <p class="product-description">Antiinflamatorio y analgésico. Caja con 20 tabletas.</p>
-        <p class="product-price">$8.00</p>
-        <button class="add-to-cart" onclick="addToCart(3, 'Ibuprofeno 200mg', 8)">Añadir al carrito</button>
-      </div>
-    
-      <!-- Producto 4 -->
-      <div class="product-card" data-price="6.5" data-sold="40" data-id="4">
-        <img src="imagenes/Productos/antiseptica.jpg" alt="Producto 4" class="product-image">
-        <h3 class="product-name">Crema Antiséptica</h3>
-        <p class="product-description">Protege y sana heridas menores. Tubo de 50g.</p>
-        <p class="product-price">$6.50</p>
-        <button class="add-to-cart" onclick="addToCart(4, 'Crema Antiséptica', 6.5)">Añadir al carrito</button>
-      </div>
-    
-      <!-- Producto 5 -->
-      <div class="product-card" data-price="7" data-sold="25" data-id="5">
-        <img src="imagenes/Productos/tos.jpeg" alt="Producto 5" class="product-image">
-        <h3 class="product-name">Jarabe para la Tos</h3>
-        <p class="product-description">Alivia la tos seca y con flema. Frasco de 120ml.</p>
-        <p class="product-price">$7.00</p>
-        <button class="add-to-cart" onclick="addToCart(5, 'Jarabe para la Tos', 7)">Añadir al carrito</button>
-      </div>
-    
-      <!-- Producto 6 -->
-      <div class="product-card" data-price="4.5" data-sold="60" data-id="6">
-        <img src="imagenes/Productos/Gel.jpg" alt="Producto 6" class="product-image">
-        <h3 class="product-name">Gel Desinfectante</h3>
-        <p class="product-description">Mata el 99.9% de gérmenes. Botella de 500ml.</p>
-        <p class="product-price">$4.50</p>
-        <button class="add-to-cart" onclick="addToCart(6, 'Gel Desinfectante', 4.5)">Añadir al carrito</button>
-      </div>
-    
-      <!-- Producto 7 -->
-      <div class="product-card" data-price="12" data-sold="15" data-id="7">
-        <img src="imagenes/Productos/omeprazol.png" alt="Producto 7" class="product-image">
-        <h3 class="product-name">Omeprazol 20mg</h3>
-        <p class="product-description">Alivia el reflujo y protege el estómago. Caja con 14 cápsulas.</p>
-        <p class="product-price">$12.00</p>
-        <button class="add-to-cart" onclick="addToCart(7, 'Omeprazol 20mg', 12)">Añadir al carrito</button>
-      </div>
-    
-      <!-- Producto 8 -->
-      <div class="product-card" data-price="15" data-sold="10" data-id="8">
-        <img src="imagenes/Productos/ternometro.jpeg" alt="Producto 8" class="product-image">
-        <h3 class="product-name">Termómetro Digital</h3>
-        <p class="product-description">Medición rápida y precisa. Incluye batería.</p>
-        <p class="product-price">$15.00</p>
-        <button class="add-to-cart" onclick="addToCart(8, 'Termómetro Digital', 15)">Añadir al carrito</button>
-      </div>
-    
-      <!-- Producto 9 -->
-      <div class="product-card" data-price="9" data-sold="35" data-id="9">
-        <img src="imagenes/Productos/mascarilla.jpg" alt="Producto 9" class="product-image">
-        <h3 class="product-name">Mascarillas Desechables</h3>
-        <p class="product-description">Caja con 50 unidades. Triple capa de protección.</p>
-        <p class="product-price">$9.00</p>
-        <button class="add-to-cart" onclick="addToCart(9, 'Mascarillas Desechables', 9)">Añadir al carrito</button>
-      </div>
-    
-      <!-- Producto 10 -->
-      <div class="product-card" data-price="5.5" data-sold="20" data-id="10">
-        <img src="imagenes/Productos/vendas.jpg" alt="Producto 10" class="product-image">
-        <h3 class="product-name">Vendas Elásticas</h3>
-        <p class="product-description">Soporte para lesiones musculares. Paquete de 2 piezas.</p>
-        <p class="product-price">$5.50</p>
-        <button class="add-to-cart" onclick="addToCart(10, 'Vendas Elásticas', 5.5)">Añadir al carrito</button>
-      </div>
-    </div>
-  </div>
-  
   <section class="footer-section">
-    <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula" style="width: 100px;">
+    <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula" class="floating">
     <h2>Farmacia Cápsula</h2>
-    <p>A domicilio: 800-522-6600</p>
-    <p>Correo electrónico: info@farmaciacapsula.com</p>
+    <p><i class="fas fa-phone-alt"></i> A domicilio: 800-522-6600</p>
+    <p><i class="fas fa-envelope"></i> Correo electrónico: info@farmaciacapsula.com</p>
     <div class="footer-links">
-      <div class="Contactanos">
-        <a href="index.html">Contáctanos</a>
-      </div>
-      <div class="Información-Legal">
-        <a href="index.html">Información Legal</a>
-      </div>
-      <div class="Preguntas-Frecuentes">
-        <a href="preguntas_frecuentes.html">Preguntas Frecuentes</a>
-      </div>
+      <a href="index.html"><i class="fas fa-envelope"></i> Contáctanos</a>
+      <a href="index.html"><i class="fas fa-gavel"></i> Información Legal</a>
+      <a href="preguntas_frecuentes.html"><i class="fas fa-question-circle"></i> Preguntas Frecuentes</a>
     </div>
   </section>
-  
+
   <footer class="footer">
-    <p>Todos los derechos reservados a farmacia capsula. </p>
+    <p>© 2025 Todos los derechos reservados a Farmacia Cápsula.</p>
   </footer>
 
-  <!-- Script de filtro y carrito -->
   <script>
-    // Carrito local (ya que el backend puede no estar disponible)
+    // Carrito local
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     
-    // Actualiza el contador del carrito al cargar la página
+    // Actualizar contador del carrito al cargar la página
     document.addEventListener('DOMContentLoaded', function() {
       updateCartCounter();
-      
-      // Implementación del filtro de productos
-      document.getElementById('product-filter').addEventListener('change', filterProducts);
     });
     
     // Función para filtrar productos
     function filterProducts() {
       const filterValue = document.getElementById('product-filter').value;
+      const priceRange = document.getElementById('price-range').value;
+      const searchTerm = document.getElementById('search').value.toLowerCase();
       const products = document.querySelectorAll('.product-card');
       
       products.forEach(product => {
-        switch(filterValue) {
-          case 'all':
-            product.style.display = 'block';
-            break;
-          case 'most-sold':
-            // Ordenar por más vendidos (usando el atributo data-sold)
-            const sold = parseInt(product.getAttribute('data-sold'));
-            product.style.display = sold >= 30 ? 'block' : 'none';
-            break;
-          case 'cheapest':
-            // Mostrar solo los productos más baratos (menos de $8)
-            const price = parseFloat(product.getAttribute('data-price'));
-            product.style.display = price <= 8 ? 'block' : 'none';
-            break;
+        const price = parseFloat(product.getAttribute('data-price'));
+        const sold = parseInt(product.getAttribute('data-sold'));
+        const name = product.querySelector('.product-name').textContent.toLowerCase();
+        const description = product.querySelector('.product-description').textContent.toLowerCase();
+        
+        let show = true;
+        
+        // Aplicar filtros
+        if (filterValue !== 'all') {
+          switch(filterValue) {
+            case 'most-sold':
+              show = sold >= 30;
+              break;
+            case 'cheapest':
+              show = price <= 8;
+              break;
+            case 'newest':
+              const date = new Date(product.getAttribute('data-date'));
+              const now = new Date();
+              show = (now - date) < 30 * 24 * 60 * 60 * 1000; // Últimos 30 días
+              break;
+          }
         }
+        
+        // Aplicar rango de precio
+        if (priceRange !== 'all' && show) {
+          const [min, max] = priceRange.split('-').map(Number);
+          if (max) {
+            show = price >= min && price <= max;
+          } else {
+            show = price >= min;
+          }
+        }
+        
+        // Aplicar búsqueda
+        if (searchTerm && show) {
+          show = name.includes(searchTerm) || description.includes(searchTerm);
+        }
+        
+        product.style.display = show ? 'block' : 'none';
       });
     }
-
+    
     // Añadir producto al carrito
     function addToCart(productId, productName, productPrice) {
-      // Buscar si el producto ya está en el carrito
       const existingProductIndex = cart.findIndex(item => item.id === productId);
       
       if (existingProductIndex !== -1) {
-        // Si el producto ya está en el carrito, incrementar cantidad
         cart[existingProductIndex].quantity += 1;
       } else {
-        // Si no, añadir nuevo producto al carrito
         cart.push({
           id: productId,
           name: productName,
@@ -281,14 +822,21 @@
         });
       }
       
-      // Guardar carrito en localStorage
       localStorage.setItem('cart', JSON.stringify(cart));
-      
-      // Actualizar contador del carrito y mostrar notificación
       updateCartCounter();
       
       // Mostrar notificación
-      alert(`${productName} añadido al carrito`);
+      const notification = document.createElement('div');
+      notification.className = 'notification';
+      notification.innerHTML = `
+        <i class="fas fa-check-circle"></i>
+        ${productName} añadido al carrito
+      `;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
     }
     
     // Actualizar contador del carrito
@@ -304,7 +852,6 @@
       const cartModal = document.getElementById('cart-modal');
       const cartTotalElement = document.getElementById('cart-total');
       
-      // Limpiar contenido anterior
       cartContainer.innerHTML = '';
       
       if (cart.length === 0) {
@@ -313,7 +860,6 @@
       } else {
         let cartTotal = 0;
         
-        // Crear elementos para cada producto en el carrito
         cart.forEach((item, index) => {
           const itemTotal = item.price * item.quantity;
           cartTotal += itemTotal;
@@ -321,15 +867,17 @@
           const cartItem = document.createElement('div');
           cartItem.className = 'cart-item';
           cartItem.innerHTML = `
-            <div>
-              <h3>${item.name}</h3>
-              <p>Precio: $${item.price.toFixed(2)}</p>
+            <div class="cart-item-info">
+              <h3 class="cart-item-name">${item.name}</h3>
+              <p class="cart-item-price">$${item.price.toFixed(2)}</p>
             </div>
             <div class="quantity-control">
               <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">-</button>
               <span>${item.quantity}</span>
               <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">+</button>
-              <button class="quantity-btn" onclick="removeItem(${index})" style="margin-left: 10px; background-color: #ff6b6b; color: white;">🗑</button>
+              <button class="quantity-btn remove-btn" onclick="removeItem(${index})">
+                <i class="fas fa-trash"></i>
+              </button>
             </div>
             <div>
               <p>$${itemTotal.toFixed(2)}</p>
@@ -339,11 +887,9 @@
           cartContainer.appendChild(cartItem);
         });
         
-        // Actualizar total
         cartTotalElement.textContent = cartTotal.toFixed(2);
       }
       
-      // Mostrar modal
       cartModal.style.display = 'block';
     }
     
@@ -355,7 +901,6 @@
     
     // Actualizar cantidad de un producto
     function updateQuantity(index, change) {
-      // No permitir cantidades menores que 1
       if (cart[index].quantity + change < 1) {
         return;
       }
@@ -363,7 +908,7 @@
       cart[index].quantity += change;
       localStorage.setItem('cart', JSON.stringify(cart));
       updateCartCounter();
-      showCart(); // Recargar vista del carrito
+      showCart();
     }
     
     // Eliminar item del carrito
@@ -371,7 +916,7 @@
       cart.splice(index, 1);
       localStorage.setItem('cart', JSON.stringify(cart));
       updateCartCounter();
-      showCart(); // Recargar vista del carrito
+      showCart();
     }
     
     // Proceder al pago
@@ -381,27 +926,141 @@
         return;
       }
       
-      // Aquí iría la lógica para proceder al pago
+      // Verificar si el usuario está autenticado
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        alert('Por favor, inicia sesión para continuar con la compra');
+        window.location.href = 'iniciar_sesion.html';
+        return;
+      }
+      
+      // Simular proceso de pago
       alert('¡Gracias por tu compra! Te redirigiremos al proceso de pago.');
       setTimeout(() => {
         window.location.href = 'delivery.html';
       }, 1500);
-      // Aquí podrías redirigir a una página de pago o integrar con tu sistema de pagos
       
-      // Limpia el carrito después de la compra
+      // Limpiar carrito después de la compra
       cart = [];
       localStorage.setItem('cart', JSON.stringify(cart));
       updateCartCounter();
       closeCart();
     }
     
-    // Cierra el modal del carrito si el usuario hace clic fuera de él
+    // Cerrar el modal si el usuario hace clic fuera de él
     window.onclick = function(event) {
       const cartModal = document.getElementById('cart-modal');
       if (event.target === cartModal) {
         closeCart();
       }
     }
+
+    // Sistema de favoritos
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+    function toggleFavorite(productId) {
+      const favoriteBtn = document.querySelector(`.product-card[data-id="${productId}"] .favorite-btn`);
+      const index = favorites.indexOf(productId);
+      
+      if (index === -1) {
+        favorites.push(productId);
+        favoriteBtn.innerHTML = '<i class="fas fa-heart"></i>';
+        favoriteBtn.classList.add('active');
+        showNotification('Producto añadido a favoritos');
+      } else {
+        favorites.splice(index, 1);
+        favoriteBtn.innerHTML = '<i class="far fa-heart"></i>';
+        favoriteBtn.classList.remove('active');
+        showNotification('Producto removido de favoritos');
+      }
+      
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    }
+
+    // Inicializar favoritos al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+      favorites.forEach(productId => {
+        const favoriteBtn = document.querySelector(`.product-card[data-id="${productId}"] .favorite-btn`);
+        if (favoriteBtn) {
+          favoriteBtn.innerHTML = '<i class="fas fa-heart"></i>';
+          favoriteBtn.classList.add('active');
+        }
+      });
+    });
+
+    // Sistema de notificaciones mejorado
+    function showNotification(message, type = 'success') {
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+        ${message}
+      `;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+
+    // Sistema de sugerencias de búsqueda
+    const searchInput = document.getElementById('search');
+    const searchSuggestions = document.getElementById('search-suggestions');
+    let searchTimeout;
+
+    searchInput.addEventListener('input', function() {
+      clearTimeout(searchTimeout);
+      const searchTerm = this.value.trim().toLowerCase();
+      
+      if (searchTerm.length < 2) {
+        searchSuggestions.classList.remove('active');
+        return;
+      }
+      
+      searchTimeout = setTimeout(() => {
+        const products = document.querySelectorAll('.product-card');
+        const suggestions = [];
+        
+        products.forEach(product => {
+          const name = product.querySelector('.product-name').textContent.toLowerCase();
+          const description = product.querySelector('.product-description').textContent.toLowerCase();
+          
+          if (name.includes(searchTerm) || description.includes(searchTerm)) {
+            suggestions.push({
+              name: product.querySelector('.product-name').textContent,
+              id: product.getAttribute('data-id')
+            });
+          }
+        });
+        
+        if (suggestions.length > 0) {
+          searchSuggestions.innerHTML = suggestions.map(suggestion => `
+            <div class="suggestion-item" onclick="goToProduct(${suggestion.id})">
+              ${suggestion.name}
+            </div>
+          `).join('');
+          searchSuggestions.classList.add('active');
+        } else {
+          searchSuggestions.classList.remove('active');
+        }
+      }, 300);
+    });
+
+    function goToProduct(productId) {
+      const product = document.querySelector(`.product-card[data-id="${productId}"]`);
+      if (product) {
+        product.scrollIntoView({ behavior: 'smooth' });
+        product.focus();
+        searchSuggestions.classList.remove('active');
+      }
+    }
+
+    // Cerrar sugerencias al hacer clic fuera
+    document.addEventListener('click', function(e) {
+      if (!searchInput.contains(e.target) && !searchSuggestions.contains(e.target)) {
+        searchSuggestions.classList.remove('active');
+      }
+    });
   </script>
 </body>
 </html>

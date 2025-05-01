@@ -416,6 +416,179 @@
         display: none;
       }
     }
+    
+    /* Mapa y Ubicación */
+    .map-container {
+      height: 400px;
+      margin: 20px 0;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .location-picker {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .location-picker input {
+      padding-right: 40px;
+    }
+
+    .location-picker i {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: var(--primary);
+    }
+
+    /* Seguimiento de Pedidos */
+    .tracking-section {
+      background-color: white;
+      border-radius: 15px;
+      padding: 25px;
+      margin: 20px 0;
+      box-shadow: var(--shadow);
+    }
+
+    .tracking-steps {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px 0;
+      position: relative;
+    }
+
+    .tracking-steps::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: #ddd;
+      z-index: 1;
+    }
+
+    .tracking-step {
+      position: relative;
+      z-index: 2;
+      background-color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #ddd;
+      transition: all 0.3s ease;
+    }
+
+    .tracking-step.active {
+      border-color: var(--primary);
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .tracking-step.completed {
+      border-color: var(--primary);
+      background-color: var(--primary);
+      color: white;
+    }
+
+    /* Opciones de Pago */
+    .payment-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .payment-option {
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .payment-option:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .payment-option.selected {
+      border-color: var(--primary);
+      background-color: rgba(76, 175, 80, 0.1);
+    }
+
+    .payment-option i {
+      font-size: 24px;
+      color: var(--primary);
+    }
+
+    /* Horarios de Entrega */
+    .delivery-time {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .time-slot {
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .time-slot:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .time-slot.selected {
+      border-color: var(--primary);
+      background-color: rgba(76, 175, 80, 0.1);
+    }
+
+    .time-slot.unavailable {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Notificaciones */
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--primary);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+      z-index: 1000;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
   </style>
 </head>
 <body>
@@ -458,129 +631,126 @@
       </div>
       
       <div class="delivery-section">
-        <div class="delivery-form animate-up">
-          <h2 class="form-title">Datos para el Delivery</h2>
-          <form id="deliveryForm">
-            <div class="form-group">
-              <label for="nombre">Nombre completo:</label>
-              <i class="fas fa-user"></i>
-              <input type="text" class="form-control" id="nombre" name="nombre" required>
-            </div>
-            
-            <div class="form-group">
-              <label for="direccion">Dirección de entrega:</label>
-              <i class="fas fa-map-marker-alt"></i>
-              <textarea class="form-control" id="direccion" name="direccion" rows="3" required></textarea>
-            </div>
-            
-            <div class="form-group">
-              <label for="telefono">Teléfono de contacto:</label>
-              <i class="fas fa-phone"></i>
-              <input type="tel" class="form-control" id="telefono" name="telefono" required>
-            </div>
-            
-            <div class="form-group">
-              <label for="email">Correo electrónico:</label>
-              <i class="fas fa-envelope"></i>
-              <input type="email" class="form-control" id="email" name="email" required>
-            </div>
-            
-            <div class="form-group">
-              <label for="fecha">Fecha de entrega:</label>
-              <i class="fas fa-calendar"></i>
-              <input type="date" class="form-control" id="fecha" name="fecha" required>
-            </div>
-            
-            <div class="form-group">
-              <label for="hora">Hora de entrega:</label>
+        <div class="delivery-info animate__animated animate__fadeInLeft">
+          <h3 class="form-title">Información de Entrega</h3>
+          <div class="info-item">
+            <div class="info-icon">
               <i class="fas fa-clock"></i>
-              <input type="time" class="form-control" id="hora" name="hora" required>
             </div>
-            
-            <div class="form-group">
-              <label for="metodoPago">Método de pago:</label>
-              <i class="fas fa-credit-card"></i>
-              <select class="form-control" id="metodoPago" name="metodoPago" required>
-                <option value="">Seleccione método de pago</option>
-                <option value="efectivo">Efectivo</option>
-                <option value="tarjeta">Tarjeta de crédito/débito</option>
-                <option value="transferencia">Transferencia bancaria</option>
-                <option value="yape">Yape</option>
-                <option value="plin">Plin</option>
-              </select>
+            <div class="info-text">
+              <h4>Horario de Entrega</h4>
+              <p>Lunes a Domingo: 8:00 AM - 8:00 PM</p>
             </div>
-            
-            <div class="form-group">
-              <label for="notas">Notas adicionales:</label>
-              <i class="fas fa-sticky-note"></i>
-              <textarea class="form-control" id="notas" name="notas" rows="2" placeholder="Instrucciones especiales para la entrega (opcional)"></textarea>
-            </div>
-            
-            <div class="form-check">
-              <input type="checkbox" id="terminos" name="terminos" required>
-              <label for="terminos">Acepto los términos y condiciones del servicio</label>
-            </div>
-            
-            <button type="submit" class="form-btn" id="submitBtn">
-              <span>Confirmar Pedido</span>
-              <i class="fas fa-arrow-right"></i>
-              <div class="loader" id="btnLoader"></div>
-            </button>
-          </form>
-        </div>
-        
-        <div class="delivery-info animate-up">
-          <h2 class="form-title">Información del Servicio</h2>
-          
+          </div>
           <div class="info-item">
             <div class="info-icon">
               <i class="fas fa-truck"></i>
             </div>
             <div class="info-text">
-              <h4>Entrega Rápida</h4>
-              <p>Recibe tus medicamentos en menos de 2 horas en zonas urbanas.</p>
-            </div>
-          </div>
-          
-          <div class="info-item">
-            <div class="info-icon">
-              <i class="fas fa-map-marked-alt"></i>
-            </div>
-            <div class="info-text">
               <h4>Zonas de Cobertura</h4>
-              <p>Consulta nuestras zonas de reparto y horarios disponibles.</p>
+              <p>Entregamos en toda el área metropolitana</p>
             </div>
           </div>
-          
           <div class="info-item">
             <div class="info-icon">
-              <i class="fas fa-hand-holding-medical"></i>
+              <i class="fas fa-dollar-sign"></i>
             </div>
             <div class="info-text">
-              <h4>Manipulación Segura</h4>
-              <p>Garantizamos la correcta manipulación y transporte de tus medicamentos.</p>
+              <h4>Costo de Envío</h4>
+              <p>Gratis para compras mayores a $50</p>
             </div>
           </div>
-          
-          <div class="info-item">
-            <div class="info-icon">
-              <i class="fas fa-shield-alt"></i>
+        </div>
+
+        <div class="delivery-form animate__animated animate__fadeInRight">
+          <h3 class="form-title">Solicitar Delivery</h3>
+          <form id="deliveryForm">
+            <div class="form-group">
+              <label for="name">Nombre Completo</label>
+              <i class="fas fa-user"></i>
+              <input type="text" id="name" class="form-control" required>
             </div>
-            <div class="info-text">
-              <h4>Pago Seguro</h4>
-              <p>Diferentes métodos de pago seguros y confiables.</p>
+
+            <div class="form-group">
+              <label for="phone">Teléfono</label>
+              <i class="fas fa-phone"></i>
+              <input type="tel" id="phone" class="form-control" required>
             </div>
+
+            <div class="form-group">
+              <label for="address">Dirección</label>
+              <i class="fas fa-map-marker-alt"></i>
+              <input type="text" id="address" class="form-control" required>
+            </div>
+
+            <div class="location-picker">
+              <label for="location">Seleccionar Ubicación</label>
+              <input type="text" id="location" class="form-control" placeholder="Buscar ubicación...">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+
+            <div class="map-container" id="map"></div>
+
+            <div class="form-group">
+              <label>Horario de Entrega</label>
+              <div class="delivery-time">
+                <div class="time-slot" data-time="8:00-10:00">8:00 - 10:00</div>
+                <div class="time-slot" data-time="10:00-12:00">10:00 - 12:00</div>
+                <div class="time-slot" data-time="12:00-14:00">12:00 - 14:00</div>
+                <div class="time-slot" data-time="14:00-16:00">14:00 - 16:00</div>
+                <div class="time-slot" data-time="16:00-18:00">16:00 - 18:00</div>
+                <div class="time-slot" data-time="18:00-20:00">18:00 - 20:00</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Método de Pago</label>
+              <div class="payment-options">
+                <div class="payment-option" data-payment="cash">
+                  <i class="fas fa-money-bill-wave"></i>
+                  <span>Efectivo</span>
+                </div>
+                <div class="payment-option" data-payment="card">
+                  <i class="fas fa-credit-card"></i>
+                  <span>Tarjeta</span>
+                </div>
+                <div class="payment-option" data-payment="transfer">
+                  <i class="fas fa-exchange-alt"></i>
+                  <span>Transferencia</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="notes">Notas Adicionales</label>
+              <textarea id="notes" class="form-control" rows="3"></textarea>
+            </div>
+
+            <button type="submit" class="form-btn">
+              <i class="fas fa-paper-plane"></i> Solicitar Delivery
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="tracking-section animate__animated animate__fadeInUp">
+        <h3 class="form-title">Seguimiento de Pedido</h3>
+        <div class="tracking-steps">
+          <div class="tracking-step active">
+            <i class="fas fa-shopping-cart"></i>
           </div>
-          
-          <div class="info-item">
-            <div class="info-icon">
-              <i class="fas fa-phone-alt"></i>
-            </div>
-            <div class="info-text">
-              <h4>¿Necesitas ayuda?</h4>
-              <p>Llámanos al 800-522-6600 para asistencia.</p>
-            </div>
+          <div class="tracking-step">
+            <i class="fas fa-box"></i>
           </div>
+          <div class="tracking-step">
+            <i class="fas fa-truck"></i>
+          </div>
+          <div class="tracking-step">
+            <i class="fas fa-home"></i>
+          </div>
+        </div>
+        <div class="tracking-status">
+          <p>Estado actual: <span id="currentStatus">Preparando pedido</span></p>
         </div>
       </div>
     </div>
@@ -610,153 +780,128 @@
   </footer>
 
   <script>
-    document.getElementById('deliveryForm').addEventListener('submit', async function (event) {
-      event.preventDefault();
-      
-      // Mostrar loader
-      document.getElementById('submitBtn').innerHTML = '<div class="loader" style="display:inline-block;"></div> Procesando...';
-      document.getElementById('submitBtn').disabled = true;
-      
-      // Validar formulario
-      const form = event.target;
-      if (!form.checkValidity()) {
-        form.reportValidity();
-        resetButton();
-        return;
-      }
-      
-      const formData = {
-        nombre: document.getElementById('nombre').value,
-        direccion: document.getElementById('direccion').value,
-        telefono: document.getElementById('telefono').value,
-        email: document.getElementById('email').value,
-        fecha: document.getElementById('fecha').value,
-        hora: document.getElementById('hora').value,
-        metodoPago: document.getElementById('metodoPago').value,
-        notas: document.getElementById('notas').value
-      };
-      
-      try {
-        // Simulación de envío a API
-        await new Promise(resolve => setTimeout(resolve, 1500)); // Simular carga
-        
-        // En producción, descomentar esto:
-        /*
-        const response = await fetch('http://localhost:3001/api/pedidos', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formData)
-        });
-        
-        const result = await response.json();
-        
-        if (!result.success) {
-          throw new Error(result.message || 'Error en el servidor');
-        }
-        */
-        
-        // Mostrar mensaje de éxito y resetear formulario
-        showSuccessMessage();
-        form.reset();
-        
-      } catch (error) {
-        console.error('Error al enviar el pedido:', error);
-        alert('Ocurrió un error al procesar tu pedido. Por favor intenta nuevamente.');
-      } finally {
-        resetButton();
-      }
-    });
-    
-    function resetButton() {
-      document.getElementById('submitBtn').innerHTML = '<span>Confirmar Pedido</span><i class="fas fa-arrow-right"></i>';
-      document.getElementById('submitBtn').disabled = false;
-    }
-    
-    function showSuccessMessage() {
-      // Crear modal de éxito
-      const modal = document.createElement('div');
-      modal.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0,0,0,0.7);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-      `;
-      
-      const modalContent = document.createElement('div');
-      modalContent.style.cssText = `
-        background-color: white;
-        border-radius: 10px;
-        padding: 30px;
-        text-align: center;
-        max-width: 400px;
-        animation: slideUp 0.5s ease;
-      `;
-      
-      modalContent.innerHTML = `
-        <div style="color: #4CAF50; font-size: 50px; margin-bottom: 20px;">
-          <i class="fas fa-check-circle"></i>
-        </div>
-        <h3 style="margin-bottom: 15px; color: #333;">¡Pedido Confirmado!</h3>
-        <p style="margin-bottom: 25px; color: #666;">Gracias por tu pedido. Recibirás una confirmación por correo electrónico con los detalles de tu entrega.</p>
-        <button id="closeModal" style="background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Aceptar</button>
-      `;
-      
-      modal.appendChild(modalContent);
-      document.body.appendChild(modal);
-      
-      document.getElementById('closeModal').addEventListener('click', function() {
-        document.body.removeChild(modal);
-        window.scrollTo(0, 0);
+    // Inicializar mapa
+    function initMap() {
+      const map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 9.9281, lng: -84.0907 },
+        zoom: 12
+      });
+
+      const marker = new google.maps.Marker({
+        map: map,
+        draggable: true
+      });
+
+      // Autocompletado de direcciones
+      const autocomplete = new google.maps.places.Autocomplete(
+        document.getElementById('location')
+      );
+
+      autocomplete.addListener('place_changed', () => {
+        const place = autocomplete.getPlace();
+        if (!place.geometry) return;
+
+        map.setCenter(place.geometry.location);
+        marker.setPosition(place.geometry.location);
       });
     }
-    
-    // Animaciones al hacer scroll
-    window.addEventListener('DOMContentLoaded', function() {
-      const elements = document.querySelectorAll('.animate-fade, .animate-up');
+
+    // Selección de horario
+    document.querySelectorAll('.time-slot').forEach(slot => {
+      slot.addEventListener('click', function() {
+        if (this.classList.contains('unavailable')) return;
+        
+        document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+
+    // Selección de método de pago
+    document.querySelectorAll('.payment-option').forEach(option => {
+      option.addEventListener('click', function() {
+        document.querySelectorAll('.payment-option').forEach(o => o.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+
+    // Validación del formulario
+    document.getElementById('deliveryForm').addEventListener('submit', function(e) {
+      e.preventDefault();
       
-      function checkPosition() {
-        for (let i = 0; i < elements.length; i++) {
-          let element = elements[i];
-          let positionFromTop = elements[i].getBoundingClientRect().top;
-          
-          if (positionFromTop - window.innerHeight <= 0) {
-            element.style.opacity = 1;
-            element.style.transform = 'translateY(0)';
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const address = document.getElementById('address').value;
+      const location = document.getElementById('location').value;
+      const selectedTime = document.querySelector('.time-slot.selected');
+      const selectedPayment = document.querySelector('.payment-option.selected');
+
+      if (!name || !phone || !address || !location || !selectedTime || !selectedPayment) {
+        showNotification('Por favor complete todos los campos requeridos', 'error');
+        return;
+      }
+
+      // Simular envío del formulario
+      showNotification('¡Pedido recibido! Pronto nos comunicaremos con usted.');
+      
+      // Actualizar estado de seguimiento
+      updateTrackingStatus();
+    });
+
+    // Función para mostrar notificaciones
+    function showNotification(message, type = 'success') {
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+        ${message}
+      `;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+
+    // Función para actualizar estado de seguimiento
+    function updateTrackingStatus() {
+      const steps = document.querySelectorAll('.tracking-step');
+      const statusText = document.getElementById('currentStatus');
+      let currentStep = 0;
+
+      const statuses = [
+        'Preparando pedido',
+        'Pedido en camino',
+        'Repartidor cerca',
+        'Pedido entregado'
+      ];
+
+      const interval = setInterval(() => {
+        if (currentStep < steps.length) {
+          steps.forEach((step, index) => {
+            if (index <= currentStep) {
+              step.classList.add('completed');
+            } else {
+              step.classList.remove('completed');
+            }
+          });
+
+          statusText.textContent = statuses[currentStep];
+          currentStep++;
+
+          if (currentStep === steps.length) {
+            clearInterval(interval);
+            showNotification('¡Pedido entregado con éxito!');
           }
         }
-      }
-      
-      window.addEventListener('scroll', checkPosition);
-      checkPosition();
-    });
-    
-    // Validación de fecha (no permitir fechas anteriores a hoy)
-    document.addEventListener('DOMContentLoaded', function() {
-      const fechaInput = document.getElementById('fecha');
-      const today = new Date();
-      let dd = today.getDate();
-      let mm = today.getMonth() + 1;
-      const yyyy = today.getFullYear();
-      
-      if (dd < 10) {
-        dd = '0' + dd;
-      }
-      
-      if (mm < 10) {
-        mm = '0' + mm;
-      }
-      
-      const todayStr = yyyy + '-' + mm + '-' + dd;
-      fechaInput.setAttribute('min', todayStr);
-    });
+      }, 3000);
+    }
+
+    // Cargar API de Google Maps
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places`;
+    script.defer = true;
+    script.async = true;
+    document.head.appendChild(script);
   </script>
 </body>
 </html>

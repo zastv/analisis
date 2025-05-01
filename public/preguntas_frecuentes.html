@@ -5,20 +5,13 @@
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#4CAF50" />
-    <meta name="description" content="Farmacia Cápsula - Tu farmacia de confianza" />
+    <meta name="description" content="Farmacia Cápsula - Preguntas Frecuentes" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <title>Farmacia Cápsula - Tu farmacia online de confianza</title>
+    <title>Preguntas Frecuentes - Farmacia Cápsula</title>
     <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      }
-      
       :root {
         --primary-color: #4CAF50;
         --secondary-color: #3d8b40;
@@ -26,19 +19,27 @@
         --text-color: #333;
         --light-bg: #f9f9f9;
         --dark-bg: #263238;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       }
-      
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
       body {
         background: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);
         min-height: 100vh;
         display: flex;
         flex-direction: column;
       }
-      
-      /* NAVBAR */
+
+      /* Navbar */
       .navbar {
         background-color: white;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--shadow);
         padding: 1rem 2rem;
         display: flex;
         justify-content: space-between;
@@ -47,34 +48,33 @@
         top: 0;
         z-index: 1000;
       }
-      
+
       .logo-container {
         display: flex;
         align-items: center;
         gap: 1rem;
       }
-      
+
       .logo {
         width: 50px;
         transition: transform 0.5s ease;
       }
-      
+
       .logo:hover {
         transform: rotate(360deg) scale(1.1);
       }
-      
+
       .site-title {
         color: var(--primary-color);
         font-size: 1.5rem;
         font-weight: 700;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
       }
-      
+
       .nav-links {
         display: flex;
         gap: 1.5rem;
       }
-      
+
       .nav-links a {
         text-decoration: none;
         color: var(--text-color);
@@ -82,690 +82,261 @@
         padding: 0.5rem 1rem;
         border-radius: 4px;
         transition: all 0.3s ease;
-        position: relative;
         display: flex;
         align-items: center;
         gap: 6px;
       }
-      
-      .nav-links a i {
-        font-size: 1.2rem;
-      }
-      
+
       .nav-links a:hover {
         color: var(--primary-color);
       }
-      
-      .nav-links a::after {
-        content: '';
-        position: absolute;
-        width: 0;
-        height: 2px;
-        bottom: 0;
-        left: 0;
-        background-color: var(--primary-color);
-        transition: width 0.3s ease;
-      }
-      
-      .nav-links a:hover::after {
-        width: 100%;
-      }
-      
-      .active-link {
-        color: var(--primary-color) !important;
-        font-weight: 600 !important;
-      }
-      
-      /* CAROUSEL */
-      .carousel-container {
-        margin: 2rem auto;
-        width: 90%;
+
+      /* Contenedor principal */
+      .main-container {
         max-width: 1200px;
-        position: relative;
-        overflow: hidden;
-        border-radius: 12px;
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        margin: 2rem auto;
+        padding: 0 2rem;
       }
-      
-      .carousel {
-        width: 100%;
-        height: 450px;
-        position: relative;
-        overflow: hidden;
-      }
-      
-      .carousel-inner {
-        width: 100%;
-        height: 100%;
-        position: relative;
-      }
-      
-      .carousel-item {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        transition: opacity 1s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      
-      .carousel-item.active {
-        opacity: 1;
-        z-index: 1;
-      }
-      
-      .carousel-item img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-      
-      .carousel-caption {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
-        color: white;
+
+      /* Búsqueda */
+      .search-container {
+        background-color: white;
         padding: 2rem;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        margin-bottom: 2rem;
         text-align: center;
       }
-      
-      .carousel-caption h2 {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        font-weight: 700;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
+      .search-box {
+        position: relative;
+        max-width: 600px;
+        margin: 0 auto;
       }
-      
-      .carousel-caption p {
-        font-size: 1.2rem;
-        margin-bottom: 1.5rem;
-        font-weight: 400;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-      }
-      
-      .carousel-btn {
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 0.8rem 2rem;
+
+      .search-input {
+        width: 100%;
+        padding: 1rem 3rem 1rem 1rem;
+        border: 2px solid #ddd;
+        border-radius: 8px;
         font-size: 1rem;
-        font-weight: 600;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        text-decoration: none;
-        display: inline-block;
-      }
-      
-      .carousel-btn:hover {
-        background-color: var(--secondary-color);
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      }
-      
-      .carousel-indicators {
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 10px;
-        z-index: 10;
-      }
-      
-      .carousel-indicator {
-        width: 12px;
-        height: 12px;
-        background-color: rgba(255, 255, 255, 0.5);
-        border-radius: 50%;
-        cursor: pointer;
         transition: all 0.3s ease;
       }
-      
-      .carousel-indicator.active {
-        background-color: white;
-        transform: scale(1.2);
+
+      .search-input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
       }
-      
-      .carousel-control {
+
+      .search-icon {
         position: absolute;
+        right: 1rem;
         top: 50%;
         transform: translateY(-50%);
-        width: 50px;
-        height: 50px;
-        background-color: rgba(255, 255, 255, 0.3);
-        border: none;
-        border-radius: 50%;
-        font-size: 1.5rem;
+        color: #777;
+      }
+
+      /* Categorías */
+      .categories {
         display: flex;
-        align-items: center;
-        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .category-btn {
+        background-color: white;
+        border: 2px solid #ddd;
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
         cursor: pointer;
         transition: all 0.3s ease;
-        z-index: 10;
-        color: white;
+        font-weight: 500;
       }
-      
-      .carousel-control:hover {
-        background-color: rgba(255, 255, 255, 0.6);
-      }
-      
-      .carousel-control.prev {
-        left: 20px;
-      }
-      
-      .carousel-control.next {
-        right: 20px;
-      }
-      
-      /* SERVICIOS DESTACADOS */
-      .featured-services {
-        padding: 3rem 2rem;
-        background-color: white;
-        margin: 2rem auto;
-        width: 90%;
-        max-width: 1200px;
-        border-radius: 12px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      }
-      
-      .section-title {
-        text-align: center;
-        color: var(--primary-color);
-        font-size: 2.5rem;
-        margin-bottom: 2rem;
-        position: relative;
-        padding-bottom: 1rem;
-      }
-      
-      .section-title::after {
-        content: '';
-        position: absolute;
-        width: 80px;
-        height: 4px;
-        background-color: var(--accent-color);
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        border-radius: 2px;
-      }
-      
-      .services-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 2rem;
-      }
-      
-      .service-card {
-        background-color: var(--light-bg);
-        border-radius: 8px;
-        padding: 2rem;
-        text-align: center;
-        transition: all 0.3s ease;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-      
-      .service-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-      }
-      
-      .service-icon {
+
+      .category-btn:hover,
+      .category-btn.active {
         background-color: var(--primary-color);
         color: white;
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2rem;
-        margin-bottom: 1.5rem;
-        transition: all 0.3s ease;
+        border-color: var(--primary-color);
       }
-      
-      .service-card:hover .service-icon {
-        transform: rotateY(180deg);
-        background-color: var(--accent-color);
+
+      /* Preguntas */
+      .faq-container {
+        display: grid;
+        gap: 1.5rem;
       }
-      
-      .service-title {
-        color: var(--text-color);
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
-      }
-      
-      .service-desc {
-        color: #555;
-        font-size: 1rem;
-        line-height: 1.6;
-        margin-bottom: 1.5rem;
-      }
-      
-      .service-link {
-        color: var(--primary-color);
-        text-decoration: none;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-      }
-      
-      .service-link:hover {
-        color: var(--accent-color);
-      }
-      
-      /* FAQ SECTION */
-      .faq-section {
-        padding: 3rem 2rem;
-        margin: 2rem auto;
-        width: 90%;
-        max-width: 1000px;
-      }
-      
-      .faq-title {
-        text-align: center;
-        color: var(--primary-color);
-        font-size: 2.5rem;
-        margin-bottom: 2rem;
-        position: relative;
-        padding-bottom: 1rem;
-      }
-      
-      .faq-title::after {
-        content: '';
-        position: absolute;
-        width: 80px;
-        height: 4px;
-        background-color: var(--accent-color);
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        border-radius: 2px;
-      }
-      
+
       .faq-item {
         background-color: white;
-        border-radius: 8px;
-        margin-bottom: 1rem;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
         overflow: hidden;
-      }
-      
-      .faq-question {
-        background-color: white;
-        color: var(--text-color);
-        width: 100%;
-        text-align: left;
-        padding: 1.5rem;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        font-size: 1.2rem;
-        font-weight: 600;
-        position: relative;
         transition: all 0.3s ease;
+      }
+
+      .faq-question {
+        padding: 1.5rem;
+        cursor: pointer;
         display: flex;
         justify-content: space-between;
         align-items: center;
-      }
-      
-      .faq-question:hover {
-        background-color: #f9f9f9;
-      }
-      
-      .faq-toggle {
-        font-weight: bold;
-        font-size: 1.5rem;
-        transition: transform 0.3s ease;
-      }
-      
-      .faq-question.active .faq-toggle {
-        transform: rotate(45deg);
-      }
-      
-      .faq-answer {
-        background-color: var(--light-bg);
-        color: #555;
-        padding: 0;
-        max-height: 0;
-        overflow: hidden;
-        transition: all 0.3s ease;
-      }
-      
-      .faq-answer.show {
-        padding: 1.5rem;
-        max-height: 300px;
-      }
-      
-      /* MODAL */
-      #open-modal {
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 0.8rem 2rem;
-        font-size: 1rem;
         font-weight: 600;
-        border-radius: 50px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        margin: 1rem auto 3rem;
-        display: block;
+        transition: background-color 0.3s ease;
       }
-      
-      #open-modal:hover {
-        background-color: var(--secondary-color);
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+
+      .faq-question:hover {
+        background-color: var(--light-bg);
       }
-      
-      .modal {
+
+      .faq-answer {
+        padding: 1.5rem;
+        background-color: var(--light-bg);
         display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1100;
-        align-items: center;
-        justify-content: center;
         animation: fadeIn 0.3s ease;
       }
-      
+
       @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
       }
-      
-      @keyframes slideIn {
-        from { transform: translateY(50px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
+
+      .faq-answer.active {
+        display: block;
       }
-      
-      .modal-content {
-        background-color: white;
-        padding: 2rem;
-        border-radius: 8px;
-        width: 90%;
-        max-width: 600px;
-        position: relative;
-        animation: slideIn 0.4s ease;
-      }
-      
-      .close-modal {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        font-size: 1.5rem;
-        cursor: pointer;
-        color: #aaa;
-        transition: all 0.3s ease;
-      }
-      
-      .close-modal:hover {
-        color: var(--text-color);
-        transform: rotate(90deg);
-      }
-      
-      .modal-content h2 {
-        color: var(--primary-color);
-        margin-bottom: 1rem;
-        font-size: 1.8rem;
-      }
-      
-      .modal-content p {
-        color: #555;
-        line-height: 1.6;
-      }
-      
-      /* NEWSLETTER */
-      .newsletter {
-        background-color: var(--primary-color);
-        padding: 3rem 2rem;
-        text-align: center;
-        color: white;
-      }
-      
-      .newsletter h3 {
-        font-size: 1.8rem;
-        margin-bottom: 1rem;
-      }
-      
-      .newsletter p {
-        font-size: 1.1rem;
-        margin-bottom: 2rem;
-        max-width: 700px;
-        margin-left: auto;
-        margin-right: auto;
-      }
-      
-      .newsletter-form {
-        display: flex;
-        max-width: 600px;
-        margin: 0 auto;
-      }
-      
-      .newsletter-input {
-        flex: 1;
-        padding: 0.8rem 1.5rem;
-        border: none;
-        border-radius: 50px 0 0 50px;
-        font-size: 1rem;
-        outline: none;
-      }
-      
-      .newsletter-btn {
-        background-color: var(--accent-color);
-        color: white;
-        border: none;
-        padding: 0 2rem;
-        border-radius: 0 50px 50px 0;
-        font-size: 1rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-      
-      .newsletter-btn:hover {
-        background-color: #e68900;
-      }
-      
-      /* FOOTER */
-      .footer {
-        background-color: var(--dark-bg);
-        color: white;
-        padding: 3rem 0 0;
-      }
-      
-      .footer-content {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 2rem;
-        padding: 0 2rem;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-      
-      .footer-section h3 {
-        color: var(--accent-color);
-        margin-bottom: 1.5rem;
-        position: relative;
-        padding-bottom: 0.5rem;
-        font-size: 1.3rem;
-      }
-      
-      .footer-section h3::after {
-        content: '';
-        position: absolute;
-        width: 40px;
-        height: 3px;
-        background-color: var(--primary-color);
-        bottom: 0;
-        left: 0;
-        border-radius: 2px;
-      }
-      
-      .footer-section p {
-        margin-bottom: 0.5rem;
-        line-height: 1.6;
-      }
-      
-      .footer-section ul {
-        list-style: none;
-      }
-      
-      .footer-section ul li {
-        margin-bottom: 0.5rem;
-      }
-      
-      .footer-section ul li a {
-        color: #ddd;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      
-      .footer-section ul li a:hover {
-        color: var(--primary-color);
-        padding-left: 5px;
-      }
-      
-      .social-links {
+
+      /* Votación */
+      .vote-container {
         display: flex;
         gap: 1rem;
         margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #ddd;
       }
-      
-      .social-links a {
+
+      .vote-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #777;
+        transition: all 0.3s ease;
         display: flex;
         align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        background-color: rgba(255, 255, 255, 0.1);
-        border-radius: 50%;
-        color: white;
+        gap: 0.5rem;
+      }
+
+      .vote-btn:hover {
+        color: var(--primary-color);
+      }
+
+      .vote-btn.active {
+        color: var(--primary-color);
+      }
+
+      /* Nueva pregunta */
+      .new-question {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        margin-top: 2rem;
+      }
+
+      .new-question h2 {
+        margin-bottom: 1.5rem;
+        color: var(--primary-color);
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+      }
+
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        width: 100%;
+        padding: 0.8rem;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
         transition: all 0.3s ease;
-        text-decoration: none;
-        font-size: 1.2rem;
       }
-      
-      .social-links a:hover {
-        background-color: var(--primary-color);
-        transform: translateY(-3px);
+
+      .form-group input:focus,
+      .form-group textarea:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
       }
-      
-      .footer-bottom {
-        background-color: rgba(0, 0, 0, 0.2);
-        text-align: center;
-        padding: 1.5rem 0;
-        margin-top: 3rem;
-      }
-      
-      /* BACK TO TOP BUTTON */
-      .back-to-top {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 50px;
-        height: 50px;
+
+      .submit-btn {
         background-color: var(--primary-color);
         color: white;
         border: none;
-        border-radius: 50%;
-        font-size: 1.2rem;
-        display: none;
-        align-items: center;
-        justify-content: center;
+        padding: 1rem 2rem;
+        border-radius: 8px;
         cursor: pointer;
+        font-weight: 600;
         transition: all 0.3s ease;
-        z-index: 1000;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
       }
-      
-      .back-to-top:hover {
+
+      .submit-btn:hover {
         background-color: var(--secondary-color);
-        transform: translateY(-5px);
+        transform: translateY(-2px);
       }
-      
-      /* ANIMACIONES */
-      @keyframes float {
-        0% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
-        100% { transform: translateY(0); }
+
+      /* Footer */
+      .footer {
+        background-color: var(--dark-bg);
+        color: white;
+        padding: 2rem;
+        margin-top: auto;
+        text-align: center;
       }
-      
-      .floating {
-        animation: float 6s ease-in-out infinite;
+
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin: 1rem 0;
       }
-      
-      @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-        100% { transform: scale(1); }
+
+      .footer-links a {
+        color: white;
+        text-decoration: none;
+        transition: color 0.3s ease;
       }
-      
-      .pulse {
-        animation: pulse 2s infinite;
+
+      .footer-links a:hover {
+        color: var(--accent-color);
       }
-      
-      /* RESPONSIVIDAD */
+
+      /* Responsive */
       @media (max-width: 768px) {
         .navbar {
           flex-direction: column;
-          padding: 1rem;
+          gap: 1rem;
         }
-        
-        .logo-container {
-          margin-bottom: 1rem;
-        }
-        
+
         .nav-links {
           flex-wrap: wrap;
           justify-content: center;
-          gap: 0.5rem;
         }
-        
-        .carousel {
-          height: 300px;
+
+        .main-container {
+          padding: 0 1rem;
         }
-        
-        .carousel-caption h2 {
-          font-size: 1.8rem;
-        }
-        
-        .carousel-caption p {
-          font-size: 1rem;
-        }
-        
-        .newsletter-form {
-          flex-direction: column;
-          align-items: center;
-        }
-        
-        .newsletter-input {
-          width: 100%;
-          border-radius: 50px;
-          margin-bottom: 1rem;
-        }
-        
-        .newsletter-btn {
-          width: 100%;
-          border-radius: 50px;
-          padding: 0.8rem;
+
+        .categories {
+          justify-content: center;
         }
       }
     </style>
@@ -773,122 +344,306 @@
   <body>
     <nav class="navbar">
       <div class="logo-container">
-        <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula" class="logo floating">
-        <h1 class="site-title animate__animated animate__fadeIn">Farmacia Cápsula</h1>
+        <img src="https://images.vexels.com/media/users/3/135594/isolated/preview/bdfd2abb53c8631d97c489a07e121c44-icono-de-capsula.png" alt="Logo Farmacia Cápsula" class="logo">
+        <h1 class="site-title">Farmacia Cápsula</h1>
       </div>
-      <div class="nav-links animate__animated animate__fadeInRight">
-        <a href="index.html" class="active-link"><i class="fas fa-home"></i> Inicio</a>
-        <a href="iniciar_sesion.html"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</a>
+      <div class="nav-links">
+        <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
         <a href="producto.html"><i class="fas fa-pills"></i> Productos</a>
         <a href="delivery.html"><i class="fas fa-truck"></i> Delivery</a>
         <a href="servicios.html"><i class="fas fa-heartbeat"></i> Servicios</a>
+        <a href="preguntas_frecuentes.html" class="active-link"><i class="fas fa-question-circle"></i> FAQ</a>
       </div>
     </nav>
 
-    <div class="carousel-container">
-      <div class="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="/api/placeholder/1200/450" alt="Oferta especial">
-            <div class="carousel-caption animate__animated animate__fadeInUp">
-              <h2>Cuidamos tu salud</h2>
-              <p>Productos farmacéuticos de alta calidad para toda la familia</p>
-              <a href="producto.html" class="carousel-btn">Ver productos</a>
-            </div>
+    <div class="main-container">
+      <div class="search-container animate__animated animate__fadeIn">
+        <h2>¿Cómo podemos ayudarte?</h2>
+        <div class="search-box">
+          <input type="text" class="search-input" placeholder="Buscar preguntas frecuentes...">
+          <i class="fas fa-search search-icon"></i>
+        </div>
+      </div>
+
+      <div class="categories animate__animated animate__fadeInUp">
+        <button class="category-btn active" data-category="all">Todas</button>
+        <button class="category-btn" data-category="pedidos">Pedidos</button>
+        <button class="category-btn" data-category="pagos">Pagos</button>
+        <button class="category-btn" data-category="envios">Envíos</button>
+        <button class="category-btn" data-category="productos">Productos</button>
+        <button class="category-btn" data-category="servicios">Servicios</button>
+      </div>
+
+      <div class="faq-container">
+        <!-- Pregunta 1 -->
+        <div class="faq-item animate__animated animate__fadeIn" data-category="pedidos">
+          <div class="faq-question">
+            <span>¿Cómo puedo realizar un pedido?</span>
+            <i class="fas fa-chevron-down"></i>
           </div>
-          <div class="carousel-item">
-            <img src="/api/placeholder/1200/450" alt="Entrega a domicilio">
-            <div class="carousel-caption animate__animated animate__fadeInUp">
-              <h2>Entrega a domicilio</h2>
-              <p>Recibe tus medicamentos en la comodidad de tu hogar</p>
-              <a href="delivery.html" class="carousel-btn">Conoce más</a>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <img src="/api/placeholder/1200/450" alt="Atención profesional">
-            <div class="carousel-caption animate__animated animate__fadeInUp">
-              <h2>Atención profesional</h2>
-              <p>Personal capacitado para brindarte la mejor asesoría</p>
-              <a href="servicios.html" class="carousel-btn">Ver servicios</a>
+          <div class="faq-answer">
+            <p>Para realizar un pedido, sigue estos pasos:</p>
+            <ol>
+              <li>Selecciona los productos que deseas en nuestra tienda online</li>
+              <li>Agrega los productos al carrito de compras</li>
+              <li>Procede al checkout</li>
+              <li>Selecciona el método de pago y envío</li>
+              <li>Confirma tu pedido</li>
+            </ol>
+            <div class="vote-container">
+              <button class="vote-btn" data-vote="helpful">
+                <i class="fas fa-thumbs-up"></i> ¿Fue útil?
+              </button>
+              <button class="vote-btn" data-vote="unhelpful">
+                <i class="fas fa-thumbs-down"></i> No fue útil
+              </button>
             </div>
           </div>
         </div>
-        <button class="carousel-control prev"><i class="fas fa-chevron-left"></i></button>
-        <button class="carousel-control next"><i class="fas fa-chevron-right"></i></button>
-        <div class="carousel-indicators">
-          <div class="carousel-indicator active"></div>
-          <div class="carousel-indicator"></div>
-          <div class="carousel-indicator"></div>
+
+        <!-- Pregunta 2 -->
+        <div class="faq-item animate__animated animate__fadeIn" data-category="pagos">
+          <div class="faq-question">
+            <span>¿Qué métodos de pago aceptan?</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Aceptamos los siguientes métodos de pago:</p>
+            <ul>
+              <li>Tarjetas de crédito y débito (Visa, Mastercard, American Express)</li>
+              <li>Transferencias bancarias</li>
+              <li>Pago en efectivo al momento de la entrega</li>
+              <li>Pago móvil (Yape, Plin)</li>
+            </ul>
+            <div class="vote-container">
+              <button class="vote-btn" data-vote="helpful">
+                <i class="fas fa-thumbs-up"></i> ¿Fue útil?
+              </button>
+              <button class="vote-btn" data-vote="unhelpful">
+                <i class="fas fa-thumbs-down"></i> No fue útil
+              </button>
+            </div>
+          </div>
         </div>
+
+        <!-- Pregunta 3 -->
+        <div class="faq-item animate__animated animate__fadeIn" data-category="envios">
+          <div class="faq-question">
+            <span>¿Cuál es el tiempo de entrega?</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>El tiempo de entrega varía según la ubicación:</p>
+            <ul>
+              <li>Área metropolitana: 1-2 horas</li>
+              <li>Zonas cercanas: 2-4 horas</li>
+              <li>Otras zonas: 4-6 horas</li>
+            </ul>
+            <p>Los pedidos realizados después de las 6 PM se entregarán al día siguiente.</p>
+            <div class="vote-container">
+              <button class="vote-btn" data-vote="helpful">
+                <i class="fas fa-thumbs-up"></i> ¿Fue útil?
+              </button>
+              <button class="vote-btn" data-vote="unhelpful">
+                <i class="fas fa-thumbs-down"></i> No fue útil
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pregunta 4 -->
+        <div class="faq-item animate__animated animate__fadeIn" data-category="productos">
+          <div class="faq-question">
+            <span>¿Los productos son originales?</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Sí, todos nuestros productos son 100% originales y provienen directamente de los laboratorios y distribuidores autorizados. Garantizamos la autenticidad y calidad de todos los productos que vendemos.</p>
+            <div class="vote-container">
+              <button class="vote-btn" data-vote="helpful">
+                <i class="fas fa-thumbs-up"></i> ¿Fue útil?
+              </button>
+              <button class="vote-btn" data-vote="unhelpful">
+                <i class="fas fa-thumbs-down"></i> No fue útil
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pregunta 5 -->
+        <div class="faq-item animate__animated animate__fadeIn" data-category="servicios">
+          <div class="faq-question">
+            <span>¿Ofrecen servicios de farmacia?</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="faq-answer">
+            <p>Sí, ofrecemos los siguientes servicios:</p>
+            <ul>
+              <li>Asesoría farmacéutica</li>
+              <li>Control de presión arterial</li>
+              <li>Control de glucosa</li>
+              <li>Entrega de medicamentos con receta</li>
+              <li>Servicio de vacunación</li>
+            </ul>
+            <div class="vote-container">
+              <button class="vote-btn" data-vote="helpful">
+                <i class="fas fa-thumbs-up"></i> ¿Fue útil?
+              </button>
+              <button class="vote-btn" data-vote="unhelpful">
+                <i class="fas fa-thumbs-down"></i> No fue útil
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="new-question animate__animated animate__fadeInUp">
+        <h2>¿No encontraste lo que buscabas?</h2>
+        <form id="newQuestionForm">
+          <div class="form-group">
+            <label for="category">Categoría</label>
+            <select id="category" required>
+              <option value="">Selecciona una categoría</option>
+              <option value="pedidos">Pedidos</option>
+              <option value="pagos">Pagos</option>
+              <option value="envios">Envíos</option>
+              <option value="productos">Productos</option>
+              <option value="servicios">Servicios</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="question">Tu pregunta</label>
+            <textarea id="question" rows="4" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="email">Correo electrónico (opcional)</label>
+            <input type="email" id="email">
+          </div>
+          <button type="submit" class="submit-btn">Enviar pregunta</button>
+        </form>
       </div>
     </div>
 
-    <section class="featured-services animate__animated animate__fadeIn">
-      <h2 class="section-title">Nuestros Servicios</h2>
-      <div class="services-container">
-        <div class="service-card">
-          <div class="service-icon">
-            <i class="fas fa-pills"></i>
-          </div>
-          <h3 class="service-title">Medicamentos</h3>
-          <p class="service-desc">Amplio catálogo de medicamentos de venta libre y con receta para todas tus necesidades.</p>
-          <a href="producto.html" class="service-link">Ver más <i class="fas fa-arrow-right"></i></a>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">
-            <i class="fas fa-truck"></i>
-          </div>
-          <h3 class="service-title">Delivery 24/7</h3>
-          <p class="service-desc">Servicio de entrega a domicilio disponible las 24 horas del día, los 7 días de la semana.</p>
-          <a href="delivery.html" class="service-link">Ver más <i class="fas fa-arrow-right"></i></a>
-        </div>
-        <div class="service-card">
-          <div class="service-icon">
-            <i class="fas fa-user-md"></i>
-          </div>
-          <h3 class="service-title">Consulta farmacéutica</h3>
-          <p class="service-desc">Nuestros farmacéuticos están disponibles para brindarte asesoría profesional sobre medicamentos.</p>
-          <a href="servicios.html" class="service-link">Ver más <i class="fas fa-arrow-right"></i></a>
-        </div>
+    <footer class="footer">
+      <p>© 2025 Farmacia Cápsula. Todos los derechos reservados.</p>
+      <div class="footer-links">
+        <a href="index.html">Inicio</a>
+        <a href="producto.html">Productos</a>
+        <a href="delivery.html">Delivery</a>
+        <a href="servicios.html">Servicios</a>
+        <a href="preguntas_frecuentes.html">FAQ</a>
       </div>
-    </section>
+    </footer>
 
-    <section class="faq-section">
-      <h2 class="faq-title">Preguntas Frecuentes</h2>
-      <div class="faq-item">
-        <button class="faq-question">
-          ¿Cómo puedo comprar medicamentos en línea? <span class="faq-toggle">+</span>
-        </button>
-        <div class="faq-answer">
-          Para comprar medicamentos en línea, solo necesitas registrarte en nuestra plataforma, buscar los productos que necesitas, añadirlos al carrito y completar el pago. Para medicamentos con receta, deberás subir una imagen de la receta médica durante el proceso de compra.
-        </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-question">
-          ¿Cuánto tiempo tarda en llegar mi pedido? <span class="faq-toggle">+</span>
-        </button>
-        <div class="faq-answer">
-          El tiempo de entrega depende de tu ubicación. En zonas urbanas generalmente entregamos en 1-2 horas. Para zonas rurales o más alejadas, el tiempo de entrega puede ser de 24-48 horas. Puedes verificar el tiempo estimado durante el proceso de compra.
-        </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-question">
-          ¿Qué métodos de pago aceptan? <span class="faq-toggle">+</span>
-        </button>
-        <div class="faq-answer">
-          Aceptamos múltiples métodos de pago: tarjetas de crédito/débito, transferencias bancarias, PayPal y pago en efectivo contra entrega. Todos nuestros métodos de pago son seguros y protegidos.
-        </div>
-      </div>
-      <div class="faq-item">
-        <button class="faq-question">
-          ¿Puedo devolver medicamentos? <span class="faq-toggle">+</span>
-        </button>
-        <div class="faq-answer">
-          Por razones de seguridad y regulaciones sanitarias, no aceptamos devoluciones de medicamentos una vez que han salido de nuestras instalaciones. Sin embargo, si recibes productos dañados o incorrectos, contáctanos inmediatamente para resolver el problema.
-        </div>
-      </div>
-    </section>
+    <script>
+      // Funcionalidad de las preguntas frecuentes
+      document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+          const answer = question.nextElementSibling;
+          const icon = question.querySelector('i');
+          
+          // Cerrar otras respuestas
+          document.querySelectorAll('.faq-answer').forEach(ans => {
+            if (ans !== answer) {
+              ans.classList.remove('active');
+              ans.previousElementSibling.querySelector('i').classList.remove('fa-chevron-up');
+              ans.previousElementSibling.querySelector('i').classList.add('fa-chevron-down');
+            }
+          });
+          
+          // Toggle respuesta actual
+          answer.classList.toggle('active');
+          icon.classList.toggle('fa-chevron-up');
+          icon.classList.toggle('fa-chevron-down');
+        });
+      });
 
-    <button id="open-modal" class="animate__animated animate__pulse animate__infinite animate__slower">
-      <i class="fas fa-info-circle"></i> Más Información
-    </button>
+      // Sistema de votación
+      document.querySelectorAll('.vote-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const container = this.parentElement;
+          const question = container.closest('.faq-item');
+          const voteType = this.dataset.vote;
+          
+          // Remover votos activos
+          container.querySelectorAll('.vote-btn').forEach(b => b.classList.remove('active'));
+          
+          // Aplicar voto actual
+          this.classList.add('active');
+          
+          // Guardar voto en localStorage
+          const questionId = question.dataset.category + '-' + question.querySelector('.faq-question span').textContent;
+          localStorage.setItem(`vote-${questionId}`, voteType);
+        });
+      });
+
+      // Filtrado por categorías
+      document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          // Actualizar botones activos
+          document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          
+          const category = this.dataset.category;
+          const questions = document.querySelectorAll('.faq-item');
+          
+          questions.forEach(question => {
+            if (category === 'all' || question.dataset.category === category) {
+              question.style.display = 'block';
+            } else {
+              question.style.display = 'none';
+            }
+          });
+        });
+      });
+
+      // Búsqueda
+      const searchInput = document.querySelector('.search-input');
+      searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        const questions = document.querySelectorAll('.faq-item');
+        
+        questions.forEach(question => {
+          const questionText = question.querySelector('.faq-question span').textContent.toLowerCase();
+          const answerText = question.querySelector('.faq-answer').textContent.toLowerCase();
+          
+          if (questionText.includes(searchTerm) || answerText.includes(searchTerm)) {
+            question.style.display = 'block';
+          } else {
+            question.style.display = 'none';
+          }
+        });
+      });
+
+      // Formulario de nueva pregunta
+      document.getElementById('newQuestionForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const category = document.getElementById('category').value;
+        const question = document.getElementById('question').value;
+        const email = document.getElementById('email').value;
+        
+        // Simular envío de pregunta
+        alert('¡Gracias por tu pregunta! La revisaremos y la agregaremos a nuestras FAQ si es relevante para otros usuarios.');
+        
+        // Limpiar formulario
+        this.reset();
+      });
+
+      // Cargar votos guardados
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.faq-item').forEach(question => {
+          const questionId = question.dataset.category + '-' + question.querySelector('.faq-question span').textContent;
+          const savedVote = localStorage.getItem(`vote-${questionId}`);
+          
+          if (savedVote) {
+            const voteBtn = question.querySelector(`.vote-btn[data-vote="${savedVote}"]`);
+            if (voteBtn) {
+              voteBtn.classList.add('active');
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
